@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tu carrito | VELORA TECH</title>
+    <script src="https://stripe.com"></script>
+    <style>
+        :root { --bg-dark: #070708; --bg-card: #0f1013; --text-main: #ffffff; --text-muted: #7e8494; --border-color: #1c1e24; --accent: #0071e3; }
+        body { background-color: var(--bg-dark); color: var(--text-main); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; border-bottom: 1px solid var(--border-color); background-color: rgba(7, 7, 8, 0.9); }
+        .logo { font-weight: 800; font-size: 1.4rem; letter-spacing: 1px; }
+        nav a { color: var(--text-muted); text-decoration: none; margin-left: 24px; font-size: 0.85rem; font-weight: 500; }
+        nav a.active { color: var(--text-main); }
+        .breadcrumb { padding: 20px 5%; font-size: 0.8rem; color: var(--text-muted); }
+        .cart-container { max-width: 800px; margin: 40px auto; padding: 0 20px; }
+        .cart-item { display: flex; justify-content: space-between; background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 20px; border-radius: 6px; margin-bottom: 20px; }
+        .checkout-btn { background-color: var(--accent); color: white; border: none; padding: 14px 28px; border-radius: 4px; font-weight: 600; width: 100%; cursor: pointer; font-size: 1rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">VELORA TECH</div>
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="componentes.html">Componentes</a>
+            <a href="carrito.html" class="active">🛒 Carrito</a>
+        </nav>
+    </header>
+    <div class="breadcrumb">Inicio › Carrito</div>
+    <div class="cart-container">
+        <h2>Tu carrito</h2>
+        <div class="cart-item">
+            <div>
+                <h3 style="margin:0;">GeForce RTX 5070 Ti 16GB</h3>
+                <p style="color:var(--text-muted); margin:5px 0 0 0;">Cantidad: 1</p>
+            </div>
+            <div style="font-weight:700;">$26,499.00 MXN</div>
+        </div>
+        <button class="checkout-btn" onclick="pagarCarrito()">Proceder al Pago Seguro</button>
+    </div>
+
+    <script>
+        const stripe = Stripe('pk_test_51USAXPK6RrUN4mtyQ49ApWFZTmIa2aukwwSRYuT5bMwQQMCWuQJXObsuTWBAS7lu274LQ7Sv5nYGaRjqlxCyPk1L00fLY4e30L'); 
+        function pagarCarrito() {
+            stripe.redirectToCheckout({
+                lineItems: [{ product: 'prod_VT6xS0qZSgYPdt', quantity: 1 }], 
+                mode: 'payment',
+                successUrl: window.location.origin + '/index.html',
+                cancelUrl: window.location.origin + '/carrito.html',
+            });
+        }
+    </script>
+</body>
+</html>
