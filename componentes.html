@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Componentes de PC | VELORA TECH</title>
+    <style>
+        :root { --bg-dark: #070708; --bg-card: #0f1013; --bg-sidebar: #0b0c0e; --text-main: #ffffff; --text-muted: #7e8494; --border-color: #1c1e24; --accent: #0071e3; }
+        body { background-color: var(--bg-dark); color: var(--text-main); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; border-bottom: 1px solid var(--border-color); background-color: rgba(7, 7, 8, 0.9); }
+        .logo { font-weight: 800; font-size: 1.4rem; letter-spacing: 1px; }
+        nav a { color: var(--text-muted); text-decoration: none; margin-left: 24px; font-size: 0.85rem; font-weight: 500; }
+        nav a.active { color: var(--text-main); }
+        .breadcrumb { padding: 20px 5%; font-size: 0.8rem; color: var(--text-muted); }
+        .store-layout { max-width: 1200px; margin: 0 auto 60px auto; display: grid; grid-template-columns: 260px 1fr; gap: 40px; padding: 0 20px; }
+        .sidebar h4 { font-size: 0.8rem; text-transform: uppercase; color: var(--text-main); margin-bottom: 12px; }
+        .filter-checkbox { display: flex; align-items: center; margin-bottom: 8px; font-size: 0.85rem; color: var(--text-muted); }
+        .filter-checkbox input { margin-right: 8px; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; }
+        .product-card { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 16px; display: flex; flex-direction: column; }
+        .product-image { width: 100%; height: 180px; background-color: #070708; border-radius: 4px; margin-bottom: 16px; display: flex; justify-content: center; align-items: center; }
+        .product-image img { max-width: 90%; max-height: 90%; object-fit: contain; }
+        .product-brand { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
+        .product-card h3 { margin: 0 0 12px 0; font-size: 0.9rem; font-weight: 600; height: 40px; overflow: hidden; }
+        .product-price { font-size: 1.2rem; font-weight: 700; margin-bottom: 16px; }
+        .buy-button { background-color: var(--accent); color: #ffffff; border: none; padding: 10px; border-radius: 4px; font-weight: 600; font-size: 0.85rem; cursor: pointer; text-decoration: none; text-align: center; display: block; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">VELORA TECH</div>
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="componentes.html" class="active">Componentes</a>
+            <a href="carrito.html">🛒 Carrito</a>
+        </nav>
+    </header>
+    <div class="breadcrumb">Inicio › Componentes</div>
+    <div class="store-layout">
+        <aside class="sidebar">
+            <h3 style="margin-top:0;">Filtros</h3>
+            <h4>Precio (MXN)</h4>
+            <div style="display:flex; gap:5px; margin-bottom:20px;"><input type="text" placeholder="Mín" style="width:50%; background:#000; border:1px solid var(--border-color); color:#fff; padding:5px;"><input type="text" placeholder="Máx" style="width:50%; background:#000; border:1px solid var(--border-color); color:#fff; padding:5px;"></div>
+            <h4>Marca</h4>
+            <label class="filter-checkbox"><input type="checkbox" checked> [-] ASUS</label>
+            <label class="filter-checkbox"><input type="checkbox" checked> [-] AMD</label>
+            <label class="filter-checkbox"><input type="checkbox" checked> [-] PNY</label>
+        </aside>
+        <main>
+            <h2 style="margin-top: 0;">Componentes de PC</h2>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image"><img src="https://unsplash.com"></div>
+                    <span class="product-brand">PNY / NVIDIA</span>
+                    <h3>GeForce RTX 5070 Ti 16GB GDDR7</h3>
+                    <div class="product-price">$26,499.00 MXN</div>
+                    <a href="carrito.html" class="buy-button">Comprar Ahora</a>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
