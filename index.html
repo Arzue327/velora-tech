@@ -157,276 +157,94 @@ button,input,select{font:inherit}button,a{cursor:pointer}a{color:inherit;text-de
   margin: 0 auto;
 }
 
+
+/* Ficha de producto VELORA TECH */
 .product-detail {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: 44px;
+  max-width: 1240px;
+  margin: 30px auto;
   align-items: start;
-  margin-top: 20px;
 }
 
 .detail-image {
-  background: #f8f9fa;
-  border-radius: 12px;
-  padding: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 400px;
-}
-
-.detail-image img {
-  max-width: 100%;
-  max-height: 450px;
-  object-fit: contain;
-  filter: none !important;
-}
-
-.detail-copy h1 {
-  font-size: 28px;
-  margin: 10px 0;
-}
-
-.detail-price {
-  font-size: 32px;
-  font-weight: bold;
-  margin: 15px 0;
-}
-
-.detail-copy ul {
-  padding-left: 20px;
-  line-height: 1.8;
-  color: #444;
-}
-
-/* VELORA TECH — ficha premium de producto */
-#page-detail .section {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 34px 24px 70px;
-}
-
-#page-detail .breadcrumb {
-  margin-bottom: 28px;
-  font-size: 12px;
-  color: #817b72;
-}
-
-#page-detail .product-detail {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-  gap: 52px;
-  align-items: start;
-}
-
-#page-detail .detail-image {
-  min-height: 440px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 35px;
-  background: #f7f5f0;
-  border: 1px solid #e7e3dc;
-  border-radius: 16px;
-  font-size: 100px;
-  overflow: hidden;
-}
-
-#page-detail .detail-image img {
-  display: block;
-  width: 100%;
-  max-width: 490px;
-  max-height: 490px;
-  object-fit: contain;
-  mix-blend-mode: multiply;
-}
-
-#page-detail .detail-copy {
-  padding: 8px 0;
-  min-width: 0;
-}
-
-#page-detail .detail-copy .eyebrow {
-  margin-bottom: 14px;
-  font-size: 11px;
-  letter-spacing: 1.8px;
-  text-transform: uppercase;
-}
-
-#page-detail .detail-copy h1 {
-  margin: 0 0 18px;
-  font-size: clamp(25px, 3vw, 38px);
-  line-height: 1.18;
-  letter-spacing: -1.1px;
-  overflow-wrap: anywhere;
-}
-
-#page-detail .detail-copy .stars {
-  margin-bottom: 22px;
-  font-size: 13px;
-}
-
-#page-detail .detail-price {
-  margin: 18px 0;
-  font-size: 32px;
-  font-weight: 750;
-  letter-spacing: -1px;
-}
-
-#page-detail .detail-price .oldprice {
-  margin-left: 8px;
-  font-size: 15px;
-  font-weight: 400;
-  letter-spacing: 0;
-}
-
-#page-detail .detail-copy ul {
-  margin: 22px 0;
-  padding: 0;
-  list-style: none;
-  border-top: 1px solid #e7e3dc;
-}
-
-#page-detail .detail-copy li {
-  padding: 12px 4px;
-  border-bottom: 1px solid #e7e3dc;
-  font-size: 13px;
-  line-height: 1.6;
-}
-
-#page-detail .detail-copy li::before {
-  content: "✓";
-  margin-right: 10px;
-  color: #52745b;
-}
-
-#page-detail .detail-copy .notice {
-  margin: 20px 0;
-  font-size: 12px;
-  line-height: 1.7;
-}
-
-#page-detail .qty-large {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 24px;
-}
-
-#page-detail .qty-large label {
-  width: 100%;
-  font-size: 12px;
-  color: #817b72;
-}
-
-#page-detail #detailQty {
-  width: 82px;
-  min-height: 46px;
-  padding: 10px;
-  border: 1px solid #ded9d0;
-  border-radius: 8px;
-  background: #fff;
-  font: inherit;
-}
-
-#page-detail #detailAdd {
-  flex: 1;
-  min-height: 46px;
-  border-radius: 8px;
-}
-
-#page-detail .text-link {
-  display: inline-block;
-  margin-top: 22px;
-  font-size: 13px;
-}
-
-@media (max-width: 760px) {
-  #page-detail .section {
-    padding: 22px 16px 45px;
-  }
-
-  #page-detail .product-detail {
-    grid-template-columns: 1fr;
-    gap: 28px;
-  }
-
-  #page-detail .detail-image {
-    min-height: 290px;
-    padding: 22px;
-  }
-
-  #page-detail .detail-image img {
-    max-height: 330px;
-  }
-
-  #page-detail .detail-copy h1 {
-    font-size: 27px;
-  }
-
-  #page-detail .detail-price {
-    font-size: 28px;
-  }
-}
-
-/* VELORA TECH — ficha premium de producto */
-#page-detail .product-detail {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-  gap: 48px;
-  align-items: start;
-}
-
-#page-detail .detail-image {
   min-height: 420px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 32px;
+  padding: 30px;
   background: #f7f5f0;
   border: 1px solid #e7e3dc;
   border-radius: 16px;
-  overflow: hidden;
 }
 
-#page-detail .detail-image img {
+.detail-image img {
+  display: block;
   width: 100%;
-  max-width: 490px;
-  max-height: 460px;
+  max-height: 440px;
   object-fit: contain;
 }
 
-#page-detail .detail-copy {
-  min-width: 0;
-  padding: 8px 0;
-}
-
-#page-detail .detail-copy h1 {
+.detail-copy h1 {
   font-size: clamp(26px, 3vw, 38px);
   line-height: 1.2;
-  overflow-wrap: anywhere;
+  margin: 16px 0;
 }
 
-#page-detail .detail-price {
-  margin: 20px 0;
+.detail-copy .stars {
+  margin: 14px 0;
+  color: #b58a45;
+}
+
+.detail-copy .stars span {
+  color: #777;
+}
+
+.detail-price {
+  margin: 22px 0;
   font-size: 32px;
   font-weight: 750;
 }
 
+.oldprice {
+  margin-left: 10px;
+  font-size: 16px;
+  font-weight: 400;
+  color: #888;
+  text-decoration: line-through;
+}
+
+.detail-benefits {
+  display: grid;
+  gap: 10px;
+  margin: 24px 0;
+  font-size: 13px;
+}
+
+.detail-copy ul {
+  padding-left: 20px;
+  line-height: 1.9;
+}
+
+.back-catalog {
+  display: inline-block;
+  margin-top: 20px;
+}
+
 @media (max-width: 760px) {
-  #page-detail .product-detail {
+  .product-detail {
     grid-template-columns: 1fr;
-    gap: 26px;
+    gap: 24px;
+    margin: 20px 12px;
   }
 
-  #page-detail .detail-image {
-    min-height: 290px;
-    padding: 20px;
+  .detail-image {
+    min-height: 280px;
   }
 
-  #page-detail .detail-image img {
-    max-height: 330px;
+  .detail-copy h1 {
+    font-size: 27px;
   }
 }
 </style>
