@@ -257,6 +257,12 @@ button,input,select{font:inherit}button,a{cursor:pointer}a{color:inherit;text-de
     text-align: center;
     gap: 10px; /* Reduce el espacio entre elementos */
   }
+}/* Oculta la barra superior informativa y el menú principal en el detalle del producto y en el carrito */
+#page-detail.active ~ .topbar,
+#page-detail.active ~ .nav,
+#page-cart.active ~ .topbar,
+#page-cart.active ~ .nav {
+    display: none !important;
 }
 </style>
 </head>
