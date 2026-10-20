@@ -369,6 +369,66 @@ button,input,select{font:inherit}button,a{cursor:pointer}a{color:inherit;text-de
     font-size: 28px;
   }
 }
+
+/* VELORA TECH — ficha premium de producto */
+#page-detail .product-detail {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: 48px;
+  align-items: start;
+}
+
+#page-detail .detail-image {
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  background: #f7f5f0;
+  border: 1px solid #e7e3dc;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+#page-detail .detail-image img {
+  width: 100%;
+  max-width: 490px;
+  max-height: 460px;
+  object-fit: contain;
+}
+
+#page-detail .detail-copy {
+  min-width: 0;
+  padding: 8px 0;
+}
+
+#page-detail .detail-copy h1 {
+  font-size: clamp(26px, 3vw, 38px);
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+#page-detail .detail-price {
+  margin: 20px 0;
+  font-size: 32px;
+  font-weight: 750;
+}
+
+@media (max-width: 760px) {
+  #page-detail .product-detail {
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+
+  #page-detail .detail-image {
+    min-height: 290px;
+    padding: 20px;
+  }
+
+  #page-detail .detail-image img {
+    max-height: 330px;
+  }
+}
 </style>
 </head>
 <body>
