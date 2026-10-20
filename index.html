@@ -285,10 +285,8 @@ function renderProductDetail(id) {
     ? `<img src="${p.art}" alt="${p.name}" style="max-width:100%; height:auto; object-fit:contain;">` 
     : p.art;
 
-  // Buscamos o creamos el contenedor de detalle en la página
   let detailPage = document.getElementById('page-product-detail');
   if (!detailPage) {
-    // Si no existe la página de detalle en el HTML, la creamos dinámicamente para que no falle
     detailPage = document.createElement('section');
     detailPage.id = 'page-product-detail';
     detailPage.className = 'page';
@@ -322,9 +320,8 @@ function renderProductDetail(id) {
     </div>
   `;
 
-  // Ocultamos todas las páginas y mostramos la de detalle
   document.querySelectorAll('.page').forEach(pg => pg.classList.remove('active'));
   detailPage.classList.add('active');
   window.scrollTo(0, 0);
-</script>
+}</script>
 </body></html>
