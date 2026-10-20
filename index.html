@@ -151,6 +151,52 @@ button,input,select{font:inherit}button,a{cursor:pointer}a{color:inherit;text-de
   filter: none !important;
   -webkit-filter: none !important;
   opacity: 1 !important;
+}#page-product-detail {
+  padding: 40px 5%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.product-detail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+  margin-top: 20px;
+}
+
+.detail-image {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+
+.detail-image img {
+  max-width: 100%;
+  max-height: 450px;
+  object-fit: contain;
+  filter: none !important;
+}
+
+.detail-copy h1 {
+  font-size: 28px;
+  margin: 10px 0;
+}
+
+.detail-price {
+  font-size: 32px;
+  font-weight: bold;
+  margin: 15px 0;
+}
+
+.detail-copy ul {
+  padding-left: 20px;
+  line-height: 1.8;
+  color: #444;
 }
 </style>
 </head>
@@ -228,5 +274,51 @@ document.addEventListener("click",e=>{const page=e.target.closest("[data-page]")
 $("searchBtn").onclick=()=>{searchTerm=$("searchInput").value.trim().toLowerCase();showPage("catalog");renderCatalog()};$("searchInput").addEventListener("keydown",e=>{if(e.key==="Enter")$("searchBtn").click()});["minPrice","maxPrice","sortSelect"].forEach(id=>$(id).addEventListener("input",renderCatalog));document.querySelectorAll(".brand-filter,.cat-filter").forEach(el=>el.addEventListener("change",renderCatalog));$("clearFilters").onclick=()=>{document.querySelectorAll(".brand-filter,.cat-filter").forEach(c=>c.checked=false);$("minPrice").value="";$("maxPrice").value="";$("sortSelect").value="popular";searchTerm="";$("searchInput").value="";renderCatalog()};
 $("checkCompat").onclick=()=>{const cpu=$("cpuSelect").value,gpu=$("gpuSelect").value,board=$("boardSelect").value;let msg="Selecciona los componentes para obtener una orientación.";if(cpu&&gpu&&board){msg="Selección registrada. Revisa socket, BIOS, dimensiones de GPU, consumo y conectores de la fuente con las especificaciones oficiales antes de comprar. Esta demo no valida compatibilidad real."}else if(cpu||gpu||board){msg="Faltan selecciones. Completa los campos para una revisión orientativa."}$("compatResult").textContent=msg};
 saveCart();renderHome();renderCatalog();
-</script>
+function renderProductDetail(id) {
+  const p = products.find(x => x.id == id);
+  if (!p) return;
+  
+  // Guardamos el producto actual
+  currentProduct = p;
+  
+  // Detectamos si 'art' es imagen o ícono
+  const artContent = p.art.includes('.') 
+    ? `<img src="${p.art}" alt="${p.name}" style="max-width:100%; height:auto; object-fit:contain;">` 
+    : p.art;
+
+  // Renderizamos el contenido en la sección de detalle
+  const detailContainer = document.querySelector("#page-product-detail") || document.querySelector(".product-detail");
+  if (detailContainer) {
+    detailContainer.innerHTML = `
+      <div class="breadcrumb"><a href="#" data-page="home">Inicio</a> / <a href="#" data-page="catalog">Catálogo</a> / ${p.name}</div>
+      <div class="product-detail">
+        <div class="detail-image">${artContent}</div>
+        <div class="detail-copy">
+          <div class="muted">${p.brand} · ${p.cat}</div>
+          <h1>${p.name}</h1>
+          <div class="stars">★★★★★ (4.8)</div>
+          <div class="detail-price">$${p.price.toLocaleString('es-MX')}${p.old ? ` <span class="oldprice">$${p.old.toLocaleString('es-MX')}</span>` : ''}</div>
+          <p>${p.desc || 'Sin descripción disponible.'}</p>
+          
+          <h3>Especificaciones técnicas</h3>
+          <ul>
+            ${(p.spec || []).map(s => `<li>${s}</li>`).join('')}
+          </ul>
+
+          <div class="qty-large" style="margin-top:20px;">
+            <button class="btn" onclick="addToCart(${p.id})">Agregar al carrito</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Cambiamos la vista activa a la página de detalle
+  document.querySelectorAll('.page').forEach(pg => pg.classList.remove('active'));
+  const detailPage = document.getElementById('page-product-detail') || document.getElementById('product-detail');
+  if (detailPage) {
+    detailPage.classList.add('active');
+  }
+  window.scrollTo(0, 0);
+}</script>
 </body></html>
