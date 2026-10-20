@@ -310,12 +310,10 @@ function renderProductDetail(id) {
 
         <div class="product-detail" style="display:grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; margin-top: 25px;">
           
-          <!-- Columna Izquierda: Imagen grande -->
           <div class="detail-image" style="background:#f8f9fa; border-radius:12px; padding:30px; display:flex; align-items:center; justify-content:center; min-height:420px; border:1px solid #eee;">
             ${artContent}
           </div>
 
-          <!-- Columna Derecha: Especificaciones e información -->
           <div class="detail-copy">
             <div class="muted" style="text-transform:uppercase; letter-spacing:1px; font-weight:600;">${p.brand} · ${p.cat}</div>
             <h1 style="font-size: 28px; font-weight:700; margin: 10px 0 15px; line-height:1.3;">${p.name}</h1>
@@ -332,7 +330,7 @@ function renderProductDetail(id) {
 
             <h3 style="font-size:16px; font-weight:700; margin-bottom:12px;">Especificaciones técnicas:</h3>
             <ul style="padding-left: 20px; line-height: 2; color: #444; font-size:13px;">
-              ${(p.spec && p.spec.length > 0) ? p.spec.map(s => `<li>${s}</li>`).join('')} : '<li>Garantía de fabricante disponible</li><li>Envío inmediato a todo México</li>'}
+              ${(p.spec && p.spec.length > 0) ? p.spec.map(s => `<li>${s}</li>`).join('') : '<li>Garantía de fabricante disponible</li><li>Envío inmediato a todo México</li>'}
             </ul>
 
             <div style="margin-top:30px; display:flex; gap:15px; align-items:center;">
