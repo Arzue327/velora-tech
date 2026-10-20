@@ -250,6 +250,14 @@ button,input,select{font:inherit}button,a{cursor:pointer}a{color:inherit;text-de
     font-size: 27px;
   }
 }
+/* Esto se aplicará solo en pantallas de celulares */
+@media (max-width: 768px) {
+  .navbar, .topbar {
+    flex-direction: column; /* Apila los elementos uno abajo del otro */
+    text-align: center;
+    gap: 10px; /* Reduce el espacio entre elementos */
+  }
+}
 </style>
 </head>
 <body>
