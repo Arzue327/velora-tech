@@ -265,7 +265,17 @@ function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show")
 function card(p) {
   const artContent = p.art.includes('.') ? `<img src="${p.art}" alt="${p.name}">` : p.art;
   const flagHtml = p.flag ? `<span class="flag">${p.flag}</span>` : '';
-  return `<article class="product">${flagHtml}<a class="product-art" href="#" onclick="renderProductDetail(${p.id}); return false;" aria-label="${p.name}">${artContent}</a><a href="#" onclick="renderProductDetail(${p.id}); return false;"><h3>${p.name}</h3></a><div class="muted">${p.brand} · ${p.cat}</div><div class="stars">★★★★★ (4.8)</div><div class="price">$${p.price.toLocaleString('es-MX')}${p.old?` <span class="oldprice">$${p.old.toLocaleString('es-MX')}</span>`:''}</div><button class="btn" onclick="addToCart(${p.id})">Agregar al carrito</button></article>`;
+  return `
+    <article class="product" style="cursor:pointer;" onclick="renderProductDetail(${p.id})">
+      ${flagHtml}
+      <div class="product-art">${artContent}</div>
+      <h3>${p.name}</h3>
+      <div class="muted">${p.brand} · ${p.cat}</div>
+      <div class="stars">★★★★★ (4.8)</div>
+      <div class="price">$${p.price.toLocaleString('es-MX')}${p.old?` <span class="oldprice">$${p.old.toLocaleString('es-MX')}</span>`:''}</div>
+      <button class="btn" onclick="event.stopPropagation(); addToCart(${p.id})">Agregar al carrito</button>
+    </article>
+  `;
 }
 function renderHome(){const list=products.filter(p=>(homeTab==="Todos"||p.cat===homeTab)&&(!searchTerm||p.name.toLowerCase().includes(searchTerm)));$("homeProducts").innerHTML=list.slice(0,8).map(card).join("")||'<div class="empty">No se encontraron productos.</div>'}
 function getFiltered(){let list=products.filter(p=>(!searchTerm||p.name.toLowerCase().includes(searchTerm)||p.brand.toLowerCase().includes(searchTerm))&&(![...document.querySelectorAll(".brand-filter:checked")].length||[...document.querySelectorAll(".brand-filter:checked")].some(c=>c.value===p.brand))&&(![...document.querySelectorAll(".cat-filter:checked")].length||[...document.querySelectorAll(".cat-filter:checked")].some(c=>c.value===p.cat))&&(!+$("minPrice").value||p.price>=+$("minPrice").value)&&(!+$("maxPrice").value||p.price<=+$("maxPrice").value));const s=$("sortSelect").value;if(s==="low")list.sort((a,b)=>a.price-b.price);if(s==="high")list.sort((a,b)=>b.price-a.price);if(s==="name")list.sort((a,b)=>a.name.localeCompare(b.name));return list}
