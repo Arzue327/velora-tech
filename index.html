@@ -320,5 +320,47 @@ function renderProductDetail(id) {
     detailPage.classList.add('active');
   }
   window.scrollTo(0, 0);
-}</script>
+function renderProductDetail(id) {
+  const p = products.find(x => x.id == id);
+  if (!p) return;
+  
+  currentProduct = p;
+  
+  const artContent = p.art.includes('.') 
+    ? `<img src="${p.art}" alt="${p.name}" style="max-width:100%; height:auto; object-fit:contain;">` 
+    : p.art;
+
+  const detailContainer = document.querySelector("#page-product-detail") || document.querySelector(".product-detail");
+  if (detailContainer) {
+    detailContainer.innerHTML = `
+      <div class="breadcrumb"><a href="#" data-page="home">Inicio</a> / <a href="#" data-page="catalog">Catálogo</a> / ${p.name}</div>
+      <div class="product-detail">
+        <div class="detail-image">${artContent}</div>
+        <div class="detail-copy">
+          <div class="muted">${p.brand} · ${p.cat}</div>
+          <h1>${p.name}</h1>
+          <div class="stars">★★★★★ (4.8)</div>
+          <div class="detail-price">$${p.price.toLocaleString('es-MX')}${p.old ? ` <span class="oldprice">$${p.old.toLocaleString('es-MX')}</span>` : ''}</div>
+          <p>${p.desc || 'Sin descripción disponible.'}</p>
+          
+          <h3>Especificaciones técnicas</h3>
+          <ul>
+            ${(p.spec || []).map(s => `<li>${s}</li>`).join('')}
+          </ul>
+
+          <div class="qty-large" style="margin-top:20px;">
+            <button class="btn" onclick="addToCart(${p.id})">Agregar al carrito</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  document.querySelectorAll('.page').forEach(pg => pg.classList.remove('active'));
+  const detailPage = document.getElementById('page-product-detail') || document.getElementById('product-detail');
+  if (detailPage) {
+    detailPage.classList.add('active');
+  }
+  window.scrollTo(0, 0);
+</script>
 </body></html>
