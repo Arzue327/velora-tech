@@ -332,7 +332,25 @@ function card(p){
 function renderHome(){const list=products.filter(p=>(homeTab==="Todos"||p.cat===homeTab)&&(!searchTerm||p.name.toLowerCase().includes(searchTerm)));$("homeProducts").innerHTML=list.slice(0,8).map(card).join("")||'<div class="empty">No se encontraron productos.</div>'}
 function getFiltered(){let list=products.filter(p=>(!searchTerm||p.name.toLowerCase().includes(searchTerm)||p.brand.toLowerCase().includes(searchTerm))&&(![...document.querySelectorAll(".brand-filter:checked")].length||[...document.querySelectorAll(".brand-filter:checked")].some(c=>c.value===p.brand))&&(![...document.querySelectorAll(".cat-filter:checked")].length||[...document.querySelectorAll(".cat-filter:checked")].some(c=>c.value===p.cat))&&(!+$("minPrice").value||p.price>=+$("minPrice").value)&&(!+$("maxPrice").value||p.price<=+$("maxPrice").value));const s=$("sortSelect").value;if(s==="low")list.sort((a,b)=>a.price-b.price);if(s==="high")list.sort((a,b)=>b.price-a.price);if(s==="name")list.sort((a,b)=>a.name.localeCompare(b.name));return list}
 function renderCatalog(){const list=getFiltered();$("catalogProducts").innerHTML=list.map(card).join("")||'<div class="empty">No hay productos que coincidan con esos filtros.</div>';$("resultCount").textContent=`${list.length} productos (demo)`}
-function showPage(name){document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));document.querySelectorAll("main > section:not(.page)").forEach(section=>section.style.display=name==="home"?"":"none");const target=$("page-"+name);if(target)target.classList.add("active");if(name==="catalog")renderCatalog();if(name==="cart")renderCart();window.scrollTo({top:0,behavior:"smooth"})}
+function showPage(pageId) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    const targetPage = document.getElementById(pageId);
+    if (targetPage) targetPage.classList.add('active');
+
+    // CONTROL DE BARRAS: Selecciona la barra superior y el menú principal
+    const topbar = document.querySelector('.topbar');
+    const nav = document.querySelector('.nav');
+
+    // Si la página activa es el detalle o el carrito, las oculta; si no, las muestra
+    if (pageId === 'page-detail' || pageId === 'page-cart') {
+        if (topbar) topbar.style.display = 'none';
+        if (nav) nav.style.display = 'none';
+    } else {
+        if (topbar) topbar.style.display = 'flex'; // Cambia a 'flex' para mantener su diseño original
+        if (nav) nav.style.display = 'flex';
+    }
+}
+
 function addToCart(id){const p=products.find(x=>x.id===+id);if(!p)return;const item=cart.find(x=>x.id===p.id);if(item)item.qty++;else cart.push({id:p.id,qty:1});saveCart();toast("Añadido al carrito (demo)")}
 function renderDetail(id){const p=products.find(x=>x.id===+id);if(!p)return;currentProduct=p;$("detailContent").innerHTML=`<div class="detail-image">
   ${
@@ -407,7 +425,7 @@ function renderProductDetail(id) {
   const detailContainer = document.querySelector("#page-product-detail") || document.querySelector(".product-detail");
   if (detailContainer) {
     detailContainer.innerHTML = `
-      <div class="breadcrumb"><a href="#" data-page="home">Inicio</a> / <a href="#" data-page="catalog">Catálogo</a> / ${p.name}</div>
+      <div class="breadcrumb"><a href="#" data-page="home" onclick="showPage('page-home')">Inicio</a> / <a href="#" data-page="catalog" onclick="showPage('page-catalog')">Catálogo</a> / ${p.name}</div>
       <div class="product-detail">
         <div class="detail-image">${artContent}</div>
         <div class="detail-copy">
@@ -437,5 +455,10 @@ function renderProductDetail(id) {
     detailPage.classList.add('active');
   }
   window.scrollTo(0, 0);
-}</script>
+}// Ocultar barras al entrar al detalle del producto
+const topbar = document.querySelector('.topbar');
+const nav = document.querySelector('.nav');
+if (topbar) topbar.style.display = 'none';
+if (nav) nav.style.display = 'none';
+</script>
 </body></html>
