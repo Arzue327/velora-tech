@@ -179,7 +179,6 @@ button,input,select{font:inherit}button,a{cursor:pointer}a{color:inherit;text-de
   max-width: 100%;
   max-height: 450px;
   object-fit: contain;
-  .product-art img {
   filter: none !important;
 }
 
@@ -279,49 +278,47 @@ function renderProductDetail(id) {
   const p = products.find(x => x.id == id);
   if (!p) return;
   
+  // Guardamos el producto actual
   currentProduct = p;
   
+  // Detectamos si 'art' es imagen o ícono
   const artContent = p.art.includes('.') 
     ? `<img src="${p.art}" alt="${p.name}" style="max-width:100%; height:auto; object-fit:contain;">` 
     : p.art;
 
-  let detailPage = document.getElementById('page-product-detail');
-  if (!detailPage) {
-    detailPage = document.createElement('section');
-    detailPage.id = 'page-product-detail';
-    detailPage.className = 'page';
-    document.querySelector('main').appendChild(detailPage);
-  }
-
-  detailPage.innerHTML = `
-    <div style="padding: 40px 5%; max-width: 1200px; margin: 0 auto;">
-      <div class="breadcrumb"><a href="#" data-page="home" onclick="switchPage('home')">Inicio</a> / <span>${p.name}</span></div>
-      <div class="product-detail" style="display:grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; margin-top: 20px;">
-        <div class="detail-image" style="background:#f8f9fa; border-radius:12px; padding:30px; display:flex; align-items:center; justify-content:center; min-height:400px;">
-          ${artContent}
-        </div>
+  // Renderizamos el contenido en la sección de detalle
+  const detailContainer = document.querySelector("#page-product-detail") || document.querySelector(".product-detail");
+  if (detailContainer) {
+    detailContainer.innerHTML = `
+      <div class="breadcrumb"><a href="#" data-page="home">Inicio</a> / <a href="#" data-page="catalog">Catálogo</a> / ${p.name}</div>
+      <div class="product-detail">
+        <div class="detail-image">${artContent}</div>
         <div class="detail-copy">
           <div class="muted">${p.brand} · ${p.cat}</div>
-          <h1 style="font-size: 28px; margin: 10px 0;">${p.name}</h1>
+          <h1>${p.name}</h1>
           <div class="stars">★★★★★ (4.8)</div>
-          <div class="detail-price" style="font-size: 32px; font-weight: bold; margin: 15px 0;">$${p.price.toLocaleString('es-MX')}${p.old ? ` <span class="oldprice" style="text-decoration:line-through; color:#999; font-size:20px;">$${p.old.toLocaleString('es-MX')}</span>` : ''}</div>
-          <p style="color: #555; line-height: 1.6;">${p.desc || 'Sin descripción disponible.'}</p>
+          <div class="detail-price">$${p.price.toLocaleString('es-MX')}${p.old ? ` <span class="oldprice">$${p.old.toLocaleString('es-MX')}</span>` : ''}</div>
+          <p>${p.desc || 'Sin descripción disponible.'}</p>
           
-          <h3 style="margin-top: 20px;">Especificaciones técnicas</h3>
-          <ul style="padding-left: 20px; line-height: 1.8; color: #444;">
+          <h3>Especificaciones técnicas</h3>
+          <ul>
             ${(p.spec || []).map(s => `<li>${s}</li>`).join('')}
           </ul>
 
-          <div style="margin-top:25px;">
+          <div class="qty-large" style="margin-top:20px;">
             <button class="btn" onclick="addToCart(${p.id})">Agregar al carrito</button>
           </div>
         </div>
       </div>
-    </div>
-  `;
+    `;
+  }
 
+  // Cambiamos la vista activa a la página de detalle
   document.querySelectorAll('.page').forEach(pg => pg.classList.remove('active'));
-  detailPage.classList.add('active');
+  const detailPage = document.getElementById('page-product-detail') || document.getElementById('product-detail');
+  if (detailPage) {
+    detailPage.classList.add('active');
+  }
   window.scrollTo(0, 0);
 }</script>
 </body></html>
