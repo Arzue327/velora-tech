@@ -369,8 +369,7 @@ const products=[
 {id:10,name:"SSD SATA 1TB",brand:"WD",cat:"Almacenamiento",price:1199,old:1399,art:"▱",rating:4.5,desc:"Unidad de almacenamiento adicional de referencia.",spec:["1 TB (ejemplo)","Interfaz SATA","Revisar bahía y conexión disponible"]},
 {id:11,name:"Kingston FURY Beast 32GB DDR4",brand:"Kingston",cat:"RAM",price:1399,old:1599,art:"▰",rating:4.6,desc:"Kit de memoria de referencia para multitarea y gaming.",spec:["32 GB (ejemplo)","DDR4 (confirmar kit)","Verificar placa y configuración"]},
 {id:12,name:"Gabinete ATX minimalista",brand:"ASUS",cat:"Accesorios",price:1299,old:1499,art:"▣",rating:4.4,desc:"Gabinete de estilo sobrio para una construcción limpia.",spec:["Formato por confirmar","Revisar largo de GPU","Verificar radiadores y ventiladores"]}
-{id:13,name:"GIGABYTE - NVIDIA GeForce RTX 5070 Ti GAMING OC 16G GDDR7 PCI Express 5.0 Graphics Card - Black",brand:"GIGABYTE",cat:"GPU",price:28999,old:31999,art:"rtx_5070_ti-removebg-preview.png",flag:"Popular",rating:4.8,desc:"Tarjeta gráfica de alto rendimiento para gaming y creación de contenido.",spec:["16 GB GDDR7 (ejemplo)","Arquitectura NVIDIA (referencia)","Verificar dimensiones y fuente antes de comprar"]},
-  ];
+];
 let cart=JSON.parse(localStorage.getItem("veloraCart")||"[]"),homeTab="Todos",searchTerm="",currentProduct=null;
 const money=n=>n.toLocaleString("es-MX",{style:"currency",currency:"MXN",maximumFractionDigits:0});
 const $=id=>document.getElementById(id);
