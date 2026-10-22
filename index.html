@@ -369,7 +369,17 @@ const products=[
 {id:10,name:"SSD SATA 1TB",brand:"WD",cat:"Almacenamiento",price:1199,old:1399,art:"▱",rating:4.5,desc:"Unidad de almacenamiento adicional de referencia.",spec:["1 TB (ejemplo)","Interfaz SATA","Revisar bahía y conexión disponible"]},
 {id:11,name:"Kingston FURY Beast 32GB DDR4",brand:"Kingston",cat:"RAM",price:1399,old:1599,art:"▰",rating:4.6,desc:"Kit de memoria de referencia para multitarea y gaming.",spec:["32 GB (ejemplo)","DDR4 (confirmar kit)","Verificar placa y configuración"]},
 {id:12,name:"Gabinete ATX minimalista",brand:"ASUS",cat:"Accesorios",price:1299,old:1499,art:"▣",rating:4.4,desc:"Gabinete de estilo sobrio para una construcción limpia.",spec:["Formato por confirmar","Revisar largo de GPU","Verificar radiadores y ventiladores"]}
-];
+{
+  id: 13, // Asegúrate de que el ID sea único (el siguiente número consecutivo)
+  name: "GIGABYTE - NVIDIA GeForce RTX 5080", // Nombre del componente
+  brand: "ASUS", // O la marca correspondiente
+  cat: "GPU", // Categoría exacta (GPU, CPU, RAM, Almacenamiento, Tarjeta madre, Fuentes)
+  price: 34999, // Precio en números (sin comas ni símbolos)
+  old_price: 38999, // (Opcional) Precio anterior para mostrar descuento
+  art: "rtx_5080_pny-removebg-preview.png", // Nombre del archivo de imagen que subiste a tu repositorio
+  rating: 4.9, // Calificación de estrellas (ej. 4.8 o 5)
+  desc: "Descripción corta del rendimiento y características de este componente para tu PC custom."
+}];
 let cart=JSON.parse(localStorage.getItem("veloraCart")||"[]"),homeTab="Todos",searchTerm="",currentProduct=null;
 const money=n=>n.toLocaleString("es-MX",{style:"currency",currency:"MXN",maximumFractionDigits:0});
 const $=id=>document.getElementById(id);
