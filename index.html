@@ -264,7 +264,44 @@ button,input,select{font:inherit}button,a{cursor:pointer}a{color:inherit;text-de
 #page-cart.active ~ .nav {
     display: none !important;
 }
-</style>
+/* Estilos para el menú desplegable de Componentes */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #1a1a1a;
+  min-width: 200px;
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.4);
+  z-index: 1000;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #333;
+  top: 100%;
+  left: 0;
+}
+
+.dropdown-content a {
+  color: #fff;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  font-size: 14px;
+  text-align: left;
+  transition: background 0.2s;
+}
+
+.dropdown-content a:hover {
+  background-color: #27ae60;
+  color: #fff;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}</style>
 </head>
 <body>
 <div class="topbar"><span>🚚 Envíos a todo México</span><span>◉ Soporte 24/7 &nbsp;&nbsp; ♙ Mi cuenta</span></div>
