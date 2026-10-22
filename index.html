@@ -307,7 +307,18 @@ button,input,select{font:inherit}button,a{cursor:pointer}a{color:inherit;text-de
 <div class="topbar"><span>🚚 Envíos a todo México</span><span>◉ Soporte 24/7 &nbsp;&nbsp; ♙ Mi cuenta</span></div>
 <header class="nav">
 <a href="#" class="brand" data-page="home" aria-label="VELORA TECH inicio"><img src="imagen-velora-removebg-preview.png" alt="Logo de Velora Tech"></a>
-<nav class="navlinks"><a href="#" data-page="home">Inicio</a><a href="#" data-page="catalog">Componentes</a><a href="#compat">Compatibilidad</a><a href="#footer">Contacto</a></nav>
+<nav class="navlinks"><a href="#" data-page="home">Inicio</a><div class="dropdown" style="display: inline-block;">
+    <a href="#" data-page="catalog" style="cursor: pointer; text-decoration: none;">Componentes ▾</a>
+    <div class="dropdown-content">
+      <a href="#" onclick="showPage('catalog'); filterProducts('CPU'); return false;">Procesadores (CPU)</a>
+      <a href="#" onclick="showPage('catalog'); filterProducts('GPU'); return false;">Tarjetas Gráficas (GPU)</a>
+      <a href="#" onclick="showPage('catalog'); filterProducts('RAM'); return false;">Memoria RAM</a>
+      <a href="#" onclick="showPage('catalog'); filterProducts('Almacenamiento'); return false;">Almacenamiento (SSD)</a>
+      <a href="#" onclick="showPage('catalog'); filterProducts('Tarjetas madre'); return false;">Placas Madre</a>
+      <a href="#" onclick="showPage('catalog'); filterProducts('Fuentes'); return false;">Fuentes de Poder</a>
+      <a href="#" onclick="showPage('catalog'); filterProducts('Refrigeración'); return false;">Refrigeración</a>
+    </div>
+  </div><a href="#compat">Compatibilidad</a><a href="#footer">Contacto</a></nav>
 <div class="search"><span>⌕</span><input id="searchInput" placeholder="Buscar productos..." aria-label="Buscar productos"><button class="iconbtn" id="searchBtn" aria-label="Buscar" style="font-size:16px">⌕</button></div>
 <button class="iconbtn" data-page="cart" aria-label="Ver carrito">🛒<span class="count" id="cartCount">0</span></button>
 </header>
