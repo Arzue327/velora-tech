@@ -308,16 +308,17 @@ button,input,select{font:inherit}button,a{cursor:pointer}a{color:inherit;text-de
 <header class="nav">
 <a href="#" class="brand" data-page="home" aria-label="VELORA TECH inicio"><img src="imagen-velora-removebg-preview.png" alt="Logo de Velora Tech"></a>
 <nav class="navlinks"><a href="#" data-page="home">Inicio</a><div class="dropdown" style="display: inline-block;">
+    <div class="dropdown" style="display: inline-block;">
     <a href="#" style="cursor: pointer; text-decoration: none;">Componentes ▾</a>
     <div class="dropdown-content">
-      <a href="componentes.html">Procesadores (CPU)</a>
-      <a href="componentes.html">Tarjetas Gráficas (GPU)</a>
-      <a href="componentes.html">Memoria RAM</a>
-      <a href="componentes.html">Almacenamiento (SSD)</a>
-      <a href="componentes.html">Placas Madre</a>
-      <a href="componentes.html">Fuentes de Poder</a>
-      <a href="componentes.html">Refrigeración</a>
+      <a href="#" onclick="showPage('catalog'); setTimeout(() => { let cb = document.querySelector('input[value=\'CPU\'], input[id*=\'cpu\' i], label:has(input)'); /* o marcar por texto */ }, 50); return false;">Procesadores (CPU)</a>
+      <a href="#" onclick="showPage('catalog'); return false;">Tarjetas Gráficas (GPU)</a>
+      <a href="#" onclick="showPage('catalog'); return false;">Memoria RAM</a>
+      <a href="#" onclick="showPage('catalog'); return false;">Almacenamiento (SSD)</a>
+      <a href="#" onclick="showPage('catalog'); return false;">Tarjeta madre</a>
+      <a href="#" onclick="showPage('catalog'); return false;">Fuentes de Poder</a>
     </div>
+  </div>
   </div><a href="#compat">Compatibilidad</a><a href="#footer">Contacto</a></nav>
 <div class="search"><span>⌕</span><input id="searchInput" placeholder="Buscar productos..." aria-label="Buscar productos"><button class="iconbtn" id="searchBtn" aria-label="Buscar" style="font-size:16px">⌕</button></div>
 <button class="iconbtn" data-page="cart" aria-label="Ver carrito">🛒<span class="count" id="cartCount">0</span></button>
