@@ -556,24 +556,30 @@ function renderProductDetail(id) {
 }
 
 function processFinalOrder() {
-  const name = document.getElementById('chk-name').value.trim();
-  const email = document.getElementById('chk-email').value.trim();
-  const phone = document.getElementById('chk-phone').value.trim();
-  const address = document.getElementById('chk-address').value.trim();
+  const name = document.getElementById('chk-name').value;
+  const email = document.getElementById('chk-email').value;
+  const phone = document.getElementById('chk-phone').value;
+  const address = document.getElementById('chk-address').value;
+  const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
 
-  // Si falta algún campo, mostramos una advertencia visual flotante o directa
   if (!name || !email || !phone || !address) {
-    let errorBox = document.getElementById('checkout-error');
-    if (errorBox) {
-      errorBox.innerText = "⚠️ Por favor, completa todos los datos de envío antes de continuar.";
-      errorBox.style.display = "block";
-      errorBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    } else {
-      // Por si el contenedor no se ha pintado, creamos un aviso flotante temporal
-      alert("⚠️ Por favor, completa todos los datos de envío antes de continuar.");
-    }
+    alert("Por favor, completa todos los datos de envío.");
     return;
   }
-  
-  // Resto de tu código de pago...</script>
+
+  if (paymentMethod === 'whatsapp') {
+    let total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+    let msg = `¡Hola! Mi nombre es *${name}*.\nDirección de envío: *${address}*.\nTeléfono: *${phone}*.\n\nQuiero hacer el siguiente pedido en VELORA TECH:\n`;
+    cart.forEach(i => { msg += `- ${i.qty}x ${i.name} ($${(i.price * i.qty).toLocaleString('es-MX')})\n`; });
+    msg += `\n*Total: $${total.toLocaleString('es-MX')}*`;
+    
+    window.open(`https://wa.me/521XXXXXXXXXX?text=${encodeURIComponent(msg)}`, '_blank');
+  } else {
+    alert(`¡Gracias por tu compra, ${name}! Tu pedido ha sido registrado con éxito.`);
+    cart = [];
+    saveCart();
+    renderHome();
+    showPage('home');
+  }
+}</script>
 </body></html>
