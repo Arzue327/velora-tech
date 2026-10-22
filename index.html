@@ -310,13 +310,13 @@ button,input,select{font:inherit}button,a{cursor:pointer}a{color:inherit;text-de
 <nav class="navlinks"><a href="#" data-page="home">Inicio</a><div class="dropdown" style="display: inline-block;">
     <a href="#" style="cursor: pointer; text-decoration: none;">Componentes ▾</a>
     <div class="dropdown-content">
-      <a href="#" onclick="showPage('catalog'); setTimeout(() => filterProducts('CPU'), 50); return false;">Procesadores (CPU)</a>
-      <a href="#" onclick="showPage('catalog'); setTimeout(() => filterProducts('GPU'), 50); return false;">Tarjetas Gráficas (GPU)</a>
-      <a href="#" onclick="showPage('catalog'); setTimeout(() => filterProducts('RAM'), 50); return false;">Memoria RAM</a>
-      <a href="#" onclick="showPage('catalog'); setTimeout(() => filterProducts('Almacenamiento'), 50); return false;">Almacenamiento (SSD)</a>
-      <a href="#" onclick="showPage('catalog'); setTimeout(() => filterProducts('Tarjetas madre'), 50); return false;">Placas Madre</a>
-      <a href="#" onclick="showPage('catalog'); setTimeout(() => filterProducts('Fuentes'), 50); return false;">Fuentes de Poder</a>
-      <a href="#" onclick="showPage('catalog'); setTimeout(() => filterProducts('Refrigeración'), 50); return false;">Refrigeración</a>
+      <a href="#" onclick="showPage('catalog'); return false;">Procesadores (CPU)</a>
+      <a href="#" onclick="showPage('catalog'); return false;">Tarjetas Gráficas (GPU)</a>
+      <a href="#" onclick="showPage('catalog'); return false;">Memoria RAM</a>
+      <a href="#" onclick="showPage('catalog'); return false;">Almacenamiento (SSD)</a>
+      <a href="#" onclick="showPage('catalog'); return false;">Placas Madre</a>
+      <a href="#" onclick="showPage('catalog'); return false;">Fuentes de Poder</a>
+      <a href="#" onclick="showPage('catalog'); return false;">Refrigeración</a>
     </div>
   </div><a href="#compat">Compatibilidad</a><a href="#footer">Contacto</a></nav>
 <div class="search"><span>⌕</span><input id="searchInput" placeholder="Buscar productos..." aria-label="Buscar productos"><button class="iconbtn" id="searchBtn" aria-label="Buscar" style="font-size:16px">⌕</button></div>
