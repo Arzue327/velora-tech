@@ -383,7 +383,14 @@ function card(p){
 function renderHome(){const list=products.filter(p=>(homeTab==="Todos"||p.cat===homeTab)&&(!searchTerm||p.name.toLowerCase().includes(searchTerm)));$("homeProducts").innerHTML=list.slice(0,8).map(card).join("")||'<div class="empty">No se encontraron productos.</div>'}
 function getFiltered(){let list=products.filter(p=>(!searchTerm||p.name.toLowerCase().includes(searchTerm)||p.brand.toLowerCase().includes(searchTerm))&&(![...document.querySelectorAll(".brand-filter:checked")].length||[...document.querySelectorAll(".brand-filter:checked")].some(c=>c.value===p.brand))&&(![...document.querySelectorAll(".cat-filter:checked")].length||[...document.querySelectorAll(".cat-filter:checked")].some(c=>c.value===p.cat))&&(!+$("minPrice").value||p.price>=+$("minPrice").value)&&(!+$("maxPrice").value||p.price<=+$("maxPrice").value));const s=$("sortSelect").value;if(s==="low")list.sort((a,b)=>a.price-b.price);if(s==="high")list.sort((a,b)=>b.price-a.price);if(s==="name")list.sort((a,b)=>a.name.localeCompare(b.name));return list}
 function renderCatalog(){const list=getFiltered();$("catalogProducts").innerHTML=list.map(card).join("")||'<div class="empty">No hay productos que coincidan con esos filtros.</div>';$("resultCount").textContent=`${list.length} productos (demo)`}
-function showPage(name){document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));document.querySelectorAll("main > section:not(.page)").forEach(section=>section.style.display=name==="home"?"":"none");const target=$("page-"+name);if(target)target.classList.add("active");if(name==="catalog")renderCatalog();if(name==="cart")renderCart();window.scrollTo({top:0,behavior:"smooth"})}
+function showPage(page) {
+  // (Aquí estará el código que ya tiene tu tienda para ocultar y mostrar las vistas...)
+
+  // PEGA ESTO AQUÍ ADENTRO:
+  if (page === 'checkout' || page === 'carrito') {
+    renderCheckout();
+  }
+}
 function addToCart(id){const p=products.find(x=>x.id===+id);if(!p)return;const item=cart.find(x=>x.id===p.id);if(item)item.qty++;else cart.push({id:p.id,qty:1});saveCart();toast("Añadido al carrito (demo)")}
 function renderDetail(id){const p=products.find(x=>x.id===+id);if(!p)return;currentProduct=p;$("detailContent").innerHTML=`<div class="detail-image">
   ${
@@ -489,11 +496,9 @@ function renderProductDetail(id) {
   }
   window.scrollTo(0, 0);
 }function renderCheckout() {
-  // Busca el contenedor de la derecha en tu vista de checkout
   const summaryCard = document.querySelector('.checkout-right') || document.querySelector('.checkout-summary') || document.querySelectorAll('.checkout-container > div')[1] || document.querySelector('aside');
 
-  // Si no hay productos en el carrito
-  if (!window.cart || window.cart.length === 0) {
+  if (!cart || cart.length === 0) {
     if (summaryCard) {
       summaryCard.innerHTML = `
         <h3 style="margin-top:0;">Resumen de tu orden</h3>
@@ -510,16 +515,19 @@ function renderProductDetail(id) {
   let total = 0;
   let itemsHTML = '<h3 style="margin-top:0; margin-bottom:15px;">Resumen de tu orden</h3>';
 
-  window.cart.forEach(item => {
-    const itemPrice = Number(item.price) || 0;
-    const itemQty = item.quantity || item.qty || 1;
+  cart.forEach(cartItem => {
+    const product = products.find(p => p.id === cartItem.id);
+    if (!product) return;
+    
+    const itemPrice = Number(product.price) || 0;
+    const itemQty = cartItem.qty || 1;
     const itemTotal = itemPrice * itemQty;
     total += itemTotal;
 
     itemsHTML += `
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 0.95rem;">
         <div>
-          <strong style="display: block; color: #111;">${item.name || item.title || 'Producto'}</strong>
+          <strong style="display: block; color: #111;">${product.name}</strong>
           <span style="color: #666; font-size: 0.85rem;">Cant: ${itemQty}</span>
         </div>
         <span style="font-weight: 600; color: #111;">$${itemTotal.toLocaleString('es-MX')}</span>
@@ -543,17 +551,15 @@ function renderProductDetail(id) {
     </div>
   `;
 
-  // Remplaza el contenido de la tarjeta derecha con los productos reales
   if (summaryCard) {
     summaryCard.innerHTML = itemsHTML;
   }
 
-  // Actualiza dinámicamente el texto del botón negro inferior
   const completeBtn = Array.from(document.querySelectorAll('button')).find(b => b.innerText.includes('Completar'));
   if (completeBtn) {
     completeBtn.innerText = `Completar Pedido ($${total.toLocaleString('es-MX')})`;
   }
-}function processFinalOrder() {
+}}function processFinalOrder() {
   const nameInput = document.getElementById('chk-name');
   const emailInput = document.getElementById('chk-email');
   const phoneInput = document.getElementById('chk-phone');
