@@ -489,132 +489,71 @@ function renderProductDetail(id) {
   }
   window.scrollTo(0, 0);
 }function renderCheckout() {
-  if (!cart || cart.length === 0) {
-    showToast("Tu carrito está vacío 🛒");
-    showPage('home');
+  // Busca el contenedor de la derecha en tu vista de checkout
+  const summaryCard = document.querySelector('.checkout-right') || document.querySelector('.checkout-summary') || document.querySelectorAll('.checkout-container > div')[1] || document.querySelector('aside');
+
+  // Si no hay productos en el carrito
+  if (!window.cart || window.cart.length === 0) {
+    if (summaryCard) {
+      summaryCard.innerHTML = `
+        <h3 style="margin-top:0;">Resumen de tu orden</h3>
+        <p style="color: #777;">Tu carrito está vacío.</p>
+        <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:1.1rem; margin-top:15px; border-top:1px solid #eee; padding-top:10px;">
+          <span>Total a pagar</span>
+          <span>$0</span>
+        </div>
+      `;
+    }
     return;
   }
 
-  let total = cart.reduce((sum, item) => sum + ((item.price || 0) * (item.qty || 1)), 0);
-  let checkoutPage = document.getElementById('page-checkout');
+  let total = 0;
+  let itemsHTML = '<h3 style="margin-top:0; margin-bottom:15px;">Resumen de tu orden</h3>';
 
-  if (checkoutPage) {
-    checkoutPage.innerHTML = `
-      <div style="padding: 40px 5%; max-width: 1200px; margin: 0 auto;">
-        <div class="breadcrumb">
-          <a href="#" onclick="showPage('home'); return false;">Inicio</a> / 
-          <a href="#" onclick="showPage('cart'); return false;">Carrito</a> / 
-          <span>Finalizar Compra</span>
+  window.cart.forEach(item => {
+    const itemPrice = Number(item.price) || 0;
+    const itemQty = item.quantity || item.qty || 1;
+    const itemTotal = itemPrice * itemQty;
+    total += itemTotal;
+
+    itemsHTML += `
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 0.95rem;">
+        <div>
+          <strong style="display: block; color: #111;">${item.name || item.title || 'Producto'}</strong>
+          <span style="color: #666; font-size: 0.85rem;">Cant: ${itemQty}</span>
         </div>
-
-        <h1 style="font-size: 28px; font-weight: 800; margin: 35px 0 25px 0;">Checkout Seguro 🔒</h1>
-
-        <!-- 🔴 MENSAJE EN ROJO ARRIBA DE INFORMACIÓN DE ENVÍO -->
-        <div id="checkout-error" style="display: none; background: #fee2e2; border: 1px solid #f87171; color: #991b1b; padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; font-weight: 600; font-size: 14px;">
-          ⚠️ Por favor, completa todos los datos de envío antes de continuar.
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; align-items: start;">
-          
-          <!-- Formulario -->
-          <div style="background: #fff; padding: 30px; border-radius: 12px; border: 1px solid #eee;">
-            <h3 style="font-size: 18px; margin-bottom: 20px; font-weight: 700;">1. Información de Envío</h3>
-            
-            <div style="display: grid; gap: 15px;">
-              <div>
-                <label style="font-size: 12px; font-weight: 600; color: #555;">Nombre completo</label>
-                <input type="text" id="chk-name" placeholder="Ej. Carlos Pérez" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px;">
-              </div>
-              
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                <div>
-                  <label style="font-size: 12px; font-weight: 600; color: #555;">Correo electrónico</label>
-                  <input type="email" id="chk-email" placeholder="correo@tuemail.com" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px;">
-                </div>
-                <div>
-                  <label style="font-size: 12px; font-weight: 600; color: #555;">Teléfono / WhatsApp</label>
-                  <input type="tel" id="chk-phone" placeholder="55 1234 5678" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px;">
-                </div>
-              </div>
-
-              <div>
-                <label style="font-size: 12px; font-weight: 600; color: #555;">Dirección de entrega</label>
-                <input type="text" id="chk-address" placeholder="Calle, Número, Colonia, C.P." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px;">
-              </div>
-            </div>
-
-            <h3 style="font-size: 18px; margin: 30px 0 20px; font-weight: 700;">2. Método de Pago</h3>
-            
-            <div style="display: grid; gap: 10px;">
-              <label style="display: flex; align-items: center; gap: 10px; padding: 15px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer;">
-                <input type="radio" name="payment" value="card" checked>
-                <span>Tarjeta de Crédito / Débito (Pasarela Segura)</span>
-              </label>
-              
-              <label style="display: flex; align-items: center; gap: 10px; padding: 15px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer;">
-                <input type="radio" name="payment" value="oxxo">
-                <span>Efectivo en OXXO (Generar referencia)</span>
-              </label>
-
-              <label style="display: flex; align-items: center; gap: 10px; padding: 15px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer;">
-                <input type="radio" name="payment" value="whatsapp">
-                <span>Coordinar pago y envío por WhatsApp</span>
-              </label>
-            </div>
-
-            <button class="btn" style="width: 100%; margin-top: 30px; padding: 15px; font-size: 16px; font-weight: bold; background: #000; color: #fff; border-radius: 8px; cursor: pointer;" onclick="processFinalOrder()">
-              Completar Pedido ($${total.toLocaleString('es-MX')})
-            </button>
-          </div>
-
-          <!-- Resumen -->
-          <div style="background: #f8f9fa; padding: 30px; border-radius: 12px; border: 1px solid #eee;">
-            <h3 style="font-size: 18px; margin-bottom: 20px; font-weight: 700;">Resumen de tu orden</h3>
-            
-            <div style="display: grid; gap: 15px; max-height: 300px; overflow-y: auto; margin-bottom: 20px;">
-              ${cart.map(item => {
-                let nombre = item.name || item.title || 'Producto';
-                let precio = item.price || 0;
-                let cantidad = item.qty || 1;
-                return `
-                  <div style="display: flex; justify-content: space-between; align-items: center; font-size: 14px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                    <div>
-                      <strong>${nombre}</strong><br>
-                      <span style="color: #777;">Cant: ${cantidad}</span> </div> <span style="font-weight: 600;">$${(precio * cantidad).toLocaleString('es-MX')}</span>
-                  </div>
-                `;
-              }).join('')}
-            </div>
-
-            <div style="display: flex; justify-content: space-between; font-size: 16px; font-weight: 600; margin-bottom: 10px;">
-              <span>Subtotal</span>
-              <span>$${total.toLocaleString('es-MX')}</span>
-            </div>
-            
-            <div style="display: flex; justify-content: space-between; font-size: 16px; font-weight: 600; margin-bottom: 15px; color: #27ae60;">
-              <span>Envío a todo México</span>
-              <span>¡GRATIS!</span>
-            </div>
-
-            <hr style="border: 0; border-top: 1px solid #ddd; margin: 15px 0;">
-
-            <div style="display: flex; justify-content: space-between; font-size: 20px; font-weight: 800;">
-              <span>Total a pagar</span>
-              <span>$${total.toLocaleString('es-MX')}</span>
-            </div>
-          </div>
-
-        </div>
+        <span style="font-weight: 600; color: #111;">$${itemTotal.toLocaleString('es-MX')}</span>
       </div>
     `;
+  });
+
+  itemsHTML += `
+    <hr style="border:none; border-top:1px dashed #ddd; margin:15px 0;">
+    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+      <span>Subtotal</span>
+      <span>$${total.toLocaleString('es-MX')}</span>
+    </div>
+    <div style="display: flex; justify-content: space-between; margin-bottom: 15px; color: #10b981; font-weight: 500;">
+      <span>Envío a todo México</span>
+      <span>¡GRATIS!</span>
+    </div>
+    <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 1.2rem; border-top: 2px solid #111; padding-top: 12px;">
+      <span>Total a pagar</span>
+      <span>$${total.toLocaleString('es-MX')}</span>
+    </div>
+  `;
+
+  // Remplaza el contenido de la tarjeta derecha con los productos reales
+  if (summaryCard) {
+    summaryCard.innerHTML = itemsHTML;
   }
 
-  document.querySelectorAll('.page').forEach(pg => pg.classList.remove('active'));
-  if (checkoutPage) checkoutPage.classList.add('active');
-  window.scrollTo(0, 0);
-}
-
-function processFinalOrder() {
+  // Actualiza dinámicamente el texto del botón negro inferior
+  const completeBtn = Array.from(document.querySelectorAll('button')).find(b => b.innerText.includes('Completar'));
+  if (completeBtn) {
+    completeBtn.innerText = `Completar Pedido ($${total.toLocaleString('es-MX')})`;
+  }
+}function processFinalOrder() {
   const nameInput = document.getElementById('chk-name');
   const emailInput = document.getElementById('chk-email');
   const phoneInput = document.getElementById('chk-phone');
