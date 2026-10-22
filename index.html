@@ -311,12 +311,12 @@ button,input,select{font:inherit}button,a{cursor:pointer}a{color:inherit;text-de
     <div class="dropdown" style="display: inline-block;">
     <a href="#" style="cursor: pointer; text-decoration: none;">Componentes ▾</a>
     <div class="dropdown-content">
-      <a href="#" onclick="showPage('catalog'); setTimeout(() => { let cb = document.querySelector('input[value=\'CPU\'], input[id*=\'cpu\' i], label:has(input)'); /* o marcar por texto */ }, 50); return false;">Procesadores (CPU)</a>
-      <a href="#" onclick="showPage('catalog'); return false;">Tarjetas Gráficas (GPU)</a>
-      <a href="#" onclick="showPage('catalog'); return false;">Memoria RAM</a>
-      <a href="#" onclick="showPage('catalog'); return false;">Almacenamiento (SSD)</a>
-      <a href="#" onclick="showPage('catalog'); return false;">Tarjeta madre</a>
-      <a href="#" onclick="showPage('catalog'); return false;">Fuentes de Poder</a>
+      <a href="#" onclick="showPage('catalog'); setTimeout(() => { document.querySelectorAll('input[type=checkbox]').forEach(cb => { if(cb.value === 'CPU' || cb.parentElement.innerText.includes('CPU')) { cb.click(); } }); }, 100); return false;">Procesadores (CPU)</a>
+      <a href="#" onclick="showPage('catalog'); setTimeout(() => { document.querySelectorAll('input[type=checkbox]').forEach(cb => { if(cb.value === 'GPU' || cb.parentElement.innerText.includes('GPU')) { cb.click(); } }); }, 100); return false;">Tarjetas Gráficas (GPU)</a>
+      <a href="#" onclick="showPage('catalog'); setTimeout(() => { document.querySelectorAll('input[type=checkbox]').forEach(cb => { if(cb.value === 'RAM' || cb.parentElement.innerText.includes('RAM')) { cb.click(); } }); }, 100); return false;">Memoria RAM</a>
+      <a href="#" onclick="showPage('catalog'); setTimeout(() => { document.querySelectorAll('input[type=checkbox]').forEach(cb => { if(cb.value === 'Almacenamiento' || cb.parentElement.innerText.includes('Almacenamiento')) { cb.click(); } }); }, 100); return false;">Almacenamiento (SSD)</a>
+      <a href="#" onclick="showPage('catalog'); setTimeout(() => { document.querySelectorAll('input[type=checkbox]').forEach(cb => { if(cb.value === 'Tarjeta madre' || cb.parentElement.innerText.includes('Tarjeta madre')) { cb.click(); } }); }, 100); return false;">Tarjeta madre</a>
+      <a href="#" onclick="showPage('catalog'); setTimeout(() => { document.querySelectorAll('input[type=checkbox]').forEach(cb => { if(cb.value === 'Fuentes' || cb.parentElement.innerText.includes('Fuentes')) { cb.click(); } }); }, 100); return false;">Fuentes de Poder</a>
     </div>
   </div>
   </div><a href="#compat">Compatibilidad</a><a href="#footer">Contacto</a></nav>
