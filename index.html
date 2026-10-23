@@ -444,8 +444,39 @@ spec: [
   "Fuente recomendada: Verificar los requisitos del modelo exacto y la configuración completa"
 ]
 },
-{id:6,name:"ASUS TUF Radeon RX 7900 XT",brand:"ASUS",cat:"GPU",price:16999,old:18999,art:"▰",rating:4.8,desc:"Tarjeta gráfica de gama alta; ficha ilustrativa.",spec:["Especificaciones por confirmar","Revisar espacio disponible","Verificar conectores de alimentación"]},
-{id:7,name:"MSI B550M PRO-VDH WIFI",brand:"MSI",cat:"Motherboard",price:2199,old:2499,art:"▦",rating:4.5,desc:"Tarjeta madre de referencia para plataforma AM4.",spec:["Socket AM4 (referencia)","Formato micro-ATX","Verificar BIOS y lista de CPU compatibles"]},
+{id:6,name:"ASUS - PRIME NVIDIA GeForce RTX 5070 OC Edition 12GB GDDR7 PCI Express 5.0 Graphics Card - Black",brand:"ASUS",cat:"GPU",price:19999,old:22999,art:"029682f6-53f6-4ccd-8ed9-c4b1d58028c3-removebg-preview.png",rating:4.8,
+desc: "La ASUS PRIME GeForce RTX 5070 OC Edition está diseñada para gaming de alto rendimiento y creación de contenido. Basada en la arquitectura NVIDIA Blackwell, incorpora 12 GB de memoria GDDR7 y tecnologías como DLSS 4 y Ray Tracing para ofrecer gráficos detallados y un rendimiento mejorado en juegos compatibles. Su diseño de refrigeración de triple ventilador ayuda a mantener temperaturas controladas durante sesiones exigentes. Es una excelente opción para construir una PC moderna para gaming y aplicaciones gráficas.",
+spec: [
+  "Fabricante: ASUS",
+  "Modelo: PRIME GeForce RTX 5070 OC Edition",
+  "GPU: NVIDIA GeForce RTX 5070",
+  "Arquitectura: NVIDIA Blackwell",
+  "Memoria gráfica: 12 GB GDDR7",
+  "Interfaz de memoria: 192 bits",
+  "Interfaz de conexión: PCI Express 5.0",
+  "Frecuencia Boost: Verificar la ficha exacta del fabricante",
+  "Refrigeración: Triple ventilador",
+  "Tecnologías: NVIDIA DLSS 4 y Ray Tracing",
+  "Salidas de vídeo: 3 DisplayPort 2.1b y 1 HDMI 2.1b"
+]
+},
+{id:7,name:"Kingston - FURY Beast 32GB (2x16GB) DDR5 6000MHz Desktop RAM - Black",brand:"Kingston",cat:"RAM",price:17499,old:19999,art:"43f03772-f9d3-429a-bb48-09be09e3287a-removebg-preview.png",rating:4.5,
+desc: "El kit Kingston FURY Beast DDR5 de 32 GB está diseñado para equipos gaming de alto rendimiento y computadoras de última generación. Incluye dos módulos de 16 GB que trabajan en configuración de doble canal en plataformas compatibles, ofreciendo una velocidad de 6000 MT/s y una latencia CAS de CL30. Es una excelente opción para mejorar la capacidad de multitarea, disfrutar de juegos exigentes y ejecutar aplicaciones que requieren memoria rápida. Verifica la compatibilidad con tu placa madre y procesador antes de comprar.",
+spec: [
+  "Fabricante: Kingston",
+  "Serie: FURY Beast DDR5",
+  "Modelo: KF560C30BBEAK2-32",
+  "Capacidad total: 32 GB",
+  "Configuración: 2 × 16 GB",
+  "Tipo de memoria: DDR5",
+  "Velocidad: 6000 MT/s",
+  "Latencia CAS: CL30",
+  "Formato: DIMM de 288 pines",
+  "Uso: PC de escritorio",
+  "Perfil de rendimiento: AMD EXPO",
+  "Compatibilidad: Placas madre con memoria DDR5 compatible"
+]
+},
 {id:8,name:"Fuente de poder 750W 80+ Gold",brand:"ASUS",cat:"Fuentes",price:1799,old:2099,art:"▧",rating:4.4,desc:"Fuente de poder de ejemplo; modelo exacto pendiente.",spec:["750 W (ejemplo)","Certificación por confirmar","Verificar conectores y consumo del equipo"]},
 {id:9,name:"Cooler de CPU torre 120 mm",brand:"MSI",cat:"Refrigeración",price:599,old:749,art:"❉",rating:4.3,desc:"Refrigeración de aire para una construcción equilibrada.",spec:["Ventilador de 120 mm (ejemplo)","Compatibilidad de socket por confirmar","Revisar altura y espacio"]},
 {id:10,name:"SSD SATA 1TB",brand:"WD",cat:"Almacenamiento",price:1199,old:1399,art:"▱",rating:4.5,desc:"Unidad de almacenamiento adicional de referencia.",spec:["1 TB (ejemplo)","Interfaz SATA","Revisar bahía y conexión disponible"]},
@@ -723,8 +754,11 @@ function processFinalOrder() {
   }
 
   const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
-  let total = cart.reduce((sum, item) => sum + ((item.price || 0) * (item.qty || 1)), 0);
-
+  let total = cart.reduce((sum, item) => {
+  const producto = products.find(p => p.id === item.id);
+  const precio = producto ? producto.price : (item.price || 0);
+  return sum + precio * (item.qty || 1);
+}, 0);
   if (paymentMethod === 'whatsapp') {
     let msg = `¡Hola! Mi nombre es *${name}*.\nDirección de envío: *${address}*.\nTeléfono: *${phone}*.\n\nQuiero hacer el siguiente pedido en VELORA TECH:\n`;
     cart.forEach(i => {
