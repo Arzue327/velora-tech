@@ -698,18 +698,23 @@ function renderProductDetail(id) {
             <h3 style="font-size: 18px; margin-bottom: 20px; font-weight: 700;">Resumen de tu orden</h3>
             
             <div style="display: grid; gap: 15px; max-height: 300px; overflow-y: auto; margin-bottom: 20px;">
-              ${cart.map(item => {
-                let nombre = item.name || item.title || 'Producto';
-                let precio = item.price || 0;
-                let cantidad = item.qty || 1;
-                return `
-                  <div style="display: flex; justify-content: space-between; align-items: center; font-size: 14px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                    <div>
-                      <strong>${nombre}</strong><br>
-                      <span style="color: #777;">Cant: ${cantidad}</span> </div> <span style="font-weight: 600;">$${(precio * cantidad).toLocaleString('es-MX')}</span>
-                  </div>
-                `;
-              }).join('')}
+              
+${cart.map(item => {
+  const producto = products.find(p => String(p.id) === String(item.id));
+  const nombre = item.name || item.title || producto?.name || producto?.title || 'Producto';
+  const precio = Number(producto?.price ?? item.price ?? 0);
+  const cantidad = Number(item.qty || 1);
+  return `
+    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 14px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+      <div>
+        <strong>${nombre}</strong><br>
+        <span style="color: #777;">Cant: ${cantidad}</span>
+      </div>
+      <span style="font-weight: 600;">$${(precio * cantidad).toLocaleString('es-MX')}</span>
+    </div>
+  `;
+}).join('')}
+
             </div>
 
             <div style="display: flex; justify-content: space-between; font-size: 16px; font-weight: 600; margin-bottom: 10px;">
