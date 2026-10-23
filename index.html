@@ -356,7 +356,6 @@ button,input,select{font:inherit}button,a{cursor:pointer}a{color:inherit;text-de
 <div class="toast" id="toast" role="status"></div>
 <div id="homeProducts" class="products"></div>
 <script>
-const products=[
 const products = [
   {id:1,name:"GIGABYTE - NVIDIA GeForce RTX 5070 Ti GAMING OC 16G GDDR7 PCI Express 5.0 Graphics Card - Black",brand:"GIGABYTE",cat:"GPU",price:28999,old_price:31999,art:"rtx_5070_ti-removebg-preview.png",flag:"Popular",rating:4.8,desc:"Tarjeta gráfica de gama alta para gaming en 4K y renderizado con arquitectura de nueva generación."},
   {id:2,name:"AMD - Ryzen 7 9800X3D 8-Core - 16-Thread 4.7 GHz (5.2 GHz Max Boost) Socket AM5 PCI Express 5.0 Unlocked Desktop Processor - Silver",brand:"AMD",cat:"CPU",price:9499,old_price:9999,art:"ryzen-removebg-preview.png",flag:"Nuevo",rating:4.9,desc:"El procesador definitivo para gaming con tecnología 3D V-Cache de alto rendimiento."},
@@ -371,7 +370,7 @@ const products = [
   {id:11,name:"Kingston FURY Beast 32GB DDR4",brand:"Kingston",cat:"RAM",price:1399,old_price:1599,art:"⬛",rating:4.6,desc:"Kit de memoria de referencia para multitarea y gaming."},
   {id:12,name:"Gabinete ATX minimalista",brand:"ASUS",cat:"Accesorios",price:1299,old_price:1499,art:"▣",rating:4.4,desc:"Gabinete de estilo sobrio para una construcción limpia."},
   {id:13,name:"GIGABYTE - NVIDIA GeForce RTX 5080",brand:"GIGABYTE",cat:"GPU",price:34999,old_price:38999,art:"rtx_5080_pny-removebg-preview.png",rating:4.9,desc:"Nuevo componente agregado al catálogo de VELORA TECH."}
-];
+];;
 let cart=JSON.parse(localStorage.getItem("veloraCart")||"[]"),homeTab="Todos",searchTerm="",currentProduct=null;
 const money=n=>n.toLocaleString("es-MX",{style:"currency",currency:"MXN",maximumFractionDigits:0});
 const $=id=>document.getElementById(id);
