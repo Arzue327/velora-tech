@@ -593,7 +593,7 @@ function renderProductDetail(id) {
       </div>
        `;
 
-    initMercadoPagoCard(total);
+    
   }
   // Cambiamos la vista activa a la página de detalle
   document.querySelectorAll('.page').forEach(pg => pg.classList.remove('active'));
@@ -738,7 +738,9 @@ ${cart.map(item => {
 
         </div>
       </div>
-    `;
+        `;
+
+    initMercadoPagoCard(total);
   }
 
   document.querySelectorAll('.page').forEach(pg => pg.classList.remove('active'));
