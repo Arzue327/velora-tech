@@ -716,7 +716,7 @@ ${cart.map(item => {
   const precio = Number(producto?.price ?? item.price ?? 0);
   const cantidad = Number(item.qty || 1);
   
-  const imagen = producto?.image || producto?.img || producto?.imageUrl || item.image || item.img || item.imageUrl || '';
+  const imagen = producto?.art || item.art || '';
   return `
     <div style="display:flex; align-items:center; gap:12px; font-size:14px; border-bottom:1px solid #eee; padding-bottom:12px;">
       <img src="${imagen}" alt="${nombre.replace(/"/g, '&quot;')}"
