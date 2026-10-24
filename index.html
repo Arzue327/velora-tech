@@ -695,9 +695,13 @@ function renderProductDetail(id) {
   role="status"
   style="display:none; margin-top:15px; padding:12px; border-radius:8px;">
 </div>
-<button class="btn" type="button" onclick="processFinalOrder()">
-Completar Pedido ($${total.toLocaleString('es-MX')})
-            </button>
+
+<div style="display:flex; justify-content:center; width:100%; margin-top:24px;">
+  <button class="btn" type="button" onclick="processFinalOrder()" style="width:100%; max-width:420px; min-height:52px; display:flex; align-items:center; justify-content:center; text-align:center; margin:0;">
+    Completar Pedido ($${total.toLocaleString('es-MX')})
+  </button>
+</div>
+
           </div>
 
           <!-- Resumen -->
