@@ -990,7 +990,7 @@ async function initMercadoPagoCard(total) {
 
             try {
               const response = await fetch(
-                "https://velora-pagos.arzueflores.workers.dev",
+                "https://velora-pagos.arzueflores.workers.dev/process_payment?mode=test",
                 {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
