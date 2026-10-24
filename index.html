@@ -715,13 +715,18 @@ ${cart.map(item => {
   const nombre = item.name || item.title || producto?.name || producto?.title || 'Producto';
   const precio = Number(producto?.price ?? item.price ?? 0);
   const cantidad = Number(item.qty || 1);
+  
+  const imagen = producto?.image || producto?.img || producto?.imageUrl || item.image || item.img || item.imageUrl || '';
   return `
-    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 14px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-      <div>
+    <div style="display:flex; align-items:center; gap:12px; font-size:14px; border-bottom:1px solid #eee; padding-bottom:12px;">
+      <img src="${imagen}" alt="${nombre.replace(/"/g, '&quot;')}"
+        style="width:82px; height:82px; object-fit:contain; flex-shrink:0; background:#fff; border:1px solid #eee; border-radius:8px; padding:5px; box-sizing:border-box;"
+        onerror="this.style.display='none';">
+      <div style="flex:1; min-width:0;">
         <strong>${nombre}</strong><br>
-        <span style="color: #777;">Cant: ${cantidad}</span>
+        <span style="color:#777;">Cant: ${cantidad}</span>
       </div>
-      <span style="font-weight: 600;">$${(precio * cantidad).toLocaleString('es-MX')}</span>
+      <span style="font-weight:600; white-space:nowrap;">$${(precio * cantidad).toLocaleString('es-MX')}</span>
     </div>
   `;
 }).join('')}
