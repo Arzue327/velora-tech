@@ -662,35 +662,40 @@ function renderProductDetail(id) {
             </div>
 
             <h3 style="font-size: 18px; margin: 30px 0 20px; font-weight: 700;">2. Método de Pago</h3>
-            <div id="mp-card-payment" style="margin-top: 15px;">
-  <p style="font-size: 13px; color: #666;">
+            
+<div style="display: grid; gap: 10px; margin-top: 15px;">
+
+  <label style="display:flex; align-items:center; gap:10px; padding:15px; border:1px solid #ddd; border-radius:8px; cursor:pointer;">
+    <input type="radio" name="payment" value="card"
+      onchange="document.getElementById('mp-card-payment').style.display=this.checked?'block':'none'; document.getElementById('mp-payment-result').style.display='none';">
+    <span>Tarjeta de crédito o débito — Mercado Pago</span>
+  </label>
+
+  <label style="display:flex; align-items:center; gap:10px; padding:15px; border:1px solid #ddd; border-radius:8px; cursor:pointer;">
+    <input type="radio" name="payment" value="oxxo"
+      onchange="document.getElementById('mp-card-payment').style.display='none';">
+    <span>Efectivo en OXXO (Generar referencia)</span>
+  </label>
+
+  <label style="display:flex; align-items:center; gap:10px; padding:15px; border:1px solid #ddd; border-radius:8px; cursor:pointer;">
+    <input type="radio" name="payment" value="whatsapp"
+      onchange="document.getElementById('mp-card-payment').style.display='none';">
+    <span>Coordinar pago y envío por WhatsApp</span>
+  </label>
+
+</div>
+
+<div id="mp-card-payment" style="display:none; margin-top:15px;">
+  <p style="font-size:13px; color:#666;">
     El formulario seguro de Mercado Pago aparecerá aquí.
   </p>
 </div>
 
 <div id="mp-payment-result"
-     role="status"
-     style="display:none; margin-top:15px; padding:12px; border-radius:8px;">
+  role="status"
+  style="display:none; margin-top:15px; padding:12px; border-radius:8px;">
 </div>
-            <div style="display: grid; gap: 10px;">
-              <label style="display: flex; align-items: center; gap: 10px; padding: 15px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer;">
-                <input type="radio" name="payment" value="card" checked>
-                <span>Tarjeta de Crédito / Débito (Pasarela Segura)</span>
-              </label>
-              
-              <label style="display: flex; align-items: center; gap: 10px; padding: 15px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer;">
-                <input type="radio" name="payment" value="oxxo">
-                <span>Efectivo en OXXO (Generar referencia)</span>
-              </label>
-
-              <label style="display: flex; align-items: center; gap: 10px; padding: 15px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer;">
-                <input type="radio" name="payment" value="whatsapp">
-                <span>Coordinar pago y envío por WhatsApp</span>
-              </label>
-            </div>
-
-            <button class="btn" style="width: 100%; margin-top: 30px; padding: 15px; font-size: 16px; font-weight: bold; background: #000; color: #fff; border-radius: 8px; cursor: pointer;" onclick="processFinalOrder()">
-              Completar Pedido ($${total.toLocaleString('es-MX')})
+Completar Pedido ($${total.toLocaleString('es-MX')})
             </button>
           </div>
 
