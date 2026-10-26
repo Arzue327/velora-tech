@@ -550,7 +550,6 @@ document.addEventListener("click", e => {
     renderHome();
     return;
   }
-  if (e.target.id === "checkoutDemo") toast("Demo: aún no hay pagos configurados");
 });
 $("searchBtn").onclick=()=>{searchTerm=$("searchInput").value.trim().toLowerCase();showPage("catalog");renderCatalog()};$("searchInput").addEventListener("keydown",e=>{if(e.key==="Enter")$("searchBtn").click()});["minPrice","maxPrice","sortSelect"].forEach(id=>$(id).addEventListener("input",renderCatalog));document.querySelectorAll(".brand-filter,.cat-filter").forEach(el=>el.addEventListener("change",renderCatalog));$("clearFilters").onclick=()=>{document.querySelectorAll(".brand-filter,.cat-filter").forEach(c=>c.checked=false);$("minPrice").value="";$("maxPrice").value="";$("sortSelect").value="popular";searchTerm="";$("searchInput").value="";renderCatalog()};
 $("checkCompat").onclick=()=>{const cpu=$("cpuSelect").value,gpu=$("gpuSelect").value,board=$("boardSelect").value;let msg="Selecciona los componentes para obtener una orientación.";if(cpu&&gpu&&board){msg="Selección registrada. Revisa socket, BIOS, dimensiones de GPU, consumo y conectores de la fuente con las especificaciones oficiales antes de comprar. Esta demo no valida compatibilidad real."}else if(cpu||gpu||board){msg="Faltan selecciones. Completa los campos para una revisión orientativa."}$("compatResult").textContent=msg};
