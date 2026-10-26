@@ -790,7 +790,17 @@ function processFinalOrder() {
   }
 
   const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
-  let total = cart.reduce((sum, item) => {
+
+if (paymentMethod === 'card' && !window.paymentApproved) {
+  const resultBox = document.getElementById('mp-payment-result');
+  resultBox.style.display = "block";
+  resultBox.style.background = "#fee2e2";
+  resultBox.style.color = "#991b1b";
+  resultBox.textContent = "Primero completa el pago con tarjeta.";
+  return;
+}
+
+let total = cart.reduce((sum, item) => {
   const producto = products.find(p => p.id === item.id);
   const precio = producto ? producto.price : (item.price || 0);
   return sum + precio * (item.qty || 1);
@@ -855,99 +865,8 @@ function processFinalOrder() {
     cart = [];
     saveCart();
   }
-}function processFinalOrder() {
-  const nameInput = document.getElementById('chk-name');
-  const emailInput = document.getElementById('chk-email');
-  const phoneInput = document.getElementById('chk-phone');
-  const addressInput = document.getElementById('chk-address');
-  const errorBox = document.getElementById('checkout-error');
-
-  const name = nameInput ? nameInput.value.trim() : '';
-  const email = emailInput ? emailInput.value.trim() : '';
-  const phone = phoneInput ? phoneInput.value.trim() : '';
-  const address = addressInput ? addressInput.value.trim() : '';
-
-  // Validar si falta algún campo antes de continuar
-  if (!name || !email || !phone || !address) {
-    if (errorBox) {
-      errorBox.innerText = "⚠️ Por favor, completa todos los datos de envío antes de continuar.";
-      errorBox.style.display = "block";
-      errorBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    } else {
-      alert("⚠️ Por favor, completa todos los datos de envío antes de continuar.");
-    }
-    return;
-  }
-
-  if (errorBox) {
-    errorBox.style.display = "none";
-  }
-
-  const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
-  let total = cart.reduce((sum, item) => sum + ((item.price || 0) * (item.qty || 1)), 0);
-
-  if (paymentMethod === 'whatsapp') {
-    let msg = `¡Hola! Mi nombre es *${name}*.\nDirección de envío: *${address}*.\nTeléfono: *${phone}*.\n\nQuiero hacer el siguiente pedido en VELORA TECH:\n`;
-    cart.forEach(i => {
-      let nom = i.name || i.title || 'Producto';
-      let prc = i.price || 0;
-      let q = i.qty || 1;
-      msg += `- ${q}x ${nom} ($${(prc * q).toLocaleString('es-MX')})\n`;
-    });
-    msg += `\n*Total: $${total.toLocaleString('es-MX')}*`;
-    
-    window.open(`https://wa.me/521XXXXXXXXXX?text=${encodeURIComponent(msg)}`, '_blank');
-    cart = [];
-    saveCart();
-  } else {
-    // PANTALLA PROPIA DE CONFIRMACIÓN (¡Aquí está el mensaje de Gracias por tu compra!)
-    let numOrden = "VT-" + Math.floor(100000 + Math.random() * 900000);
-    let checkoutPage = document.getElementById('page-checkout');
-
-    if (checkoutPage) {
-      checkoutPage.innerHTML = `
-        <div style="padding: 50px 5% 60px; max-width: 700px; margin: 50px auto 0; text-align: center;">
-          <div style="background: #e8f8f0; width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px;">
-            <span style="font-size: 40px; color: #27ae60; line-height: 1;">✓</span>
-          </div>
-          
-          <h1 style="font-size: 32px; font-weight: 800; margin-bottom: 10px;">¡Gracias por tu compra, ${name}!</h1>
-          <p style="color: #666; font-size: 16px; margin-bottom: 30px;">Hemos recibido tu pedido con éxito y se está procesando.</p>
-          
-          <div style="background: #f8f9fa; border: 1px solid #eee; border-radius: 12px; padding: 25px; text-align: left; margin-bottom: 30px;">
-            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #e0e0e0; padding-bottom: 12px; margin-bottom: 12px;">
-              <span style="color: #777;">Número de orden:</span>
-              <strong>${numOrden}</strong>
-            </div>
-            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #e0e0e0; padding-bottom: 12px; margin-bottom: 12px;">
-              <span style="color: #777;">Método de pago:</span>
-              <strong>${paymentMethod === 'card' ? 'Tarjeta de Crédito / Débito' : (paymentMethod === 'oxxo' ? 'Efectivo en OXXO' : 'WhatsApp')}</strong>
-            </div>
-            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #e0e0e0; padding-bottom: 12px; margin-bottom: 12px;">
-              <span style="color: #777;">Dirección de entrega:</span>
-              <strong>${address}</strong>
-            </div>
-            <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; margin-top: 15px;">
-              <span>Total pagado:</span>
-              <span>$${total.toLocaleString('es-MX')} MXN</span>
-            </div>
-          </div>
-
-          <p style="font-size: 14px; color: #777; margin-bottom: 25px;">Enviamos los detalles del seguimiento a <strong>${email}</strong>.</p>
-
-          <button class="btn" style="padding: 15px 35px; font-size: 15px; background: #000; color: #fff; border-radius: 8px; cursor: pointer;" onclick="cart = []; saveCart(); renderHome(); showPage('home');">
-            Volver a la tienda
-          </button>
-        </div>
-      `;
-      window.scrollTo(0, 0);
-    }
-
-    
-    cart = [];
-    saveCart();
-  }
-}</script>
+}
+</script>
 
 <script src="https://sdk.mercadopago.com/js/v2"></script>
 
@@ -977,12 +896,11 @@ async function initMercadoPagoCard(total) {
       "cardPayment",
       "mp-card-payment",
       {
-        initialization: {
-          amount: Number(total)
-        },
+        initialization: { amount: Number(total) },
         callbacks: {
           onReady: () => {},
           onSubmit: async (formData) => {
+            window.paymentApproved = false;
             resultBox.style.display = "block";
             resultBox.style.background = "#f3f4f6";
             resultBox.style.color = "#111";
@@ -995,13 +913,21 @@ async function initMercadoPagoCard(total) {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({
-  ...formData,
-  items: cart.map(i => ({ id: i.id, qty: i.qty }))
-})
+                    ...formData,
+                    items: cart.map(i => ({ id: i.id, qty: i.qty }))
+                  })
                 }
               );
 
               const data = await response.json();
+
+              if (response.status === 402) {
+                resultBox.style.background = "#fee2e2";
+                resultBox.style.color = "#991b1b";
+                resultBox.textContent =
+                  "Pago rechazado. Intenta con otra tarjeta o revisa tus datos.";
+                return;
+              }
 
               if (!response.ok || !data.ok) {
                 throw new Error(
@@ -1009,30 +935,32 @@ async function initMercadoPagoCard(total) {
                 );
               }
 
-                 if (data.status === "approved" || data.status === "processed") {
+              if (data.status === "approved" || data.status === "processed") {
+                window.paymentApproved = true;
                 resultBox.style.background = "#dcfce7";
                 resultBox.style.color = "#166534";
-                resultBox.textContent =
-                  "Pago de prueba aprobado. ID: " + data.id;
-              } else if (data.status === "pending" ||
-                         data.status === "in_process") {
+                resultBox.textContent = "Pago de prueba aprobado. ID: " + data.id;
+              } else if (
+                data.status === "pending" ||
+                data.status === "in_process" ||
+                data.status === "processing"
+              ) {
                 resultBox.style.background = "#fef3c7";
                 resultBox.style.color = "#92400e";
                 resultBox.textContent =
-                  "Pago pendiente de confirmación. No se ha confirmado la compra.";
+                  "Tu pago está en revisión. Te avisaremos por correo cuando se confirme. No vuelvas a pagar.";
               } else {
                 resultBox.style.background = "#fee2e2";
                 resultBox.style.color = "#991b1b";
                 resultBox.textContent =
-                  "El pago no fue aprobado. Estado: " + data.status;
+                  "Pago rechazado. Intenta con otra tarjeta o revisa tus datos.";
               }
 
               return;
             } catch (error) {
               resultBox.style.background = "#fee2e2";
               resultBox.style.color = "#991b1b";
-              resultBox.textContent =
-                "Error de pago: " + error.message;
+              resultBox.textContent = "Error de pago: " + error.message;
               throw error;
             }
           },
@@ -1054,3 +982,4 @@ async function initMercadoPagoCard(total) {
 }
 </script>
 </body></html>
+
