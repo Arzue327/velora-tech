@@ -1006,7 +1006,7 @@ async function initMercadoPagoCard(total) {
                 );
               }
 
-              if (data.status === "approved") {
+                 if (data.status === "approved" || data.status === "processed") {
                 resultBox.style.background = "#dcfce7";
                 resultBox.style.color = "#166534";
                 resultBox.textContent =
