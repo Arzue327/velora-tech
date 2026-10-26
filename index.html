@@ -922,12 +922,12 @@ async function initMercadoPagoCard(total) {
               const data = await response.json();
 
               if (response.status === 402) {
-                resultBox.style.background = "#fee2e2";
-                resultBox.style.color = "#991b1b";
-                resultBox.textContent =
-                  "Pago rechazado. Intenta con otra tarjeta o revisa tus datos.";
-                return;
-              }
+  resultBox.style.background = "#fee2e2";
+  resultBox.style.color = "#991b1b";
+  resultBox.textContent =
+    "Pago rechazado. Intenta con otra tarjeta o revisa tus datos.";
+  throw new Error("HANDLED");
+}
 
               if (!response.ok || !data.ok) {
                 throw new Error(
@@ -950,17 +950,20 @@ async function initMercadoPagoCard(total) {
                 resultBox.textContent =
                   "Tu pago está en revisión. Te avisaremos por correo cuando se confirme. No vuelvas a pagar.";
               } else {
-                resultBox.style.background = "#fee2e2";
-                resultBox.style.color = "#991b1b";
-                resultBox.textContent =
-                  "Pago rechazado. Intenta con otra tarjeta o revisa tus datos.";
-              }
+  resultBox.style.background = "#fee2e2";
+  resultBox.style.color = "#991b1b";
+  resultBox.textContent =
+    "Pago rechazado. Intenta con otra tarjeta o revisa tus datos.";
+  throw new Error("HANDLED");
+}
 
               return;
-            } catch (error) {
-              resultBox.style.background = "#fee2e2";
-              resultBox.style.color = "#991b1b";
-              resultBox.textContent = "Error de pago: " + error.message;
+                        } catch (error) {
+              if (error.message !== "HANDLED") {
+                resultBox.style.background = "#fee2e2";
+                resultBox.style.color = "#991b1b";
+                resultBox.textContent = "Error de pago: " + error.message;
+              }
               throw error;
             }
           },
