@@ -900,6 +900,18 @@ async function initMercadoPagoCard(total) {
           onReady: () => {},
           onSubmit: async (formData) => {
             window.paymentApproved = false;
+const shipping = {
+  name: document.getElementById("chk-name")?.value.trim(),
+  email: document.getElementById("chk-email")?.value.trim(),
+  phone: document.getElementById("chk-phone")?.value.trim(),
+  address: document.getElementById("chk-address")?.value.trim()
+};
+if (!shipping.name || !shipping.email || !shipping.phone || !shipping.address) {
+  const box = document.getElementById("checkout-error");
+  box.style.display = "block";
+  box.scrollIntoView({ behavior: "smooth", block: "center" });
+  throw new Error("HANDLED");
+}
             resultBox.style.display = "block";
             resultBox.style.background = "#f3f4f6";
             resultBox.style.color = "#111";
@@ -907,14 +919,15 @@ async function initMercadoPagoCard(total) {
 
             try {
               const response = await fetch(
-                "https://velora-pagos.arzueflores.workers.dev/process_payment",,
+                "https://velora-pagos.arzueflores.workers.dev/process_payment",
                 {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({
-                    ...formData,
-                    items: cart.map(i => ({ id: i.id, qty: i.qty }))
-                  })
+  ...formData,
+  items: cart.map(i => ({ id: i.id, qty: i.qty })),
+  shipping
+})
                 }
               );
 
