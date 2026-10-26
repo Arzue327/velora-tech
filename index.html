@@ -904,11 +904,11 @@ async function initMercadoPagoCard(total) {
             resultBox.style.display = "block";
             resultBox.style.background = "#f3f4f6";
             resultBox.style.color = "#111";
-            resultBox.textContent = "Procesando pago de prueba…";
+            resultBox.textContent = "Procesando pago…";
 
             try {
               const response = await fetch(
-                "https://velora-pagos.arzueflores.workers.dev/process_payment?mode=test",
+                "https://velora-pagos.arzueflores.workers.dev/process_payment",,
                 {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
@@ -939,7 +939,7 @@ async function initMercadoPagoCard(total) {
                 window.paymentApproved = true;
                 resultBox.style.background = "#dcfce7";
                 resultBox.style.color = "#166534";
-                resultBox.textContent = "Pago de prueba aprobado. ID: " + data.id;
+                resultBox.textContent = "Pago aprobado. ID: " + data.id;
               } else if (
                 data.status === "pending" ||
                 data.status === "in_process" ||
