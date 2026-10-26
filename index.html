@@ -994,7 +994,10 @@ async function initMercadoPagoCard(total) {
                 {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify(formData)
+                  body: JSON.stringify({
+  ...formData,
+  items: cart.map(i => ({ id: i.id, qty: i.qty }))
+})
                 }
               );
 
