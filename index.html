@@ -772,6 +772,7 @@ function processFinalOrder() {
   // 🔴 SI FALTA UN CAMPO, MUESTRA EL TEXTO ROJO Y DETIENE EL FLUJO
   if (!name || !email || !phone || !address) {
     if (errorBox) {
+      errorBox.innerText = "⚠️ Por favor, completa todos los datos de envío antes de continuar.";
       errorBox.style.display = "block";
       errorBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
@@ -782,8 +783,6 @@ function processFinalOrder() {
   if (errorBox) {
     errorBox.style.display = "none";
   }
-
-  const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
 
 if (paymentMethod === 'card' && !window.paymentApproved) {
   const resultBox = document.getElementById('mp-payment-result');
