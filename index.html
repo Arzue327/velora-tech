@@ -948,20 +948,21 @@ if (!shipping.name || !shipping.email || !shipping.phone || !shipping.address) {
               }
 
               if (data.status === "approved" || data.status === "processed") {
-                window.paymentApproved = true;
-                resultBox.style.background = "#dcfce7";
-                resultBox.style.color = "#166534";
-                resultBox.textContent = "Pago aprobado. ID: " + data.id;
-              } else if (
-                data.status === "pending" ||
-                data.status === "in_process" ||
-                data.status === "processing"
-              ) {
-                resultBox.style.background = "#fef3c7";
-                resultBox.style.color = "#92400e";
-                resultBox.textContent =
-                  "Tu pago está en revisión. Te avisaremos por correo cuando se confirme. No vuelvas a pagar.";
-              } else {
+  window.paymentApproved = true;
+  resultBox.style.background = "#dcfce7";
+  resultBox.style.color = "#166534";
+  resultBox.textContent = "Pago aprobado. ID: " + data.id;
+} else if (
+  data.status === "pending" ||
+  data.status === "in_process" ||
+  data.status === "in_review" ||
+  data.status === "processing"
+) {
+  resultBox.style.background = "#fef3c7";
+  resultBox.style.color = "#92400e";
+  resultBox.textContent =
+    "Tu pago está en revisión. Te avisaremos por correo cuando se confirme. No vuelvas a pagar.";
+} else {
   resultBox.style.background = "#fee2e2";
   resultBox.style.color = "#991b1b";
   resultBox.textContent =
