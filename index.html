@@ -665,16 +665,11 @@ function renderProductDetail(id) {
 <div style="display: grid; gap: 10px; margin-top: 15px;">
 
   <label style="display:flex; align-items:center; gap:10px; padding:15px; border:1px solid #ddd; border-radius:8px; cursor:pointer;">
-    <input type="radio" name="payment" value="card"
-      onchange="document.getElementById('mp-card-payment').style.display=this.checked?'block':'none'; document.getElementById('mp-payment-result').style.display='none';">
+    <input type="radio" name="payment" value="card" checked
+  onchange="document.getElementById('mp-card-payment').style.display=this.checked?'block':'none'; document.getElementById('mp-payment-result').style.display='none';">
     <span>Tarjeta de crédito o débito — Mercado Pago</span>
   </label>
 
-  <label style="display:flex; align-items:center; gap:10px; padding:15px; border:1px solid #ddd; border-radius:8px; cursor:pointer;">
-    <input type="radio" name="payment" value="oxxo"
-      onchange="document.getElementById('mp-card-payment').style.display='none';">
-    <span>Efectivo en OXXO (Generar referencia)</span>
-  </label>
 
   <label style="display:flex; align-items:center; gap:10px; padding:15px; border:1px solid #ddd; border-radius:8px; cursor:pointer;">
     <input type="radio" name="payment" value="whatsapp"
@@ -684,7 +679,7 @@ function renderProductDetail(id) {
 
 </div>
 
-<div id="mp-card-payment" style="display:none; margin-top:15px;">
+<div id="mp-card-payment" style="display:block; margin-top:15px;">
   <p style="font-size:13px; color:#666;">
     El formulario seguro de Mercado Pago aparecerá aquí.
   </p>
@@ -948,6 +943,8 @@ if (!shipping.name || !shipping.email || !shipping.phone || !shipping.address) {
               }
 
               if (data.status === "approved" || data.status === "processed") {
+               container.style.display = "none";
+window.lastOrderId = data.id;
                 window.paymentApproved = true;
                 resultBox.style.background = "#dcfce7";
                 resultBox.style.color = "#166534";
