@@ -1080,13 +1080,7 @@ async function initMercadoPagoCard(total) {
         callbacks: {
           onReady: () => {},
           onSubmit: async (formData) => {
-            console.log("Diagnóstico del formulario:", {
-  payment_method_id: formData.payment_method_id,
-  installments: formData.installments,
-  hasToken: Boolean(formData.token)
-});
-
-return;
+            
             window.paymentApproved = false;
 const val = id => (document.getElementById(id)?.value || "").trim();
 const addr = {
