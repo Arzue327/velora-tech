@@ -301,6 +301,73 @@ button,input,select{font:inherit}button,a{cursor:pointer}a{color:inherit;text-de
 
 .dropdown:hover .dropdown-content {
   display: block;
+}/* ===== MÓVIL VELORA ===== */
+.filters-btn{display:none}
+
+@media(max-width:768px){
+  /* Barra superior */
+  .topbar{justify-content:center;flex-direction:row;font-size:10px;padding:7px 4%}
+  .topbar span:last-child{display:none}
+
+  /* Header: deja de flotar sobre el hero */
+  .nav{height:auto;min-height:0;margin-bottom:0;background:#0b0a09;flex-wrap:wrap;
+       padding:10px 4%;gap:10px;position:sticky;top:0;z-index:50}
+  .brand{order:1;flex:1;min-width:0}
+  .brand img{height:38px;width:auto;max-width:140px;object-fit:contain}
+  .iconbtn[data-page="cart"]{order:2;font-size:24px;padding:6px 8px}
+  .search{order:3;flex:1 1 100%;min-width:0}
+  .search input{font-size:16px}
+  .navlinks{order:4;width:100%;overflow:visible;flex-wrap:wrap;gap:6px 20px;padding:2px 0}
+  .navlinks a{font-size:13px;padding:6px 0}
+
+  /* Menú Componentes con tap */
+  .dropdown{display:block!important;width:100%}
+  .dropdown-content{position:static;width:100%;box-shadow:none;margin-top:6px}
+  .dropdown:hover .dropdown-content{display:none}
+  .dropdown.open .dropdown-content{display:block}
+  .dropdown-content a{padding:14px 16px}
+
+  /* Hero */
+  .hero-copy{min-height:380px;padding:48px 7% 40px}
+  .hero h1{font-size:46px}
+  .hero .btn{min-width:0;width:100%}
+
+  /* Tabs con scroll horizontal */
+  .tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:6px}
+  .tab{white-space:nowrap;flex:0 0 auto;padding:10px 14px}
+
+  /* Productos */
+  .product h3{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:0}
+  .product .btn{padding:12px 6px}
+
+  /* Catálogo: botón de filtros */
+  .filters-btn{display:inline-flex;width:100%}
+  .filters.open{display:block}
+
+  /* Carrito y cantidades */
+  .qty button{width:34px;height:34px}
+
+  /* Formularios (evita el zoom de iOS) */
+  input,select,textarea{font-size:16px}
+
+  /* Footer */
+  .footer-grid>div:first-child{grid-column:1/-1}
+
+  /* Toast */
+  .toast{left:16px;right:16px;bottom:16px;text-align:center}
+}
+
+@media(max-width:800px){
+  /* Checkout */
+  .checkout-wrap{padding:24px 4%!important}
+  .checkout-grid{grid-template-columns:1fr!important;gap:24px!important}
+  .checkout-two{grid-template-columns:1fr!important}
+  .checkout-card,.checkout-right{padding:18px!important}
+  #page-checkout h1{font-size:22px!important;margin:20px 0!important}
+}
+
+@media(max-width:360px){
+  .products{grid-template-columns:1fr}
 }</style>
 </head>
 <body>
@@ -309,7 +376,7 @@ button,input,select{font:inherit}button,a{cursor:pointer}a{color:inherit;text-de
 <a href="#" class="brand" data-page="home" aria-label="VELORA TECH inicio"><img src="imagen-velora-removebg-preview.png" alt="Logo de Velora Tech"></a>
 <nav class="navlinks"><a href="#" data-page="home">Inicio</a><div class="dropdown" style="display: inline-block;">
     <div class="dropdown" style="display: inline-block;">
-    <a href="#" style="cursor: pointer; text-decoration: none;">Componentes ▾</a>
+    <a href="#" class="dd-toggle" style="cursor: pointer; text-decoration: none;">Componentes ▾</a>
     <div class="dropdown-content">
       <a href="#" onclick="showPage('catalog'); setTimeout(() => { document.querySelectorAll('input[type=checkbox]').forEach(cb => { if(cb.value === 'CPU' || cb.parentElement.innerText.includes('CPU')) { cb.click(); } }); }, 100); return false;">Procesadores (CPU)</a>
       <a href="#" onclick="showPage('catalog'); setTimeout(() => { document.querySelectorAll('input[type=checkbox]').forEach(cb => { if(cb.value === 'GPU' || cb.parentElement.innerText.includes('GPU')) { cb.click(); } }); }, 100); return false;">Tarjetas Gráficas (GPU)</a>
@@ -346,7 +413,7 @@ button,input,select{font:inherit}button,a{cursor:pointer}a{color:inherit;text-de
 <section class="section" style="padding-top:5px"><div class="section-head"><div><div class="eyebrow">Productos destacados</div><h2>Elegidos para tu setup</h2></div></div><div class="tabs" id="homeTabs"><button class="tab active" data-tab="Todos">Todos</button><button class="tab" data-tab="GPU">GPU</button><button class="tab" data-tab="CPU">CPU</button><button class="tab" data-tab="RAM">RAM</button><button class="tab" data-tab="Almacenamiento">Almacenamiento</button><button class="tab" data-tab="Motherboard">Tarjeta madre</button><button class="tab" data-tab="Fuentes">Fuentes</button><button class="tab" data-tab="Refrigeración">Refrigeración</button></div><div class="products" id="homeProducts"></div></section>
 <section class="section" id="compat"><div class="compat"><div><div class="eyebrow" style="color:#c4c7c9">Herramienta de referencia</div><h2>Comprueba la compatibilidad</h2><p>Selecciona tus componentes para ver una orientación inicial. Esta herramienta es una demo y no sustituye la validación técnica de cada modelo.</p></div><div class="compat-form"><label for="cpuSelect">Procesador</label><select id="cpuSelect"><option value="">Selecciona un procesador</option><option>AMD Ryzen 5 5600</option><option>Intel Core i5 (ejemplo)</option></select><label for="gpuSelect">Tarjeta gráfica</label><select id="gpuSelect"><option value="">Selecciona una tarjeta gráfica</option><option>ASUS Dual GeForce RTX 4060 8GB</option><option>GeForce RTX 4070 (ejemplo)</option></select><label for="boardSelect">Tarjeta madre / plataforma</label><select id="boardSelect"><option value="">Selecciona plataforma</option><option>AM4</option><option>Intel LGA1700</option><option>No lo sé todavía</option></select><button class="btn" id="checkCompat" style="margin-top:14px;width:100%">Revisar selección</button><div class="compat-result" id="compatResult">La compatibilidad final depende del socket, BIOS, espacio, fuente de poder y otros factores.</div></div></div></section>
 </section>
-<section class="page" id="page-catalog"><section class="section"><div class="breadcrumb">Inicio › Componentes</div><div class="section-head"><div><div class="eyebrow">Encuentra tu próximo upgrade</div><h2>Componentes de PC</h2><p style="color:#777;font-size:12px">Explora el catálogo de demostración de VELORA TECH.</p></div></div><div class="catalog-layout"><aside class="filters"><h3>Filtros</h3><div class="filter-group"><h4>Precio (MXN)</h4><div class="range"><input type="number" id="minPrice" placeholder="Mínimo"><input type="number" id="maxPrice" placeholder="Máximo"></div></div><div class="filter-group"><h4>Marca</h4><label><input type="checkbox" class="brand-filter" value="ASUS"> ASUS</label><label><input type="checkbox" class="brand-filter" value="AMD"> AMD</label><label><input type="checkbox" class="brand-filter" value="Kingston"> Kingston</label><label><input type="checkbox" class="brand-filter" value="WD"> WD</label><label><input type="checkbox" class="brand-filter" value="MSI"> MSI</label></div><div class="filter-group"><h4>Categoría</h4><label><input type="checkbox" class="cat-filter" value="GPU"> GPU</label><label><input type="checkbox" class="cat-filter" value="CPU"> CPU</label><label><input type="checkbox" class="cat-filter" value="RAM"> RAM</label><label><input type="checkbox" class="cat-filter" value="Almacenamiento"> Almacenamiento</label><label><input type="checkbox" class="cat-filter" value="Motherboard"> Tarjeta madre</label><label><input type="checkbox" class="cat-filter" value="Fuentes"> Fuentes</label></div><button class="btn light small" id="clearFilters" style="width:100%">Limpiar filtros</button></aside><div><div class="catalog-top"><span id="resultCount" class="muted">Productos</span><select id="sortSelect" aria-label="Ordenar"><option value="popular">Ordenar: Más populares</option><option value="low">Precio: menor a mayor</option><option value="high">Precio: mayor a menor</option><option value="name">Nombre A–Z</option></select></div><div class="notice">ⓘ Los productos, precios y disponibilidad de esta página son ilustrativos. Aún no se procesan pedidos ni pagos reales.</div><div class="products" id="catalogProducts"></div></div></div></section></section>
+<section class="page" id="page-catalog"><section class="section"><div class="breadcrumb">Inicio › Componentes</div><div class="section-head"><div><div class="eyebrow">Encuentra tu próximo upgrade</div><h2>Componentes de PC</h2><p style="color:#777;font-size:12px">Explora el catálogo de demostración de VELORA TECH.</p></div></div><div class="catalog-layout"><aside class="filters"><h3>Filtros</h3><div class="filter-group"><h4>Precio (MXN)</h4><div class="range"><input type="number" id="minPrice" placeholder="Mínimo"><input type="number" id="maxPrice" placeholder="Máximo"></div></div><div class="filter-group"><h4>Marca</h4><label><input type="checkbox" class="brand-filter" value="ASUS"> ASUS</label><label><input type="checkbox" class="brand-filter" value="AMD"> AMD</label><label><input type="checkbox" class="brand-filter" value="Kingston"> Kingston</label><label><input type="checkbox" class="brand-filter" value="WD"> WD</label><label><input type="checkbox" class="brand-filter" value="MSI"> MSI</label></div><div class="filter-group"><h4>Categoría</h4><label><input type="checkbox" class="cat-filter" value="GPU"> GPU</label><label><input type="checkbox" class="cat-filter" value="CPU"> CPU</label><label><input type="checkbox" class="cat-filter" value="RAM"> RAM</label><label><input type="checkbox" class="cat-filter" value="Almacenamiento"> Almacenamiento</label><label><input type="checkbox" class="cat-filter" value="Motherboard"> Tarjeta madre</label><label><input type="checkbox" class="cat-filter" value="Fuentes"> Fuentes</label></div><button class="btn light small" id="clearFilters" style="width:100%">Limpiar filtros</button></aside><div><div class="catalog-top"><button class="btn light small filters-btn" id="filtersBtn">☰ Filtros</button><span id="resultCount" class="muted">Productos</span><select id="sortSelect" aria-label="Ordenar"><option value="popular">Ordenar: Más populares</option><option value="low">Precio: menor a mayor</option><option value="high">Precio: mayor a menor</option><option value="name">Nombre A–Z</option></select></div><div class="notice">ⓘ Los productos, precios y disponibilidad de esta página son ilustrativos. Aún no se procesan pedidos ni pagos reales.</div><div class="products" id="catalogProducts"></div></div></div></section></section>
 <section class="page" id="page-detail"><section class="section"><div class="breadcrumb"><a href="#" data-page="home">Inicio</a> › Producto</div><div class="product-detail" id="detailContent"></div></section></section>
 <section class="page" id="page-cart"><section class="section"><div class="breadcrumb">Inicio › Carrito</div><div class="section-head"><div><div class="eyebrow">Tu selección</div><h2>Tu carrito</h2></div><a href="#" class="text-link" data-page="catalog">Seguir explorando</a></div><div id="cartContent"></div></section></section>
 <section class="page" id="page-checkout">
@@ -617,7 +684,7 @@ function renderProductDetail(id) {
 
   if (checkoutPage) {
     checkoutPage.innerHTML = `
-      <div style="padding: 40px 5%; max-width: 1200px; margin: 0 auto;">
+      <div class="checkout-wrap" style="padding: 40px 5%; max-width: 1200px; margin: 0 auto;">
         <div class="breadcrumb">
           <a href="#" onclick="showPage('home'); return false;">Inicio</a> / 
           <a href="#" onclick="showPage('cart'); return false;">Carrito</a> / 
@@ -631,10 +698,10 @@ function renderProductDetail(id) {
           ⚠️ Por favor, completa todos los datos de envío antes de continuar.
         </div>
 
-        <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; align-items: start;">
+        <div class="checkout-grid" style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; align-items: start;">
           
           <!-- Formulario -->
-          <div style="background: #fff; padding: 30px; border-radius: 12px; border: 1px solid #eee;">
+          <div class="checkout-card" style="background: #fff; padding: 30px; border-radius: 12px; border: 1px solid #eee;">
             <h3 style="font-size: 18px; margin-bottom: 20px; font-weight: 700;">1. Información de Envío</h3>
             
             <div style="display: grid; gap: 15px;">
@@ -643,7 +710,7 @@ function renderProductDetail(id) {
                 <input type="text" id="chk-name" placeholder="Ej. Carlos Pérez" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px;">
               </div>
               
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+              <div class="checkout-two" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                 <div>
                   <label style="font-size: 12px; font-weight: 600; color: #555;">Correo electrónico</label>
                   <input type="email" id="chk-email" placeholder="correo@tuemail.com" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px;">
