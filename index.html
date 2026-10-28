@@ -654,11 +654,52 @@ function renderProductDetail(id) {
                 </div>
               </div>
 
-              <div>
-                <label style="font-size: 12px; font-weight: 600; color: #555;">Dirección de entrega</label>
-                <input type="text" id="chk-address" placeholder="Calle, Número, Colonia, C.P." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px;">
+                            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 15px;">
+                <div>
+                  <label style="font-size: 12px; font-weight: 600; color: #555;">Calle</label>
+                  <input type="text" id="chk-street" placeholder="Ej. Av. Universidad" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px;">
+                </div>
+                <div>
+                  <label style="font-size: 12px; font-weight: 600; color: #555;">Número ext. / int.</label>
+                  <input type="text" id="chk-number" placeholder="Ej. 123 Int. 4" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px;">
+                </div>
               </div>
-            </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div>
+                  <label style="font-size: 12px; font-weight: 600; color: #555;">Colonia</label>
+                  <input type="text" id="chk-colony" placeholder="Ej. Centro" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px;">
+                </div>
+                <div>
+                  <label style="font-size: 12px; font-weight: 600; color: #555;">Código postal</label>
+                  <input type="text" id="chk-zip" inputmode="numeric" maxlength="5" placeholder="31000" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px;">
+                </div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div>
+                  <label style="font-size: 12px; font-weight: 600; color: #555;">Ciudad / Municipio</label>
+                  <input type="text" id="chk-city" placeholder="Ej. Chihuahua" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px;">
+                </div>
+                <div>
+                  <label style="font-size: 12px; font-weight: 600; color: #555;">Estado</label>
+                  <select id="chk-state" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px; background: #fff;">
+                    <option value="">Selecciona un estado</option>
+                    ${["Aguascalientes","Baja California","Baja California Sur","Campeche","Chiapas","Chihuahua","Ciudad de México","Coahuila","Colima","Durango","Estado de México","Guanajuato","Guerrero","Hidalgo","Jalisco","Michoacán","Morelos","Nayarit","Nuevo León","Oaxaca","Puebla","Querétaro","Quintana Roo","San Luis Potosí","Sinaloa","Sonora","Tabasco","Tamaulipas","Tlaxcala","Veracruz","Yucatán","Zacatecas"].map(e => `<option value="${e}">${e}</option>`).join('')}
+                  </select>
+                </div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div>
+                  <label style="font-size: 12px; font-weight: 600; color: #555;">País</label>
+                  <input type="text" id="chk-country" value="México" readonly style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px; background: #f5f5f5;">
+                </div>
+                <div>
+                  <label style="font-size: 12px; font-weight: 600; color: #555;">Referencias (opcional)</label>
+                  <input type="text" id="chk-refs" placeholder="Entre calles, color de casa..." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px;">
+                </div>
+              </div>
 
             <h3 style="font-size: 18px; margin: 30px 0 20px; font-weight: 700;">2. Método de Pago</h3>
             
@@ -770,16 +811,27 @@ async function processFinalOrder() {
   const nameInput = document.getElementById('chk-name');
   const emailInput = document.getElementById('chk-email');
   const phoneInput = document.getElementById('chk-phone');
-  const addressInput = document.getElementById('chk-address');
-  const errorBox = document.getElementById('checkout-error');
+    const errorBox = document.getElementById('checkout-error');
+  const val = id => (document.getElementById(id)?.value || '').trim();
 
   const name = nameInput ? nameInput.value.trim() : '';
   const email = emailInput ? emailInput.value.trim() : '';
   const phone = phoneInput ? phoneInput.value.trim() : '';
-  const address = addressInput ? addressInput.value.trim() : '';
+
+  const addr = {
+    street: val('chk-street'),
+    number: val('chk-number'),
+    colony: val('chk-colony'),
+    zip: val('chk-zip'),
+    city: val('chk-city'),
+    state: val('chk-state'),
+    country: val('chk-country') || 'México',
+    refs: val('chk-refs')
+  };
+  const address = `${addr.street} ${addr.number}, Col. ${addr.colony}, C.P. ${addr.zip}, ${addr.city}, ${addr.state}, ${addr.country}` + (addr.refs ? ` (Ref: ${addr.refs})` : '');
 
   // 🔴 SI FALTA UN CAMPO, MUESTRA EL TEXTO ROJO Y DETIENE EL FLUJO
-  if (!name || !email || !phone || !address) {
+  if (!name || !email || !phone || !addr.street || !addr.number || !addr.colony || !addr.zip || !addr.city || !addr.state) {
     if (errorBox) {
       errorBox.textContent = "⚠️ Por favor, completa todos los datos de envío antes de continuar.";
       errorBox.style.display = "block";
@@ -803,6 +855,12 @@ async function processFinalOrder() {
       : !phoneOk
         ? "⚠️ Ingresa un teléfono de 10 dígitos."
         : "⚠️ Ingresa tu nombre y apellido.";
+    errorBox.style.display = "block";
+    errorBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }  
+  if (!/^\d{5}$/.test(addr.zip)) {
+    errorBox.textContent = "⚠️ Ingresa un código postal de 5 dígitos.";
     errorBox.style.display = "block";
     errorBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
     return;
