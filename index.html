@@ -556,13 +556,13 @@ img{max-width:100%}
     <div class="dropdown" style="display: inline-block;">
     <a href="#" class="dd-toggle" style="cursor: pointer; text-decoration: none;">Componentes ▾</a>
     <div class="dropdown-content">
-      <a href="#" onclick="showPage('catalog'); setTimeout(() => { document.querySelectorAll('input[type=checkbox]').forEach(cb => { if(cb.value === 'CPU' || cb.parentElement.innerText.includes('CPU')) { cb.click(); } }); }, 100); return false;">Procesadores (CPU)</a>
-      <a href="#" onclick="showPage('catalog'); setTimeout(() => { document.querySelectorAll('input[type=checkbox]').forEach(cb => { if(cb.value === 'GPU' || cb.parentElement.innerText.includes('GPU')) { cb.click(); } }); }, 100); return false;">Tarjetas Gráficas (GPU)</a>
-      <a href="#" onclick="showPage('catalog'); setTimeout(() => { document.querySelectorAll('input[type=checkbox]').forEach(cb => { if(cb.value === 'RAM' || cb.parentElement.innerText.includes('RAM')) { cb.click(); } }); }, 100); return false;">Memoria RAM</a>
-      <a href="#" onclick="showPage('catalog'); setTimeout(() => { document.querySelectorAll('input[type=checkbox]').forEach(cb => { if(cb.value === 'Almacenamiento' || cb.parentElement.innerText.includes('Almacenamiento')) { cb.click(); } }); }, 100); return false;">Almacenamiento (SSD)</a>
-      <a href="#" onclick="showPage('catalog'); setTimeout(() => { document.querySelectorAll('input[type=checkbox]').forEach(cb => { if(cb.value === 'Tarjeta madre' || cb.parentElement.innerText.includes('Tarjeta madre')) { cb.click(); } }); }, 100); return false;">Tarjeta madre</a>
-      <a href="#" onclick="showPage('catalog'); setTimeout(() => { document.querySelectorAll('input[type=checkbox]').forEach(cb => { if(cb.value === 'Fuentes' || cb.parentElement.innerText.includes('Fuentes')) { cb.click(); } }); }, 100); return false;">Fuentes de Poder</a>
-    </div>
+  <a href="#" onclick="filtrarCategoriaMenu('CPU'); return false;">Procesadores (CPU)</a>
+<a href="#" onclick="filtrarCategoriaMenu('GPU'); return false;">Tarjetas Gráficas (GPU)</a>
+<a href="#" onclick="filtrarCategoriaMenu('RAM'); return false;">Memoria RAM</a>
+<a href="#" onclick="filtrarCategoriaMenu('Almacenamiento'); return false;">Almacenamiento (SSD)</a>
+<a href="#" onclick="filtrarCategoriaMenu('Motherboard'); return false;">Tarjeta madre</a>
+<a href="#" onclick="filtrarCategoriaMenu('Fuentes'); return false;">Fuentes de Poder</a>
+</div>
   </div>
   </div><a href="#compat">Compatibilidad</a><a href="#footer">Contacto</a></nav>
 <div class="search"><span>⌕</span><input id="searchInput" placeholder="Buscar productos..." aria-label="Buscar productos"><button class="iconbtn" id="searchBtn" aria-label="Buscar" style="font-size:16px">⌕</button></div>
@@ -1489,6 +1489,38 @@ if (menuToggle && navLinks) {
       menuToggle.textContent = "☰";
     });
   });
+}
+// El menú Componentes sustituye la categoría anterior
+function filtrarCategoriaMenu(categoria) {
+  showPage("catalog");
+
+  setTimeout(() => {
+    const categorias = document.querySelectorAll(
+      ".cat-filter"
+    );
+
+    categorias.forEach(cb => {
+      const debeEstarActiva = cb.value === categoria;
+
+      if (cb.checked !== debeEstarActiva) {
+        cb.click();
+      }
+    });
+
+    document.querySelectorAll(".dropdown.open").forEach(d => {
+      d.classList.remove("open");
+    });
+
+    const nav = document.querySelector(".navlinks");
+    if (nav) nav.classList.remove("menu-open");
+
+    const boton = document.getElementById("menuToggle");
+    if (boton) {
+      boton.textContent = "☰";
+      boton.setAttribute("aria-expanded", "false");
+      boton.setAttribute("aria-label", "Abrir menú");
+    }
+  }, 150);
 }
 </script>
 </body></html>
