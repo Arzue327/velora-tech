@@ -788,9 +788,24 @@ async function processFinalOrder() {
     return;
   }
 
-  // Si todo está lleno, oculta el error
+    // Si todo está lleno, oculta el error
   if (errorBox) {
     errorBox.style.display = "none";
+  }
+
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+  const phoneOk = phone.replace(/\D/g, '').length === 10;
+  const nameOk = name.split(/\s+/).filter(Boolean).length >= 2;
+
+  if (!emailOk || !phoneOk || !nameOk) {
+    errorBox.textContent = !emailOk
+      ? "⚠️ Ingresa un correo electrónico válido."
+      : !phoneOk
+        ? "⚠️ Ingresa un teléfono de 10 dígitos."
+        : "⚠️ Ingresa tu nombre y apellido.";
+    errorBox.style.display = "block";
+    errorBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
   }
 
     const checkedPayment = document.querySelector('input[name="payment"]:checked');
