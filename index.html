@@ -1049,17 +1049,34 @@ async function initMercadoPagoCard(total) {
           onReady: () => {},
           onSubmit: async (formData) => {
             window.paymentApproved = false;
-const shipping = {
-  name: document.getElementById("chk-name")?.value.trim(),
-  email: document.getElementById("chk-email")?.value.trim(),
-  phone: document.getElementById("chk-phone")?.value.trim(),
-  address: document.getElementById("chk-address")?.value.trim()
+const val = id => (document.getElementById(id)?.value || "").trim();
+const addr = {
+  street: val("chk-street"),
+  number: val("chk-number"),
+  colony: val("chk-colony"),
+  zip: val("chk-zip"),
+  city: val("chk-city"),
+  state: val("chk-state"),
+  country: val("chk-country") || "México",
+  refs: val("chk-refs")
 };
-if (!shipping.name || !shipping.email || !shipping.phone || !shipping.address) {
+const shipping = {
+  name: val("chk-name"),
+  email: val("chk-email"),
+  phone: val("chk-phone"),
+  address: `${addr.street} ${addr.number}, Col. ${addr.colony}, C.P. ${addr.zip}, ${addr.city}, ${addr.state}, ${addr.country}` + (addr.refs ? ` (Ref: ${addr.refs})` : "")
+};
+const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(shipping.email);
+const phoneOk = shipping.phone.replace(/\D/g, "").length === 10;
+const nameOk = shipping.name.split(/\s+/).filter(Boolean).length >= 2;
+const zipOk = /^\d{5}$/.test(addr.zip);
+if (!shipping.name || !shipping.email || !shipping.phone || !addr.street || !addr.number || !addr.colony || !addr.zip || !addr.city || !addr.state || !emailOk || !phoneOk || !nameOk || !zipOk) {
   const box = document.getElementById("checkout-error");
+  box.textContent = "⚠️ Revisa tus datos de envío: nombre y apellido, correo válido, teléfono de 10 dígitos y código postal de 5 dígitos.";
   box.style.display = "block";
   box.scrollIntoView({ behavior: "smooth", block: "center" });
   throw new Error("HANDLED");
+}
 }
             resultBox.style.display = "block";
             resultBox.style.background = "#f3f4f6";
