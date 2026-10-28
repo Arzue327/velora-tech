@@ -389,13 +389,72 @@ img{max-width:100%}
   #page-checkout [style*="grid-template-columns: 2fr 1fr"]{
     grid-template-columns:1fr!important;
   }
+}/* ===== MENÚ HAMBURGUESA VELORA TECH ===== */
+.menu-toggle {
+  display: none;
+  background: transparent;
+  color: #fff;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 23px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    order: 2;
+  }
+
+  .iconbtn[data-page="cart"] {
+    order: 3;
+  }
+
+  .navlinks {
+    display: none;
+    order: 5;
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 12px 0;
+    border-top: 1px solid #292929;
+  }
+
+  .navlinks.menu-open {
+    display: flex;
+  }
+
+  .navlinks > a {
+    display: block;
+    padding: 12px 8px;
+  }
+
+  .navlinks .dropdown {
+    width: 100%;
+  }
+
+  .navlinks .dropdown > .dropdown-content {
+    display: none;
+  }
+
+  .navlinks .dropdown.open > .dropdown-content {
+    display: block;
+  }
 }</style>
 </head>
 <body>
 <div class="topbar"><span>Envíos a todo México</span><span>◉ Soporte 24/7 &nbsp;&nbsp; ♙ Mi cuenta</span></div>
 <header class="nav">
 <a href="#" class="brand" data-page="home" aria-label="VELORA TECH inicio"><img src="imagen-velora-removebg-preview.png" alt="Logo de Velora Tech"></a>
-<nav class="navlinks"><a href="#" data-page="home">Inicio</a><div class="dropdown" style="display: inline-block;">
+
+<button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" type="button">☰</button>
+
+  <nav class="navlinks"><a href="#" data-page="home">Inicio</a><div class="dropdown" style="display: inline-block;">
     <div class="dropdown" style="display: inline-block;">
     <a href="#" class="dd-toggle" style="cursor: pointer; text-decoration: none;">Componentes ▾</a>
     <div class="dropdown-content">
@@ -727,28 +786,28 @@ function renderProductDetail(id) {
             <div style="display: grid; gap: 15px;">
               <div>
                 <label style="font-size: 12px; font-weight: 600; color: #555;">Nombre completo</label>
-                <input type="text" id="chk-name" placeholder="Ej. Carlos Pérez" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px;">
+                <input type="text" id="chk-name" autocomplete="name" placeholder="Ej. Carlos Pérez" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px;">
               </div>
               
               <div class="checkout-two" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                 <div>
                   <label style="font-size: 12px; font-weight: 600; color: #555;">Correo electrónico</label>
-                  <input type="email" id="chk-email" placeholder="correo@tuemail.com" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px;">
+                  <input type="email" id="chk-email" autocomplete="email" inputmode="email" placeholder="correo@tuemail.com" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px;">
                 </div>
                 <div>
                   <label style="font-size: 12px; font-weight: 600; color: #555;">Teléfono / WhatsApp</label>
-                  <input type="tel" id="chk-phone" placeholder="55 1234 5678" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px;">
+                  <input type="tel" id="chk-phone" autocomplete="tel" inputmode="tel" placeholder="55 1234 5678" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px;">
                 </div>
               </div>
 
                             <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 15px;">
                 <div>
                   <label style="font-size: 12px; font-weight: 600; color: #555;">Calle</label>
-                  <input type="text" id="chk-street" placeholder="Ej. Av. Universidad" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px;">
+                  <input type="text" id="chk-street" autocomplete="address-line1" placeholder="Ej. Av. Universidad" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px;">
                 </div>
                 <div>
                   <label style="font-size: 12px; font-weight: 600; color: #555;">Número ext. / int.</label>
-                  <input type="text" id="chk-number" placeholder="Ej. 123 Int. 4" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px;">
+                  <input type="text" id="chk-number" autocomplete="address-line2" placeholder="Ej. 123 Int. 4" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px;">
                 </div>
               </div>
 
@@ -759,18 +818,18 @@ function renderProductDetail(id) {
                 </div>
                 <div>
                   <label style="font-size: 12px; font-weight: 600; color: #555;">Código postal</label>
-                  <input type="text" id="chk-zip" inputmode="numeric" maxlength="5" placeholder="31000" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px;">
+                  <input type="text" id="chk-zip" autocomplete="postal-code" inputmode="numeric" maxlength="5" placeholder="31000" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px;">
                 </div>
               </div>
 
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                 <div>
                   <label style="font-size: 12px; font-weight: 600; color: #555;">Ciudad / Municipio</label>
-                  <input type="text" id="chk-city" placeholder="Ej. Chihuahua" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px;">
+                  <input type="text" id="chk-city" autocomplete="address-level2" placeholder="Ej. Chihuahua" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px;">
                 </div>
                 <div>
                   <label style="font-size: 12px; font-weight: 600; color: #555;">Estado</label>
-                  <select id="chk-state" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px; background: #fff;">
+                  <select id="chk-state" autocomplete="address-level1" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px; background: #fff;">
                     <option value="">Selecciona un estado</option>
                     ${["Aguascalientes","Baja California","Baja California Sur","Campeche","Chiapas","Chihuahua","Ciudad de México","Coahuila","Colima","Durango","Estado de México","Guanajuato","Guerrero","Hidalgo","Jalisco","Michoacán","Morelos","Nayarit","Nuevo León","Oaxaca","Puebla","Querétaro","Quintana Roo","San Luis Potosí","Sinaloa","Sonora","Tabasco","Tamaulipas","Tlaxcala","Veracruz","Yucatán","Zacatecas"].map(e => `<option value="${e}">${e}</option>`).join('')}
                   </select>
@@ -780,7 +839,7 @@ function renderProductDetail(id) {
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                 <div>
                   <label style="font-size: 12px; font-weight: 600; color: #555;">País</label>
-                  <input type="text" id="chk-country" value="México" readonly style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px; background: #f5f5f5;">
+                  <input type="text" id="chk-country" autocomplete="country-name" value="México" readonly style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px; background: #f5f5f5;">
                 </div>
                 <div>
                   <label style="font-size: 12px; font-weight: 600; color: #555;">Referencias (opcional)</label>
@@ -1306,6 +1365,31 @@ const filtersBtn = document.getElementById("filtersBtn");
 if (filtersBtn) {
   filtersBtn.addEventListener("click", () => {
     document.querySelector(".filters").classList.toggle("open");
+  });
+}
+  // Menú hamburguesa para móviles
+const menuToggle = document.getElementById("menuToggle");
+const navLinks = document.querySelector(".navlinks");
+
+if (menuToggle && navLinks) {
+  menuToggle.addEventListener("click", () => {
+    const abierto = navLinks.classList.toggle("menu-open");
+
+    menuToggle.setAttribute("aria-expanded", String(abierto));
+    menuToggle.setAttribute(
+      "aria-label",
+      abierto ? "Cerrar menú" : "Abrir menú"
+    );
+    menuToggle.textContent = abierto ? "✕" : "☰";
+  });
+
+  navLinks.querySelectorAll("a:not(.dd-toggle)").forEach(link => {
+    link.addEventListener("click", () => {
+      navLinks.classList.remove("menu-open");
+      menuToggle.setAttribute("aria-expanded", "false");
+      menuToggle.setAttribute("aria-label", "Abrir menú");
+      menuToggle.textContent = "☰";
+    });
   });
 }
 </script>
