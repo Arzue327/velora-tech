@@ -445,6 +445,104 @@ img{max-width:100%}
   .navlinks .dropdown.open > .dropdown-content {
     display: block;
   }
+}/* ===== AJUSTE DEL ENCABEZADO MÓVIL ===== */
+@media (max-width: 768px) {
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 4%;
+    height: auto;
+    min-height: 0;
+    flex-wrap: wrap;
+    overflow: visible;
+  }
+
+  .nav .brand {
+    order: 1;
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .nav .brand img {
+    display: block;
+    width: auto;
+    height: 38px;
+    max-width: 140px;
+    object-fit: contain;
+  }
+
+  .nav .menu-toggle {
+    display: inline-flex;
+    order: 2;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    min-width: 42px;
+    min-height: 42px;
+    margin: 0;
+  }
+
+  .nav .iconbtn[data-page="cart"] {
+    order: 3;
+    flex: 0 0 auto;
+    margin: 0;
+  }
+
+  .nav .search {
+    order: 4;
+    flex: 1 1 100%;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+  }
+
+  .nav .search input {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .nav .navlinks {
+    order: 5;
+    flex: 1 1 100%;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    margin: 0;
+  }
+
+  .nav .navlinks.menu-open {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nav .navlinks > a,
+  .nav .navlinks .dd-toggle {
+    display: block;
+    padding: 10px 8px;
+  }
+
+  .nav .navlinks .dropdown {
+    width: 100%;
+  }
+}
+
+@media (max-width: 380px) {
+  .nav .brand img {
+    height: 34px;
+    max-width: 120px;
+  }
+
+  .nav .menu-toggle {
+    min-width: 38px;
+    padding: 7px 9px;
+  }
+
+  .nav .iconbtn[data-page="cart"] {
+    padding: 5px;
+  }
 }</style>
 </head>
 <body>
