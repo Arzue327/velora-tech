@@ -27,7 +27,8 @@
       color: #fff;
       text-decoration: none;
     }
-
+.logo-link { display: inline-flex; align-items: center; }
+.logo-link img { height: 38px; width: auto; display: block; }
     main {
       max-width: 900px;
       margin: 40px auto;
@@ -68,8 +69,10 @@
 
 <body>
   <header>
-    <a href="index.html">← VELORA TECH</a>
-  </header>
+  <a href="index.html" class="logo-link" aria-label="Volver al inicio de VELORA TECH">
+    <img src="logo-v.png" alt="VELORA TECH">
+  </a>
+</header>
 
   <main>
     <h1>Aviso de privacidad</h1>
