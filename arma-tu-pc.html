@@ -116,6 +116,59 @@ a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
   .final-row{grid-template-columns:56px 1fr;}.final-row strong{grid-column:2}
 }
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+.progress{position:relative}
+.progress::-webkit-scrollbar{display:none}
+.progress{scrollbar-width:none}
+
+@media(max-width:650px){
+  /* Header */
+  .brand-logo{width:auto;height:38px;max-height:38px}
+  .nav{padding:10px 4%;gap:8px 12px}
+  .navlinks{padding:2px 0 4px;gap:22px}
+  .navlinks a{padding:6px 0;font-size:13px}
+  .cartlink{padding:6px 10px}
+
+  /* Hero */
+  .hero{padding:32px 6% 28px}
+  .hero h1{font-size:36px;letter-spacing:-1.4px}
+
+  /* Pasos: más fáciles de tocar */
+  .crumb{padding:11px 14px;font-size:12px;flex:0 0 auto}
+  .step-t{font-size:28px}
+
+  /* Marcas */
+  .brand{min-height:130px}
+  .brand img{width:110px;height:48px}
+  .brand[data-brand="AMD"] img{transform:scale(1.3)}
+  .wm{font-size:22px;letter-spacing:2px}
+  .brand:hover,.opt:hover{transform:none}
+
+  /* Productos */
+  .opt h3{min-height:0}
+  .opt .price{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 6px}
+  .opt .price s{margin-left:0}
+
+  /* Botones */
+  .btn{padding:17px 18px;min-width:0}
+  .hint{width:100%;text-align:center}
+  .acts{flex-direction:column-reverse;width:100%}
+
+  /* Resumen final */
+  .final-row{padding:12px}
+  .final-total{font-size:20px}
+
+  /* Barra fija con el total */
+  .summary{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:40;
+           padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+           border-width:1px 0 0;box-shadow:0 -6px 20px #0000001a}
+  .summary h2,.summary .lines{display:none}
+  .summary .total{border:0;padding:0;font-size:17px}
+  body{padding-bottom:64px}
+  .toast{left:16px;right:16px;bottom:78px;text-align:center}
+
+  /* Footer */
+  .footer-in{flex-direction:column;gap:12px}
+}
 </style>
 </head>
 <body>
@@ -225,7 +278,7 @@ function render(){
     main.innerHTML=crumbs+`<h2 class="step-t">Tu configuración</h2><p class="step-s">Revisa tus componentes antes de agregarlos al carrito.</p>
     <div class="final-list">${items.map(p=>`<div class="final-row"><div class="art">${artHtml(p)}</div><div><small>${STEPS.find(s=>s.key===p.s).title}</small>${p.n}</div><strong>${money(p.p)}</strong></div>`).join("")||'<div class="none">Aún no elegiste componentes.</div>'}</div>
     <div class="final-total"><span>Total</span><span>${money(total)}</span></div>
-    <div class="nav-btns"><button class="btn light" type="button" data-prev>← Anterior</button><span style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn light" type="button" data-reset>Empezar de nuevo</button><button class="btn" type="button" data-addall ${items.length?"":"disabled"}>Agregar todo al carrito <span>→</span></button></span></div>
+    <div class="nav-btns"><button class="btn light" type="button" data-prev>← Anterior</button><span class="acts" style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn light" type="button" data-reset>Empezar de nuevo</button><button class="btn" type="button" data-addall ${items.length?"":"disabled"}>Agregar todo al carrito <span>→</span></button></span></div>
     <p class="fine" style="margin-top:18px">¿Dudas con tu configuración? Un asesor puede revisarla contigo desde <a href="soporte.html" style="text-decoration:underline">soporte</a>.</p>`;
     renderSummary();return;
   }
@@ -249,7 +302,12 @@ function render(){
   renderSummary();
 }
 
-function go(i){cur=i;render();window.scrollTo({top:document.querySelector(".hero").offsetHeight+80,behavior:"smooth"})}
+function go(i){
+  cur=i;render();
+  const pr=document.querySelector(".progress"),c=pr&&pr.querySelector(".cur");
+  if(pr&&c)pr.scrollLeft=c.offsetLeft-16;
+  window.scrollTo({top:document.querySelector(".hero").offsetHeight+80,behavior:"smooth"});
+}
 
 document.addEventListener("click",e=>{
   const t=e.target.closest("button");
@@ -275,6 +333,7 @@ document.addEventListener("click",e=>{
     Object.values(sel).forEach(p=>{const it=cart.find(x=>x.id===p.id);if(it)it.qty++;else cart.push({id:p.id,qty:1})});
     try{localStorage.setItem("veloraCart",JSON.stringify(cart))}catch(err){toast("No se pudo guardar el carrito.");return}
     cartCount();toast("Tu configuración se agregó al carrito.");
+  t.disabled=true;t.textContent="Agregado ✓";
   }
 });
 render();cartCount();
