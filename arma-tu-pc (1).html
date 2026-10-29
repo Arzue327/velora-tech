@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Arma tu PC con VELORA TECH, paso a paso: procesador, tarjeta gráfica, memoria y más.">
+<title>Arma tu PC | VELORA TECH</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#191713;--muted:#817b72;--line:#ded9d0;--soft:#f7f5f0;--dark:#100f0d;--gold:#e4c99b;--gold-d:#9b907e;--max:1360px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font-family:'Montserrat',Arial,Helvetica,sans-serif;color:var(--ink);background:#fff;overflow-x:clip}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+.topbar{background:#090908;color:#f8f5ef;font-size:11px;padding:10px 5.8%;display:flex;justify-content:space-between;gap:16px}
+.nav{height:82px;padding:0 5.8%;display:flex;align-items:center;justify-content:space-between;gap:22px;background:#0b0a09;color:#fff;border-bottom:1px solid #ffffff24}
+.brand-logo{display:block;width:150px;height:auto;max-height:62px;object-fit:contain;filter:brightness(0) saturate(100%) invert(81%) sepia(19%) saturate(460%) hue-rotate(354deg) brightness(94%) contrast(88%)}
+.navlinks{display:flex;gap:28px;font-size:13px}
+.navlinks a:hover,.navlinks a.on{color:#dfc59a}
+.cartlink{font-size:13px;display:flex;align-items:center;gap:8px}
+.cartlink b{background:#fff;color:#111;border-radius:50%;width:19px;height:19px;display:grid;place-items:center;font-size:10px}
+
+.eyebrow{font-size:10px;letter-spacing:3.5px;font-weight:500;color:var(--gold-d);text-transform:uppercase}
+.hero{background:var(--dark);color:#fff;padding:52px 5.8% 44px}
+.hero-in{max-width:var(--max);margin:auto}
+.hero .eyebrow{color:#d6c5a9}
+.hero h1{font-size:clamp(38px,4.4vw,60px);line-height:.95;letter-spacing:-2.2px;font-weight:400;margin:18px 0 0}
+.hero h1 em{font-weight:600;color:#f0e7d9}
+
+.wrap{max-width:var(--max);margin:auto;padding:36px 5.8% 70px;display:grid;grid-template-columns:1fr 340px;gap:36px;align-items:start}
+.wrap.full{grid-template-columns:1fr}.wrap.full .summary{display:none}
+
+/* Progreso */
+.progress{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:30px}
+.crumb{border:1px solid #e1e1e1;background:#fff;padding:9px 13px;font-size:11px;color:#777}
+.crumb.done{color:var(--ink);border-color:#bbb}
+.crumb.cur{background:#111;color:#fff;border-color:#111}
+.crumb:disabled{cursor:default}
+
+.step-t{font-size:clamp(30px,3.4vw,42px);letter-spacing:-1px;font-weight:600;margin:0 0 8px}
+.step-s{font-size:13px;color:#666;margin:0 0 28px}
+.sub{font-size:14px;font-weight:600;margin:34px 0 14px}
+
+/* Marcas */
+.brands{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.brand{background:var(--soft);border:1px solid #ebe6dc;min-height:210px;display:grid;place-items:center;padding:24px;transition:.2s;position:relative;color:inherit}
+.brand:hover{background:#eee8dd;transform:translateY(-3px)}
+.brand[aria-pressed="true"]{background:var(--dark);border-color:var(--dark)}
+.brand img{max-width:70%;max-height:90px;object-fit:contain}
+.brand[aria-pressed="true"] img{filter:brightness(0) invert(1)}
+.wm{font-size:38px;font-weight:700;letter-spacing:6px}
+.brand[aria-pressed="true"] .wm{color:#fff}
+.brand small{position:absolute;bottom:14px;left:0;right:0;text-align:center;font-size:11px;color:var(--muted)}
+.brand[aria-pressed="true"] small{color:#cfc9be}
+
+/* Productos */
+.opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.opt{text-align:left;background:#fff;border:1px solid #e5e7e8;padding:13px;display:flex;flex-direction:column;gap:6px;transition:.2s;color:inherit;position:relative}
+.opt:hover{box-shadow:0 10px 28px #0000000b;transform:translateY(-2px)}
+.opt[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.opt[aria-pressed="true"]:after{content:"✓";position:absolute;top:10px;right:10px;background:var(--ink);color:#fff;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px}
+.art{height:140px;display:grid;place-items:center;background:linear-gradient(140deg,#fff,#f4f5f5);font-size:52px;overflow:hidden}
+.art img{max-width:100%;max-height:130px;object-fit:contain}
+.opt h3{margin:4px 0 0;font-size:12px;line-height:1.45;min-height:52px;font-weight:600}
+.opt .tag{font-size:10px;color:var(--muted)}
+.opt .price{font-size:17px;font-weight:800}
+.opt .price s{font-size:10px;color:#999;font-weight:400;margin-left:5px}
+.none{background:var(--soft);border:1px solid var(--line);padding:30px;text-align:center;font-size:13px;color:#666;line-height:1.7}
+
+/* Navegación */
+.nav-btns{display:flex;justify-content:space-between;gap:12px;margin-top:38px;padding-top:22px;border-top:1px solid var(--line)}
+.btn{display:inline-flex;align-items:center;justify-content:space-between;gap:16px;min-width:230px;border:1px solid var(--ink);background:var(--ink);color:#fff;padding:15px 20px;font-size:10px;font-weight:500;letter-spacing:1.6px;text-transform:uppercase;transition:.2s}
+.btn:hover{background:#333}.btn:disabled{opacity:.35;cursor:not-allowed}
+.btn.light{background:#fff;color:var(--ink);min-width:0;justify-content:center}.btn.light:hover{background:#eee}
+.hint{font-size:11px;color:var(--muted);align-self:center}
+
+/* Resumen */
+.summary{position:sticky;top:16px;background:var(--soft);border:1px solid var(--line);padding:22px}
+.summary h2{margin:0 0 14px;font-size:16px}
+.lines{display:grid;gap:10px;margin-bottom:14px}
+.line{display:flex;justify-content:space-between;gap:12px;font-size:12px;line-height:1.5}
+.line small{display:block;color:var(--muted);font-size:10px;max-width:190px}
+.line.empty-l{color:#aaa}
+.total{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid #ddd;padding-top:14px;font-size:19px;font-weight:800}
+.final-list{display:grid;gap:0;border:1px solid var(--line);margin-bottom:22px}
+.final-row{display:grid;grid-template-columns:74px 1fr auto;gap:16px;align-items:center;padding:14px 16px;border-bottom:1px solid var(--line);font-size:13px}
+.final-row:last-child{border:0}
+.final-row .art{height:64px;font-size:30px}.final-row .art img{max-height:58px}
+.final-row small{display:block;color:var(--muted);font-size:11px;margin-bottom:3px}
+.final-total{display:flex;justify-content:space-between;font-size:24px;font-weight:800;margin-bottom:22px}
+.fine{font-size:11px;color:var(--muted);line-height:1.6}
+.toast{position:fixed;right:20px;bottom:20px;background:#111;color:#fff;padding:14px 18px;font-size:12px;z-index:30;opacity:0;transform:translateY(8px);transition:.2s;pointer-events:none}
+.toast.show{opacity:1;transform:none}
+
+.footer{background:#101315;color:#f3f3f3;padding:34px 5.8% 20px}
+.footer-in{max-width:var(--max);margin:auto;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:11px;color:#a8abad}
+.footer a:hover{color:#fff}
+
+@media(max-width:1000px){.wrap{grid-template-columns:1fr}.summary{position:static}}
+@media(max-width:650px){
+  .topbar{justify-content:center;font-size:10px}.topbar span:last-child{display:none}
+  .nav{height:auto;padding:12px 4%;flex-wrap:wrap}.brand-logo{width:120px}
+  .navlinks{order:3;width:100%;gap:18px;overflow-x:auto;white-space:nowrap}
+  .hero{padding:40px 6%}.hero h1{font-size:40px}
+  .wrap{padding:28px 16px 50px}
+  .progress{flex-wrap:nowrap;overflow-x:auto}.crumb{white-space:nowrap}
+  .brands{gap:10px}.brand{min-height:150px;padding:14px}.wm{font-size:26px;letter-spacing:3px}
+  .opts{grid-template-columns:repeat(2,1fr);gap:10px}.art{height:100px}.opt h3{font-size:11px;min-height:48px}
+  .nav-btns{flex-direction:column-reverse}.btn{width:100%}
+  .final-row{grid-template-columns:56px 1fr;}.final-row strong{grid-column:2}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<div class="topbar"><span>Envíos a todo México</span><span><a href="soporte.html">◉ Soporte 24/7</a></span></div>
+<header class="nav">
+  <a href="index.html" aria-label="VELORA TECH inicio"><img class="brand-logo" src="imagen-velora-removebg-preview.png" alt="Logo de Velora Tech"></a>
+  <nav class="navlinks" aria-label="Principal">
+    <a href="index.html">Inicio</a>
+    <a href="arma-tu-pc.html" class="on" aria-current="page">Arma tu PC</a>
+    <a href="soporte.html">Soporte</a>
+  </nav>
+  <a class="cartlink" href="index.html#cart">Carrito <b id="cartCount">0</b></a>
+</header>
+
+<section class="hero">
+  <div class="hero-in">
+    <div class="eyebrow">Configurador</div>
+    <h1>Arma tu PC,<br>pieza por <em>pieza.</em></h1>
+  </div>
+</section>
+
+<main>
+  <div class="wrap" id="wrap">
+    <div id="main"></div>
+    <aside class="summary" aria-live="polite">
+      <h2>Tu configuración</h2>
+      <div class="lines" id="lines"></div>
+      <div class="total"><span>Total</span><span id="total">$0</span></div>
+    </aside>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="footer-in">
+    <span>© 2026 VELORA TECH. Todos los derechos reservados.</span>
+    <span><a href="garantias.html">Garantías</a> &nbsp; <a href="devoluciones.html">Devoluciones</a> &nbsp; <a href="terminos.html">Términos y Condiciones</a> &nbsp; <a href="privacidad.html">Aviso de privacidad</a></span>
+  </div>
+</footer>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* ===== LOGOS DE MARCA =====
+   Sube estas imágenes a la misma carpeta que este archivo.
+   Si no existen, se muestra el nombre de la marca en texto. */
+const BR={
+  Intel:{name:"Intel",logo:"logo-intel.png"},
+  AMD:{name:"AMD",logo:"logo-amd.png"},
+  NVIDIA:{name:"NVIDIA",logo:"logo-nvidia.png"}
+};
+
+/* Pasos. "brands" = el paso empieza eligiendo marca. Sin "brands" = muestra los productos directo. */
+const STEPS=[
+ {key:"CPU",title:"Procesador",sub:"Elige la marca de tu procesador.",brands:["Intel","AMD"]},
+ {key:"GPU",title:"Tarjeta gráfica",sub:"Elige la marca de tu tarjeta gráfica.",brands:["NVIDIA","AMD"]},
+ {key:"RAM",title:"Memoria RAM",sub:"Estas son las memorias que tenemos disponibles."},
+ {key:"SSD",title:"Almacenamiento",sub:"Estas son las unidades que tenemos disponibles."},
+ {key:"PSU",title:"Fuente de poder",sub:"Estas son las fuentes que tenemos disponibles."},
+ {key:"COOL",title:"Refrigeración",sub:"Estos son los sistemas de enfriamiento que tenemos disponibles."},
+ {key:"CASE",title:"Gabinete",sub:"Estos son los gabinetes que tenemos disponibles."}
+];
+
+/* Mismos id, nombres y precios que index.html. Si cambias algo allá, cámbialo aquí.
+   "brand" es la marca del chip/GPU (para el filtro del paso). */
+const P=[
+ {id:2,s:"CPU",brand:"AMD",n:"AMD Ryzen 7 9800X3D",t:"8 núcleos · Socket AM5",p:9499,o:9999,img:"ryzen-removebg-preview.png"},
+ {id:1,s:"GPU",brand:"NVIDIA",n:"GIGABYTE GeForce RTX 5070 Ti GAMING OC 16GB",t:"16 GB GDDR7",p:28999,o:31999,img:"01b46a11-8fc0-42da-a127-094dd3a41343-removebg-preview.png"},
+ {id:5,s:"GPU",brand:"NVIDIA",n:"PNY GeForce RTX 5080 OC 16GB",t:"16 GB GDDR7",p:39999,o:45999,img:"05ea049e-afd0-4bfc-9f8a-e2d663992a03__2_-removebg-preview.png"},
+ {id:6,s:"GPU",brand:"NVIDIA",n:"ASUS PRIME GeForce RTX 5070 OC 12GB",t:"12 GB GDDR7",p:19999,o:22999,img:"029682f6-53f6-4ccd-8ed9-c4b1d58028c3-removebg-preview.png"},
+ {id:3,s:"GPU",brand:"NVIDIA",n:"PNY GeForce RTX 5060 Ti OC 8GB",t:"8 GB GDDR7",p:11999,o:13999,img:"84a8253a-4c43-4333-b54e-d795b9dbc307-removebg-preview.png"},
+ {id:7,s:"RAM",n:"Kingston FURY Beast 32GB (2x16GB) DDR5 6000MHz",t:"DDR5 · CL30",p:17499,o:19999,img:"43f03772-f9d3-429a-bb48-09be09e3287a-removebg-preview.png"},
+ {id:11,s:"RAM",n:"Kingston FURY Beast 32GB DDR4",t:"DDR4",p:1399,o:1599,img:"▰"},
+ {id:10,s:"SSD",n:"SSD SATA 1TB WD",t:"1 TB · SATA",p:1199,o:1399,img:"▱"},
+ {id:4,s:"PSU",n:"CORSAIR RM1000e 1000W 80 PLUS Gold",t:"1000 W · ATX 3.1",p:2799,o:3199,img:"685c97bd-0822-4ac3-b0fa-a46eb0d59b51-removebg-preview.png"},
+ {id:8,s:"PSU",n:"Fuente de poder ASUS 750W 80+ Gold",t:"750 W",p:5,o:2099,img:"▧"},
+ {id:9,s:"COOL",n:"Cooler de CPU torre 120 mm MSI",t:"Aire · 120 mm",p:599,o:749,img:"❉"},
+ {id:12,s:"CASE",n:"Gabinete ATX minimalista ASUS",t:"Formato ATX",p:1299,o:1499,img:"▣"}
+];
+
+const $=id=>document.getElementById(id);
+const money=n=>n.toLocaleString("es-MX",{style:"currency",currency:"MXN",maximumFractionDigits:0});
+let cur=0;            // paso actual; STEPS.length = resumen final
+const sel={};         // producto elegido por paso
+const brand={};       // marca elegida por paso
+
+function artHtml(p){return p.img.includes(".")?`<img src="${p.img}" alt="">`:p.img}
+function fixLogo(img){const s=document.createElement("span");s.className="wm";s.textContent=img.dataset.name;img.replaceWith(s)}
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2600)}
+function cartCount(){try{$("cartCount").textContent=JSON.parse(localStorage.getItem("veloraCart")||"[]").reduce((s,x)=>s+x.qty,0)}catch(e){}}
+
+function optCard(p){
+  return `<button type="button" class="opt" data-pick="${p.id}" aria-pressed="${sel[p.s]?.id===p.id}"><div class="art">${artHtml(p)}</div><h3>${p.n}</h3><span class="tag">${p.t}</span><span class="price">${money(p.p)}<s>${money(p.o)}</s></span></button>`;
+}
+
+function renderSummary(){
+  $("lines").innerHTML=STEPS.map(s=>{const p=sel[s.key];return p?`<div class="line"><span>${s.title}<small>${p.n}</small></span><strong>${money(p.p)}</strong></div>`:`<div class="line empty-l"><span>${s.title}</span><span>Sin elegir</span></div>`}).join("");
+  $("total").textContent=money(Object.values(sel).reduce((s,p)=>s+p.p,0));
+}
+
+function render(){
+  const wrap=$("wrap"),main=$("main");
+  wrap.classList.toggle("full",cur===STEPS.length);
+  const crumbs=`<div class="progress">${STEPS.map((s,i)=>`<button type="button" class="crumb ${i===cur?"cur":sel[s.key]?"done":""}" data-go="${i}" ${i>cur&&!sel[STEPS[cur]?.key]?"disabled":""}>${sel[s.key]&&i!==cur?"✓ ":""}${s.title}</button>`).join("")}<button type="button" class="crumb ${cur===STEPS.length?"cur":""}" data-go="${STEPS.length}" ${Object.keys(sel).length?"":"disabled"}>Resumen</button></div>`;
+
+  if(cur===STEPS.length){
+    const items=STEPS.filter(s=>sel[s.key]).map(s=>sel[s.key]);
+    const total=items.reduce((s,p)=>s+p.p,0);
+    main.innerHTML=crumbs+`<h2 class="step-t">Tu configuración</h2><p class="step-s">Revisa tus componentes antes de agregarlos al carrito.</p>
+    <div class="final-list">${items.map(p=>`<div class="final-row"><div class="art">${artHtml(p)}</div><div><small>${STEPS.find(s=>s.key===p.s).title}</small>${p.n}</div><strong>${money(p.p)}</strong></div>`).join("")||'<div class="none">Aún no elegiste componentes.</div>'}</div>
+    <div class="final-total"><span>Total</span><span>${money(total)}</span></div>
+    <div class="nav-btns"><button class="btn light" type="button" data-prev>← Anterior</button><span style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn light" type="button" data-reset>Empezar de nuevo</button><button class="btn" type="button" data-addall ${items.length?"":"disabled"}>Agregar todo al carrito <span>→</span></button></span></div>
+    <p class="fine" style="margin-top:18px">¿Dudas con tu configuración? Un asesor puede revisarla contigo desde <a href="soporte.html" style="text-decoration:underline">soporte</a>.</p>`;
+    renderSummary();return;
+  }
+
+  const st=STEPS[cur];
+  let body="";
+  if(st.brands){
+    body+=`<div class="brands">${st.brands.map(b=>`<button type="button" class="brand" data-brand="${b}" aria-pressed="${brand[st.key]===b}"><img src="${BR[b].logo}" alt="${BR[b].name}" data-name="${BR[b].name}" onerror="fixLogo(this)"><small>${brand[st.key]===b?"Seleccionado":"Ver opciones"}</small></button>`).join("")}</div>`;
+    if(brand[st.key]){
+      const list=P.filter(p=>p.s===st.key&&p.brand===brand[st.key]);
+      body+=`<h3 class="sub">Opciones ${BR[brand[st.key]].name}</h3>`+(list.length?`<div class="opts">${list.map(optCard).join("")}</div>`:`<div class="none">Por ahora no tenemos ${st.title.toLowerCase()} ${BR[brand[st.key]].name} en el catálogo.<br>Elige otra marca o escríbenos por <a href="soporte.html" style="text-decoration:underline">soporte</a> para pedirla.</div>`);
+    }
+  }else{
+    const list=P.filter(p=>p.s===st.key);
+    body+=list.length?`<div class="opts">${list.map(optCard).join("")}</div>`:`<div class="none">Por ahora no tenemos opciones en esta categoría.</div>`;
+  }
+  const last=cur===STEPS.length-1;
+  main.innerHTML=crumbs+`<h2 class="step-t">${st.title}</h2><p class="step-s">${st.sub}</p>${body}
+  <div class="nav-btns">${cur>0?'<button class="btn light" type="button" data-prev>← Anterior</button>':'<span></span>'}
+  <span style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">${sel[st.key]?"":'<span class="hint">Elige una opción para continuar</span>'}<button class="btn" type="button" data-next ${sel[st.key]?"":"disabled"}>${last?"Ver resumen":"Siguiente componente"} <span>→</span></button></span></div>`;
+  renderSummary();
+}
+
+function go(i){cur=i;render();window.scrollTo({top:document.querySelector(".hero").offsetHeight+80,behavior:"smooth"})}
+
+document.addEventListener("click",e=>{
+  const t=e.target.closest("button");
+  if(!t)return;
+  if(t.dataset.brand){
+    const st=STEPS[cur];
+    brand[st.key]=t.dataset.brand;
+    if(sel[st.key]&&sel[st.key].brand!==t.dataset.brand)delete sel[st.key];
+    render();return;
+  }
+  if(t.dataset.pick){
+    const p=P.find(x=>x.id===+t.dataset.pick);
+    if(sel[p.s]?.id===p.id)delete sel[p.s];else sel[p.s]=p;
+    render();return;
+  }
+  if(t.dataset.go!==undefined&&!t.disabled){go(+t.dataset.go);return}
+  if(t.hasAttribute("data-next")&&!t.disabled){go(cur+1);return}
+  if(t.hasAttribute("data-prev")){go(cur-1);return}
+  if(t.hasAttribute("data-reset")){for(const k in sel)delete sel[k];for(const k in brand)delete brand[k];go(0);return}
+  if(t.hasAttribute("data-addall")&&!t.disabled){
+    let cart=[];
+    try{cart=JSON.parse(localStorage.getItem("veloraCart")||"[]")}catch(err){}
+    Object.values(sel).forEach(p=>{const it=cart.find(x=>x.id===p.id);if(it)it.qty++;else cart.push({id:p.id,qty:1})});
+    try{localStorage.setItem("veloraCart",JSON.stringify(cart))}catch(err){toast("No se pudo guardar el carrito.");return}
+    cartCount();toast("Tu configuración se agregó al carrito.");
+    setTimeout(()=>{location.href="index.html#cart"},1200);
+  }
+});
+render();cartCount();
+</script>
+</body>
+</html>
