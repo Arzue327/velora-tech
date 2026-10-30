@@ -798,7 +798,24 @@ document.addEventListener("click", e => {
 });
 $("searchBtn").onclick=()=>{searchTerm=$("searchInput").value.trim().toLowerCase();showPage("catalog");renderCatalog()};$("searchInput").addEventListener("keydown",e=>{if(e.key==="Enter")$("searchBtn").click()});["minPrice","maxPrice","sortSelect"].forEach(id=>$(id).addEventListener("input",renderCatalog));document.querySelectorAll(".brand-filter,.cat-filter").forEach(el=>el.addEventListener("change",renderCatalog));$("clearFilters").onclick=()=>{document.querySelectorAll(".brand-filter,.cat-filter").forEach(c=>c.checked=false);$("minPrice").value="";$("maxPrice").value="";$("sortSelect").value="popular";searchTerm="";$("searchInput").value="";renderCatalog()};
 $("checkCompat").onclick=()=>{const cpu=$("cpuSelect").value,gpu=$("gpuSelect").value,board=$("boardSelect").value;let msg="Selecciona los componentes para obtener una orientación.";if(cpu&&gpu&&board){msg="Selección registrada. Revisa socket, BIOS, dimensiones de GPU, consumo y conectores de la fuente con las especificaciones oficiales antes de comprar. Esta demo no valida compatibilidad real."}else if(cpu||gpu||board){msg="Faltan selecciones. Completa los campos para una revisión orientativa."}$("compatResult").textContent=msg};
-saveCart();renderHome();renderCatalog();
+registrarPCs();saveCart();renderHome();renderCatalog();;
+function registrarPCs(){
+  const ens=products.find(p=>p.id===100);
+  cart.forEach(i=>{
+    if(!i.build||products.some(p=>p.id===i.id))return;
+    const parts=i.build.map(id=>products.find(p=>p.id===id)).filter(Boolean);
+    const gpu=parts.find(p=>p.cat==="GPU");
+    products.push({id:i.id,name:"Tu PC",brand:"VELORA TECH",cat:"Servicios",price:parts.reduce((s,p)=>s+p.price,0)+(ens?ens.price:0),old:0,art:gpu?gpu.art:"▣",rating:5,desc:"",spec:[]});
+  });
+}
+function itemsParaServidor(){
+  const out={};
+  cart.forEach(i=>{
+    const ids=i.build?i.build.concat([100]):[i.id];
+    ids.forEach(id=>{out[id]=(out[id]||0)+i.qty});
+  });
+  return Object.entries(out).map(([id,qty])=>({id:+id,qty}));
+}
 function abrirDesdeHash(){
   if(location.hash==="#cart"){
     showPage("cart");
@@ -1183,7 +1200,7 @@ let total = cart.reduce((sum, item) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          items: cart.map(i => ({ id: i.id, qty: i.qty })),
+          items: itemsParaServidor()
           name, email, phone, address
         })
       });
@@ -1191,7 +1208,7 @@ let total = cart.reduce((sum, item) => {
       if (!res.ok || !data.ok) throw new Error(data.message || "Error");
 
       let msg = `¡Hola! Mi nombre es *${name}*.\nPedido: *${data.order_id}*\nDirección de envío: *${address}*\nTeléfono: *${phone}*\n\nQuiero coordinar este pedido en VELORA TECH:\n`;
-      cart.forEach(i => {
+      itemsParaServidor().forEach(i => {
         const p = products.find(x => x.id === i.id);
         msg += `- ${i.qty}x ${p ? p.name : 'Producto'}\n`;
       });
@@ -1229,7 +1246,7 @@ let total = cart.reduce((sum, item) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          items: cart.map(i => ({ id: i.id, qty: i.qty })),
+          items: itemsParaServidor()
           shipping: { name, email, phone, address }
         })
       });
@@ -1376,7 +1393,7 @@ if (!shipping.name || !shipping.email || !shipping.phone || !addr.street || !add
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({
   ...formData,
-  items: cart.map(i => ({ id: i.id, qty: i.qty })),
+  items: itemsParaServidor()
   shipping
 })
                 }
