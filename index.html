@@ -542,7 +542,13 @@ img{max-width:100%}
 body:not(.home) .nav{
   margin-bottom:0;
   background:#0b0a09;
-}</style>
+}
+.pc-parts{margin-top:6px;font-size:10px;color:#85898d}
+.pc-parts summary{cursor:pointer;list-style:none;display:inline-block;text-decoration:underline;color:#555}
+.pc-parts summary::-webkit-details-marker{display:none}
+.pc-parts[open] summary{margin-bottom:4px}
+.pc-parts ul{margin:0;padding-left:16px;line-height:1.6}
+</style>
 </head>
 <body class="home">
 <div class="topbar"><span>Envíos a todo México</span><span><a href="soporte.html">◉ Soporte 24/7</a> &nbsp;&nbsp; ♙ Mi cuenta</span></div>
@@ -750,9 +756,7 @@ function renderDetail(id){const p=products.find(x=>x.id===+id);if(!p)return;curr
   }
 </div><div class="detail-copy"><div class="eyebrow">${p.brand} · ${p.cat}</div><h1>${p.name}</h1><div class="detail-price">${money(p.price)} <span class="oldprice">${money(p.old)}</span></div><p style="font-size:13px;color:#666;line-height:1.7">${p.desc}</p><ul>${p.spec.map(s=>`<li>${s}</li>`).join("")}</ul><div class="qty-large"><label for="detailQty">Cantidad</label><input type="number" min="1" max="20" value="1" id="detailQty"><button class="btn" id="detailAdd">Agregar al carrito</button></div><a class="text-link" href="#" data-compat>Revisar compatibilidad →</a></div>`;showPage("detail");$("detailAdd").onclick=()=>{for(let i=0;i<Math.min(20,Math.max(1,+$("detailQty").value||1));i++)addToCart(p.id);showPage("cart")}}
 function openProductDetail(id){try{renderDetail(id);}catch(error){console.error("Error al abrir producto:",error);alert("No se pudo abrir la ficha del producto. Recarga la página e inténtalo de nuevo.");}return false}
-function renderCart(){const count=cart.reduce((s,x)=>s+x.qty,0);if(!count){$("cartContent").innerHTML='<div class="cart-panel empty"><div style="font-size:42px">🛒</div><h3>Tu carrito está vacío</h3><p>Agrega productos para comenzar tu compra.</p><a class="btn" href="#" data-page="catalog">Explorar catálogo</a></div>';return}const subtotal=cart.reduce((s,x)=>s+products.find(p=>p.id===x.id).price*x.qty,0);$("cartContent").innerHTML=`<div class="catalog-layout"><div class="cart-panel"><div class="cart-items">${cart.map(x=>{const p=products.find(p=>p.id===x.id);return `<div class="cart-item"><div class="cart-item-art">${p.art&&p.art.includes('.')?`<img src="${p.art}" alt="${p.name}">`:p.art}</div><div><h4>${p.name}</h4><div class="muted">${money(p.price)}</div><div class="qty"><button data-qty="${p.id}" data-delta="-1">−</button><span>${x.qty}</span><button data-qty="${p.id}" data-delta="1">+</button></div></div><div style="text-align:right"><strong style="font-size:12px">${money(p.price*x.qty)}</strong><br><button class="remove" data-remove="${p.id}">Quitar</button></div></div>`}).join("")}</div></div><aside class="cart-summary"><h3 style="margin-top:0">Resumen del pedido</h3><div class="summary-line"><span>Subtotal</span><span>${money(subtotal)}</span></div><div class="summary-line"><span>Envío</span><span>Por calcular</span></div><div class="summary-line total"><span>Total</span><span>${money(subtotal)}</span></div><button class="btn" id="checkout" style="width:100%"onclick="renderCheckout()">Continuar</button><button class="btn light" data-page="catalog" style="width:100%;margin-top:8px">Seguir comprando</button></aside></div>`}
-document.addEventListener("click", e => {
-  if (e.target.closest("[data-compat]")) {
+function renderCart(){const count=cart.reduce((s,x)=>s+x.qty,0);if(!count){$("cartContent").innerHTML='<div class="cart-panel empty"><div style="font-size:42px">🛒</div><h3>Tu carrito está vacío</h3><p>Agrega productos para comenzar tu compra.</p><a class="btn" href="#" data-page="catalog">Explorar catálogo</a></div>';return}const subtotal=cart.reduce((s,x)=>s+products.find(p=>p.id===x.id).price*x.qty,0);$("cartContent").innerHTML=`<div class="catalog-layout"><div class="cart-panel"><div class="cart-items">${cart.map(x=>{const p=products.find(p=>p.id===x.id);return `<div class="cart-item"><div class="cart-item-art">${p.art&&p.art.includes('.')?`<img src="${p.art}" alt="${p.name}">`:p.art}</div><div><h4>${p.name}</h4><div class="muted">${money(p.price)}</div>${p.parts&&p.parts.length?`<details class="pc-parts"><summary>Ver componentes</summary><ul>${p.parts.map(n=>`<li>${esc(n)}</li>`).join("")}<li>Servicio de ensamblaje</li></ul></details>`:""}<div class="qty"><button data-qty="${p.id}" data-delta="-1">−</button><span>${x.qty}</span><button data-qty="${p.id}" data-delta="1">+</button></div></div><div style="text-align:right"><strong style="font-size:12px">${money(p.price*x.qty)}</strong><br><button class="remove" data-remove="${p.id}">Quitar</button></div></div>`}).join("")}</div></div><aside class="cart-summary"><h3 style="margin-top:0">Resumen del pedido</h3><div class="summary-line"><span>Subtotal</span><span>${money(subtotal)}</span></div><div class="summary-line"><span>Envío</span><span>Por calcular</span></div><div class="summary-line total"><span>Total</span><span>${money(subtotal)}</span></div><button class="btn" id="checkout" style="width:100%"onclick="renderCheckout()">Continuar</button><button class="btn light" data-page="catalog" style="width:100%;margin-top:8px">Seguir comprando</button></aside></div>`}  if (e.target.closest("[data-compat]")) {
     e.preventDefault();
     showPage("home");
     setTimeout(() => {
@@ -809,11 +813,19 @@ $("checkCompat").onclick=()=>{const cpu=$("cpuSelect").value,gpu=$("gpuSelect").
 registrarPCs();saveCart();renderHome();renderCatalog();;
 function registrarPCs(){
   const ens=products.find(p=>p.id===100);
+  const esImg=x=>x&&x.art&&x.art.includes(".");
   cart.forEach(i=>{
     if(!i.build||products.some(p=>p.id===i.id))return;
     const parts=i.build.map(id=>products.find(p=>p.id===id)).filter(Boolean);
+    const gab=parts.find(p=>p.cat==="Accesorios");   // gabinete
     const gpu=parts.find(p=>p.cat==="GPU");
-    products.push({id:i.id,name:"Tu PC",brand:"VELORA TECH",cat:"Servicios",price:parts.reduce((s,p)=>s+p.price,0)+(ens?ens.price:0),old:0,art:gpu?gpu.art:"▣",rating:5,desc:"",spec:[]});
+    const art=esImg(gab)?gab.art:esImg(gpu)?gpu.art:"▣"; // gabinete > GPU > ícono
+    products.push({
+      id:i.id,name:"Tu PC",brand:"VELORA TECH",cat:"Servicios",
+      price:parts.reduce((s,p)=>s+p.price,0)+(ens?ens.price:0),
+      old:0,art,rating:5,desc:"",spec:[],
+      parts:parts.map(p=>p.name)   // lista para "Ver componentes"
+    });
   });
 }
 function itemsParaServidor(){
