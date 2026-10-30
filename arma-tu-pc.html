@@ -93,6 +93,7 @@ a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
 .final-row .art{height:64px;font-size:30px}.final-row .art img{max-height:58px}
 .final-row small{display:block;color:var(--muted);font-size:11px;margin-bottom:3px}
 .final-total{display:flex;justify-content:space-between;font-size:24px;font-weight:800;margin-bottom:22px}
+.fee{display:flex;justify-content:space-between;font-size:14px;color:#555;padding:0 0 14px}
 .fine{font-size:11px;color:var(--muted);line-height:1.6}
 .toast{position:fixed;right:20px;bottom:20px;background:#111;color:#fff;padding:14px 18px;font-size:12px;z-index:30;opacity:0;transform:translateY(8px);transition:.2s;pointer-events:none}
 .toast.show{opacity:1;transform:none}
@@ -248,6 +249,7 @@ const P=[
 ];
 
 const $=id=>document.getElementById(id);
+const ENSAMBLAJE=1000; // costo de ensamblaje en MXN
 const money=n=>n.toLocaleString("es-MX",{style:"currency",currency:"MXN",maximumFractionDigits:0});
 let cur=0;            // paso actual; STEPS.length = resumen final
 const sel={};         // producto elegido por paso
@@ -263,8 +265,9 @@ function optCard(p){
 }
 
 function renderSummary(){
-  $("lines").innerHTML=STEPS.map(s=>{const p=sel[s.key];return p?`<div class="line"><span>${s.title}<small>${p.n}</small></span><strong>${money(p.p)}</strong></div>`:`<div class="line empty-l"><span>${s.title}</span><span>Sin elegir</span></div>`}).join("");
-  $("total").textContent=money(Object.values(sel).reduce((s,p)=>s+p.p,0));
+  const has=Object.keys(sel).length>0;
+  $("lines").innerHTML=STEPS.map(s=>{const p=sel[s.key];return p?`<div class="line"><span>${s.title}<small>${p.n}</small></span><strong>${money(p.p)}</strong></div>`:`<div class="line empty-l"><span>${s.title}</span><span>Sin elegir</span></div>`}).join("")+(has?`<div class="line"><span>Costo de ensamblaje</span><strong>${money(ENSAMBLAJE)}</strong></div>`:"");
+  $("total").textContent=money(Object.values(sel).reduce((s,p)=>s+p.p,0)+(has?ENSAMBLAJE:0));
 }
 
 function render(){
@@ -274,10 +277,10 @@ function render(){
 
   if(cur===STEPS.length){
     const items=STEPS.filter(s=>sel[s.key]).map(s=>sel[s.key]);
-    const total=items.reduce((s,p)=>s+p.p,0);
+    const total=items.reduce((s,p)=>s+p.p,0)+(items.length?ENSAMBLAJE:0);
     main.innerHTML=crumbs+`<h2 class="step-t">Tu configuración</h2><p class="step-s">Revisa tus componentes antes de agregarlos al carrito.</p>
     <div class="final-list">${items.map(p=>`<div class="final-row"><div class="art">${artHtml(p)}</div><div><small>${STEPS.find(s=>s.key===p.s).title}</small>${p.n}</div><strong>${money(p.p)}</strong></div>`).join("")||'<div class="none">Aún no elegiste componentes.</div>'}</div>
-    <div class="final-total"><span>Total</span><span>${money(total)}</span></div>
+    ${items.length?`<div class="fee"><span>Costo de ensamblaje</span><span>${money(ENSAMBLAJE)}</span></div>`:""}<div class="final-total"><span>Total</span><span>${money(total)}</span></div>
     <div class="nav-btns"><button class="btn light" type="button" data-prev>← Anterior</button><span class="acts" style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn light" type="button" data-reset>Empezar de nuevo</button><button class="btn" type="button" data-addall ${items.length?"":"disabled"}>Agregar todo al carrito <span>→</span></button></span></div>
     <p class="fine" style="margin-top:18px">¿Dudas con tu configuración? Un asesor puede revisarla contigo desde <a href="soporte.html" style="text-decoration:underline">soporte</a>.</p>`;
     renderSummary();return;
@@ -331,6 +334,7 @@ document.addEventListener("click",e=>{
     let cart=[];
     try{cart=JSON.parse(localStorage.getItem("veloraCart")||"[]")}catch(err){}
     Object.values(sel).forEach(p=>{const it=cart.find(x=>x.id===p.id);if(it)it.qty++;else cart.push({id:p.id,qty:1})});
+    const ens=cart.find(x=>x.id===100);if(ens)ens.qty++;else cart.push({id:100,qty:1});
     try{localStorage.setItem("veloraCart",JSON.stringify(cart))}catch(err){toast("No se pudo guardar el carrito.");return}
     cartCount();toast("Tu configuración se agregó al carrito.");
   t.disabled=true;t.textContent="Agregado ✓";
