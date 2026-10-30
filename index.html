@@ -1200,7 +1200,7 @@ let total = cart.reduce((sum, item) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          items: itemsParaServidor()
+          items: itemsParaServidor(),
           name, email, phone, address
         })
       });
@@ -1246,7 +1246,7 @@ let total = cart.reduce((sum, item) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          items: itemsParaServidor()
+          items: itemsParaServidor(),
           shipping: { name, email, phone, address }
         })
       });
@@ -1393,7 +1393,7 @@ if (!shipping.name || !shipping.email || !shipping.phone || !addr.street || !add
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({
   ...formData,
-  items: itemsParaServidor()
+  items: itemsParaServidor(),
   shipping
 })
                 }
