@@ -817,14 +817,14 @@ function registrarPCs(){
   cart.forEach(i=>{
     if(!i.build||products.some(p=>p.id===i.id))return;
     const parts=i.build.map(id=>products.find(p=>p.id===id)).filter(Boolean);
-    const gab=parts.find(p=>p.cat==="Accesorios");   // gabinete
+    const gab=parts.find(p=>p.cat==="Accesorios");
     const gpu=parts.find(p=>p.cat==="GPU");
-    const art=esImg(gab)?gab.art:esImg(gpu)?gpu.art:"▣"; // gabinete > GPU > ícono
+    const art=esImg(gab)?gab.art:esImg(gpu)?gpu.art:"▣";
     products.push({
       id:i.id,name:"Tu PC",brand:"VELORA TECH",cat:"Servicios",
       price:parts.reduce((s,p)=>s+p.price,0)+(ens?ens.price:0),
       old:0,art,rating:5,desc:"",spec:[],
-      parts:parts.map(p=>p.name)   // lista para "Ver componentes"
+      parts:parts.map(p=>p.name)
     });
   });
 }
