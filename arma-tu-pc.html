@@ -333,8 +333,7 @@ document.addEventListener("click",e=>{
   if(t.hasAttribute("data-addall")&&!t.disabled){
     let cart=[];
     try{cart=JSON.parse(localStorage.getItem("veloraCart")||"[]")}catch(err){}
-    Object.values(sel).forEach(p=>{const it=cart.find(x=>x.id===p.id);if(it)it.qty++;else cart.push({id:p.id,qty:1})});
-    const ens=cart.find(x=>x.id===100);if(ens)ens.qty++;else cart.push({id:100,qty:1});
+    cart.push({id:Date.now(),qty:1,build:Object.values(sel).map(p=>p.id)});
     try{localStorage.setItem("veloraCart",JSON.stringify(cart))}catch(err){toast("No se pudo guardar el carrito.");return}
     cartCount();toast("Tu configuración se agregó al carrito.");
   t.disabled=true;t.textContent="Agregado ✓";
