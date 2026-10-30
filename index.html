@@ -939,7 +939,7 @@ window.addEventListener("hashchange",abrirDesdeHash);
 
   <label style="display:flex; align-items:center; gap:10px; padding:15px; border:1px solid #ddd; border-radius:8px; cursor:pointer;">
     <input type="radio" name="payment" value="card"
-      onchange="document.getElementById('mp-card-payment').style.display=this.checked?'block':'none'; document.getElementById('mp-payment-result').style.display='none';">
+  onchange="document.getElementById('mp-card-payment').style.display=this.checked?'block':'none'; document.getElementById('mp-payment-result').style.display='none'; document.getElementById('btnCompletar').style.display='none';">
     <span>Tarjeta de crédito o débito — Mercado Pago</span>
   </label>
 
@@ -972,7 +972,7 @@ window.addEventListener("hashchange",abrirDesdeHash);
   style="display:none; margin-top:15px; padding:12px; border-radius:8px;">
 </div>
 
-<div style="display:flex; justify-content:center; width:100%; margin-top:24px;">
+<div id="wrapCompletar" style="display:flex; justify-content:center; width:100%; margin-top:24px;">
   <button id="btnCompletar" class="btn" type="button" onclick="processFinalOrder()" style="width:100%; max-width:420px; min-height:52px; display:flex; align-items:center; justify-content:center; text-align:center; margin:0;">
     Completar Pedido ($${total.toLocaleString('es-MX')})
   </button>
@@ -1301,7 +1301,7 @@ const nameOk = shipping.name.split(/\s+/).filter(Boolean).length >= 2;
 const zipOk = /^\d{5}$/.test(addr.zip);
 if (!shipping.name || !shipping.email || !shipping.phone || !addr.street || !addr.number || !addr.colony || !addr.zip || !addr.city || !addr.state || !emailOk || !phoneOk || !nameOk || !zipOk) {
   const box = document.getElementById("checkout-error");
-  box.textContent = "⚠️ Revisa tus datos de envío: nombre y apellido, correo válido, teléfono de 10 dígitos y código postal de 5 dígitos.";
+  box.textContent = "⚠️ Por favor, completa todos los datos de envío antes de continuar.";
   box.style.display = "block";
   box.scrollIntoView({ behavior: "smooth", block: "center" });
   throw new Error("HANDLED");
