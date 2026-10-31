@@ -2,7 +2,7 @@
 <html lang="es-MX">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Arma tu PC con VELORA TECH, paso a paso: procesador, tarjeta gráfica, memoria y más.">
 <title>Arma tu PC | VELORA TECH</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -170,6 +170,32 @@ a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
   /* Footer */
   .footer-in{flex-direction:column;gap:12px}
 }
+/* ===== AJUSTES MÓVIL ===== */
+.wrap{grid-template-columns:minmax(0,1fr) 340px}
+.wrap.full{grid-template-columns:minmax(0,1fr)}
+@media(max-width:1000px){.wrap{grid-template-columns:minmax(0,1fr)}}
+#main,.opt{min-width:0}
+button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+
+@media(max-width:650px){
+  .art img{max-height:88px}
+  .opt{padding:10px}
+  .opt .price{font-size:15px}
+  .step-s{margin-bottom:20px}
+  .sub{margin:26px 0 12px}
+
+  /* Botones Anterior / Siguiente fijos sobre la barra del total */
+  .nav-btns:not(.fin){
+    position:sticky;bottom:calc(47px + env(safe-area-inset-bottom));z-index:20;
+    flex-direction:row;align-items:center;gap:10px;
+    background:#fff;margin-top:24px;padding:12px 0
+  }
+  .nav-btns:not(.fin)>span{flex:1;min-width:0}
+  .nav-btns:not(.fin)>span:empty{display:none}
+  .nav-btns:not(.fin) .hint{display:none}
+  .nav-btns:not(.fin) .btn{width:100%}
+  .nav-btns:not(.fin) .btn.light{width:auto;flex:0 0 auto;padding:17px 16px}
+}
 </style>
 </head>
 <body>
@@ -281,7 +307,7 @@ function render(){
     main.innerHTML=crumbs+`<h2 class="step-t">Tu configuración</h2><p class="step-s">Revisa tus componentes antes de agregarlos al carrito.</p>
     <div class="final-list">${items.map(p=>`<div class="final-row"><div class="art">${artHtml(p)}</div><div><small>${STEPS.find(s=>s.key===p.s).title}</small>${p.n}</div><strong>${money(p.p)}</strong></div>`).join("")||'<div class="none">Aún no elegiste componentes.</div>'}</div>
     ${items.length?`<div class="fee"><span>Costo de ensamblaje</span><span>${money(ENSAMBLAJE)}</span></div>`:""}<div class="final-total"><span>Total</span><span>${money(total)}</span></div>
-    <div class="nav-btns"><button class="btn light" type="button" data-prev>← Anterior</button><span class="acts" style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn light" type="button" data-reset>Empezar de nuevo</button><button class="btn" type="button" data-addall ${items.length?"":"disabled"}>Agregar todo al carrito <span>→</span></button></span></div>
+    <div class="nav-btns fin"><button class="btn light" type="button" data-prev>← Anterior</button><span class="acts" style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn light" type="button" data-reset>Empezar de nuevo</button><button class="btn" type="button" data-addall ${items.length?"":"disabled"}>Agregar todo al carrito <span>→</span></button></span></div>
     <p class="fine" style="margin-top:18px">¿Dudas con tu configuración? Un asesor puede revisarla contigo desde <a href="soporte.html" style="text-decoration:underline">soporte</a>.</p>`;
     renderSummary();return;
   }
@@ -309,7 +335,7 @@ function go(i){
   cur=i;render();
   const pr=document.querySelector(".progress"),c=pr&&pr.querySelector(".cur");
   if(pr&&c)pr.scrollLeft=c.offsetLeft-16;
-  window.scrollTo({top:document.querySelector(".hero").offsetHeight+80,behavior:"smooth"});
+  $("wrap").scrollIntoView({behavior:"smooth",block:"start"});
 }
 
 document.addEventListener("click",e=>{
