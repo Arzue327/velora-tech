@@ -565,6 +565,9 @@ dialog#authDlg::backdrop{background:#000a}
 .eye:hover{color:#111}
 .eye:focus-visible{outline:2px solid #9b7a3c;outline-offset:-2px;border-radius:8px}
 .eye svg[hidden]{display:none}
+.navicons{display:flex;align-items:center;gap:6px;flex:0 0 auto}
+#userBtn{margin:0}
+@media(max-width:768px){.nav .navicons{order:3;flex:0 0 auto}}
 </style>
 </head>
 <body class="home">
@@ -588,8 +591,10 @@ dialog#authDlg::backdrop{background:#000a}
   </div>
   </div><a href="arma-tu-pc.html">Arma tu PC</a><a href="#" data-compat>Compatibilidad</a><a href="#footer">Contacto</a></nav>
 <div class="search">...</div>
-<button class="iconbtn" data-page="cart" aria-label="Ver carrito">🛒<span class="count" id="cartCount">0</span></button>
-<button class="iconbtn" id="userBtn" aria-label="Iniciar sesión"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg><span class="udot" id="userDot" hidden></span></button>
+<div class="navicons">
+<button class="iconbtn" data-page="cart" ...>🛒<span class="count" id="cartCount">0</span></button>
+<button class="iconbtn" id="userBtn" ...>...</button>
+</div>
 </header>
 <main>
 <section class="page active" id="page-home">
