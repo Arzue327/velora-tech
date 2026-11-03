@@ -548,10 +548,21 @@ body:not(.home) .nav{
 .pc-parts summary::-webkit-details-marker{display:none}
 .pc-parts[open] summary{margin-bottom:4px}
 .pc-parts ul{margin:0;padding-left:16px;line-height:1.6}
+#userBtn{display:grid;place-items:center;margin-left:2px}
+.udot{position:absolute;right:-1px;top:-1px;width:9px;height:9px;border-radius:50%;background:#27ae60;border:2px solid #0b0a09}
+@media(max-width:768px){.nav #userBtn{order:4;flex:0 0 auto;margin:0}}
+dialog#authDlg{border:0;border-radius:14px;padding:28px;width:min(92vw,380px);color:#191713}
+dialog#authDlg::backdrop{background:#000a}
+#authDlg h3{margin:0 0 16px;font-size:20px}
+#authDlg input{width:100%;padding:12px;border:1px solid #ddd;border-radius:8px;margin-bottom:10px;font-size:16px}
+#authDlg .btn{width:100%;margin-bottom:8px;justify-content:center}
+#authDlg .x{position:absolute;right:12px;top:8px;border:0;background:none;font-size:22px;cursor:pointer}
+#auErr{color:#991b1b;font-size:12px;min-height:16px;margin:0 0 8px}
+#authDlg a{font-size:12px;text-decoration:underline}
 </style>
 </head>
 <body class="home">
-<div class="topbar"><span>Envíos a todo México</span><span><a href="soporte.html">◉ Soporte 24/7</a> &nbsp;&nbsp; ♙ Mi cuenta</span></div>
+<div class="topbar"><span>Envíos a todo México</span><span><a href="soporte.html">◉ Soporte 24/7</a></span></div>
 <header class="nav">
 <a href="#" class="brand" data-page="home" aria-label="VELORA TECH inicio"><img src="imagen-velora-removebg-preview.png" alt="Logo de Velora Tech"></a>
 
@@ -570,8 +581,9 @@ body:not(.home) .nav{
 </div>
   </div>
   </div><a href="arma-tu-pc.html">Arma tu PC</a><a href="#" data-compat>Compatibilidad</a><a href="#footer">Contacto</a></nav>
-<div class="search"><span>⌕</span><input id="searchInput" placeholder="Buscar productos..." aria-label="Buscar productos"><button class="iconbtn" id="searchBtn" aria-label="Buscar" style="font-size:16px">⌕</button></div>
+<div class="search">...</div>
 <button class="iconbtn" data-page="cart" aria-label="Ver carrito">🛒<span class="count" id="cartCount">0</span></button>
+<button class="iconbtn" id="userBtn" aria-label="Iniciar sesión"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg><span class="udot" id="userDot" hidden></span></button>
 </header>
 <main>
 <section class="page active" id="page-home">
@@ -1490,5 +1502,84 @@ function filtrarCategoriaMenu(categoria) {
     }
   }, 150);
 }
+</script>
+<dialog id="authDlg">
+  <button class="x" id="auClose" aria-label="Cerrar">×</button>
+  <div id="authOut">
+    <h3 id="authTitle">Iniciar sesión</h3>
+    <input id="auName" type="text" placeholder="Nombre completo" autocomplete="name" hidden>
+    <input id="auEmail" type="email" placeholder="Correo electrónico" autocomplete="email">
+    <input id="auPass" type="password" placeholder="Contraseña" autocomplete="current-password">
+    <p id="auErr" role="alert"></p>
+    <button class="btn" id="auGo" type="button">Entrar</button>
+    <button class="btn light" id="auGoogle" type="button">Continuar con Google</button>
+    <p style="text-align:center;margin:8px 0 0"><a href="#" id="auSwitch">¿No tienes cuenta? Crear cuenta</a></p>
+  </div>
+  <div id="authIn" hidden>
+    <h3>Hola, <span id="auHi"></span></h3>
+    <p style="font-size:13px;color:#666" id="auMail"></p>
+    <button class="btn" id="auLogout" type="button">Cerrar sesión</button>
+  </div>
+</dialog>
+
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,createUserWithEmailAndPassword,signOut,GoogleAuthProvider,signInWithPopup,updateProfile} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const app=initializeApp({
+  apiKey:"AIzaSyBQrRLog8M0wkQ4MkCiMbzzZ1kRNRtYVbw",
+  authDomain:"velora-tech-3ddfa.firebaseapp.com",
+  projectId:"velora-tech-3ddfa",
+  appId:"1:754625175772:web:6ff2967e4289d3e95b1419"
+});
+const auth=getAuth(app);
+const $=id=>document.getElementById(id);
+const dlg=$("authDlg");
+let registro=false;
+
+const MSG={
+  "auth/invalid-credential":"Correo o contraseña incorrectos.",
+  "auth/invalid-email":"Correo no válido.",
+  "auth/email-already-in-use":"Ese correo ya tiene cuenta.",
+  "auth/weak-password":"La contraseña debe tener al menos 6 caracteres.",
+  "auth/popup-closed-by-user":"",
+  "auth/too-many-requests":"Demasiados intentos. Espera un momento."
+};
+const err=e=>{$("auErr").textContent=MSG[e.code]??"No se pudo iniciar sesión. Intenta de nuevo."};
+
+function modo(r){
+  registro=r;
+  $("authTitle").textContent=r?"Crear cuenta":"Iniciar sesión";
+  $("auName").hidden=!r;
+  $("auGo").textContent=r?"Crear cuenta":"Entrar";
+  $("auSwitch").textContent=r?"¿Ya tienes cuenta? Inicia sesión":"¿No tienes cuenta? Crear cuenta";
+  $("auPass").autocomplete=r?"new-password":"current-password";
+  $("auErr").textContent="";
+}
+
+$("userBtn").onclick=()=>{modo(false);dlg.showModal()};
+$("auClose").onclick=()=>dlg.close();
+$("auSwitch").onclick=e=>{e.preventDefault();modo(!registro)};
+
+$("auGo").onclick=async()=>{
+  const email=$("auEmail").value.trim(),pass=$("auPass").value,name=$("auName").value.trim();
+  if(!email||!pass){$("auErr").textContent="Completa correo y contraseña.";return}
+  if(registro&&name.split(/\s+/).filter(Boolean).length<2){$("auErr").textContent="Escribe tu nombre y apellido.";return}
+  try{
+    if(registro){const c=await createUserWithEmailAndPassword(auth,email,pass);await updateProfile(c.user,{displayName:name})}
+    else await signInWithEmailAndPassword(auth,email,pass);
+    dlg.close();
+  }catch(e){err(e)}
+};
+$("auGoogle").onclick=async()=>{try{await signInWithPopup(auth,new GoogleAuthProvider());dlg.close()}catch(e){err(e)}};
+$("auLogout").onclick=async()=>{await signOut(auth);dlg.close()};
+
+onAuthStateChanged(auth,u=>{
+  window.veloraUser=u||null;
+  $("userDot").hidden=!u;
+  $("userBtn").setAttribute("aria-label",u?"Mi cuenta":"Iniciar sesión");
+  $("authOut").hidden=!!u;$("authIn").hidden=!u;
+  if(u){$("auHi").textContent=(u.displayName||u.email).split(" ")[0];$("auMail").textContent=u.email}
+});
 </script>
 </body></html>
