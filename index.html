@@ -559,6 +559,12 @@ dialog#authDlg::backdrop{background:#000a}
 #authDlg .x{position:absolute;right:12px;top:8px;border:0;background:none;font-size:22px;cursor:pointer}
 #auErr{color:#991b1b;font-size:12px;min-height:16px;margin:0 0 8px}
 #authDlg a{font-size:12px;text-decoration:underline}
+.pw{position:relative}
+.pw input{padding-right:44px;margin-bottom:10px}
+.eye{position:absolute;right:4px;top:0;height:46px;width:40px;border:0;background:none;color:#666;cursor:pointer;display:grid;place-items:center}
+.eye:hover{color:#111}
+.eye:focus-visible{outline:2px solid #9b7a3c;outline-offset:-2px;border-radius:8px}
+.eye svg[hidden]{display:none}
 </style>
 </head>
 <body class="home">
@@ -1509,7 +1515,7 @@ function filtrarCategoriaMenu(categoria) {
     <h3 id="authTitle">Iniciar sesión</h3>
     <input id="auName" type="text" placeholder="Nombre completo" autocomplete="name" hidden>
     <input id="auEmail" type="email" placeholder="Correo electrónico" autocomplete="email">
-    <input id="auPass" type="password" placeholder="Contraseña" autocomplete="current-password">
+    <div class="pw"><input id="auPass" type="password" placeholder="Contraseña" autocomplete="current-password"><button type="button" id="auEye" class="eye" aria-label="Mostrar contraseña" aria-pressed="false"><svg class="e-on" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><svg class="e-off" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden><path d="M3 3l18 18"/><path d="M10.6 5.1A10.7 10.7 0 0112 5c6.4 0 10 7 10 7a17 17 0 01-3.2 4M6.5 6.6C3.6 8.4 2 12 2 12s3.6 7 10 7c1.7 0 3.2-.4 4.5-1"/><path d="M9.9 9.9a3 3 0 004.2 4.2"/></svg></button></div>
     <p id="auErr" role="alert"></p>
     <button class="btn" id="auGo" type="button">Entrar</button>
     <button class="btn light" id="auGoogle" type="button">Continuar con Google</button>
@@ -1555,12 +1561,23 @@ function modo(r){
   $("auSwitch").textContent=r?"¿Ya tienes cuenta? Inicia sesión":"¿No tienes cuenta? Crear cuenta";
   $("auPass").autocomplete=r?"new-password":"current-password";
   $("auErr").textContent="";
+$("auPass").type="password";
+$("auEye").querySelector(".e-on").hidden=false;
+$("auEye").querySelector(".e-off").hidden=true;
+$("auEye").setAttribute("aria-pressed","false");
 }
 
 $("userBtn").onclick=()=>{modo(false);dlg.showModal()};
 $("auClose").onclick=()=>dlg.close();
 $("auSwitch").onclick=e=>{e.preventDefault();modo(!registro)};
-
+$("auEye").onclick=()=>{
+  const ver=$("auPass").type==="password";
+  $("auPass").type=ver?"text":"password";
+  $("auEye").setAttribute("aria-pressed",ver);
+  $("auEye").setAttribute("aria-label",ver?"Ocultar contraseña":"Mostrar contraseña");
+  $("auEye").querySelector(".e-on").hidden=ver;
+  $("auEye").querySelector(".e-off").hidden=!ver;
+};
 $("auGo").onclick=async()=>{
   const email=$("auEmail").value.trim(),pass=$("auPass").value,name=$("auName").value.trim();
   if(!email||!pass){$("auErr").textContent="Completa correo y contraseña.";return}
