@@ -961,7 +961,7 @@ window.addEventListener("hashchange",abrirDesdeHash);
     ${total <= 10000 ? `
   <label style="display:flex; align-items:center; gap:10px; padding:15px; border:1px solid #ddd; border-radius:8px; cursor:pointer;">
     <input type="radio" name="payment" value="oxxo"
-      onchange="document.getElementById('mp-card-payment').style.display='none';">
+      onchange="document.getElementById('mp-card-payment').style.display='none'; document.getElementById('mp-payment-result').style.display='none'; document.getElementById('btnCompletar').style.display='flex';">
     <span>Efectivo en OXXO</span>
   </label>` : `
   <div style="padding:15px; border:1px solid #eee; border-radius:8px; opacity:.6; font-size:13px;">
@@ -970,7 +970,7 @@ window.addEventListener("hashchange",abrirDesdeHash);
 
   <label style="display:flex; align-items:center; gap:10px; padding:15px; border:1px solid #ddd; border-radius:8px; cursor:pointer;">
     <input type="radio" name="payment" value="whatsapp"
-      onchange="document.getElementById('mp-card-payment').style.display='none';">
+      onchange="document.getElementById('mp-card-payment').style.display='none'; document.getElementById('mp-payment-result').style.display='none'; document.getElementById('btnCompletar').style.display='flex';">
     <span>Coordinar pago y envío por WhatsApp</span>
   </label>
 
