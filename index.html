@@ -621,7 +621,13 @@ dialog#authDlg::backdrop{background:#000a}
   <div class="benefit"><span class="ico">♧</span><div><strong>Múltiples métodos</strong><small> de pago</small></div></div>
 </section>
 <section class="section" style="padding-top:5px"><div class="section-head"><div><div class="eyebrow">Productos destacados</div><h2>Elegidos para tu setup</h2></div></div><div class="tabs" id="homeTabs"><button class="tab active" data-tab="Todos">Todos</button><button class="tab" data-tab="GPU">GPU</button><button class="tab" data-tab="CPU">CPU</button><button class="tab" data-tab="RAM">RAM</button><button class="tab" data-tab="Almacenamiento">Almacenamiento</button><button class="tab" data-tab="Motherboard">Tarjeta madre</button><button class="tab" data-tab="Fuentes">Fuentes</button><button class="tab" data-tab="Refrigeración">Refrigeración</button></div><div class="products" id="homeProducts"></div></section>
-<section class="section" id="compat"><div class="compat"><div><div class="eyebrow" style="color:#c4c7c9">Herramienta de referencia</div><h2>Comprueba la compatibilidad</h2><p>Selecciona tus componentes para ver una orientación inicial. Esta herramienta es orientativa y no sustituye la validación técnica de cada modelo.</p></div><div class="compat-form"><label for="cpuSelect">Procesador</label><select id="cpuSelect"><option value="">Selecciona un procesador</option><option>AMD Ryzen 5 5600</option><option>Intel Core i5 (ejemplo)</option></select><label for="gpuSelect">Tarjeta gráfica</label><select id="gpuSelect"><option value="">Selecciona una tarjeta gráfica</option><option>ASUS Dual GeForce RTX 4060 8GB</option><option>GeForce RTX 4070 (ejemplo)</option></select><label for="boardSelect">Tarjeta madre / plataforma</label><select id="boardSelect"><option value="">Selecciona plataforma</option><option>AM4</option><option>Intel LGA1700</option><option>No lo sé todavía</option></select><button class="btn" id="checkCompat" style="margin-top:14px;width:100%">Revisar selección</button><div class="compat-result" id="compatResult">La compatibilidad final depende del socket, BIOS, espacio, fuente de poder y otros factores.</div></div></div></section>
+<section class="section" id="compat"><div class="compat"><div><div class="eyebrow" style="color:#c4c7c9">Herramienta de referencia</div><h2>Comprueba la compatibilidad</h2><p>Selecciona tus componentes y revisamos socket, tipo de memoria y consumo de la fuente. Es orientativa y no sustituye la validación técnica de cada modelo.</p></div><div class="compat-form">
+<label for="cpuSelect">Procesador</label><select id="cpuSelect"></select>
+<label for="boardSelect">Plataforma de tarjeta madre</label><select id="boardSelect"></select>
+<label for="ramSelect">Memoria RAM</label><select id="ramSelect"></select>
+<label for="gpuSelect">Tarjeta gráfica</label><select id="gpuSelect"></select>
+<label for="psuSelect">Fuente de poder</label><select id="psuSelect"></select>
+<button class="btn" id="checkCompat" style="margin-top:14px;width:100%">Revisar selección</button><div class="compat-result" id="compatResult">Elige al menos dos componentes para revisar.</div></div></div></section>
 </section>
 <section class="page" id="page-catalog"><section class="section"><div class="breadcrumb">Inicio › Componentes</div><div class="section-head"><div><div class="eyebrow">Encuentra tu próximo upgrade</div><h2>Componentes de PC</h2><p style="color:#777;font-size:12px">Explora el catálogo de VELORA TECH.</p></div></div><div class="catalog-layout"><aside class="filters"><h3>Filtros</h3><div class="filter-group"><h4>Precio (MXN)</h4><div class="range"><input type="number" id="minPrice" placeholder="Mínimo"><input type="number" id="maxPrice" placeholder="Máximo"></div></div><div class="filter-group"><h4>Marca</h4><label><input type="checkbox" class="brand-filter" value="ASUS"> ASUS</label><label><input type="checkbox" class="brand-filter" value="AMD"> AMD</label><label><input type="checkbox" class="brand-filter" value="Kingston"> Kingston</label><label><input type="checkbox" class="brand-filter" value="WD"> WD</label><label><input type="checkbox" class="brand-filter" value="MSI"> MSI</label></div><div class="filter-group"><h4>Categoría</h4><label><input type="checkbox" class="cat-filter" value="GPU"> GPU</label><label><input type="checkbox" class="cat-filter" value="CPU"> CPU</label><label><input type="checkbox" class="cat-filter" value="RAM"> RAM</label><label><input type="checkbox" class="cat-filter" value="Almacenamiento"> Almacenamiento</label><label><input type="checkbox" class="cat-filter" value="Motherboard"> Tarjeta madre</label><label><input type="checkbox" class="cat-filter" value="Fuentes"> Fuentes</label></div><button class="btn light small" id="clearFilters" style="width:100%">Limpiar filtros</button></aside><div><div class="catalog-top"><button class="btn light small filters-btn" id="filtersBtn">☰ Filtros</button><span id="resultCount" class="muted">Productos</span><select id="sortSelect" aria-label="Ordenar"><option value="popular">Ordenar: Más populares</option><option value="low">Precio: menor a mayor</option><option value="high">Precio: mayor a menor</option><option value="name">Nombre A–Z</option></select></div><div class="products" id="catalogProducts"></div></div></div></section></section>
 <section class="page" id="page-detail"><section class="section"><div class="breadcrumb"><a href="#" data-page="home">Inicio</a> › Producto</div><div class="product-detail" id="detailContent"></div></section></section>
@@ -840,7 +846,83 @@ document.addEventListener("click", e => {
   }
 });
 $("searchBtn").onclick=()=>{searchTerm=$("searchInput").value.trim().toLowerCase();showPage("catalog");renderCatalog()};$("searchInput").addEventListener("keydown",e=>{if(e.key==="Enter")$("searchBtn").click()});["minPrice","maxPrice","sortSelect"].forEach(id=>$(id).addEventListener("input",renderCatalog));document.querySelectorAll(".brand-filter,.cat-filter").forEach(el=>el.addEventListener("change",renderCatalog));$("clearFilters").onclick=()=>{document.querySelectorAll(".brand-filter,.cat-filter").forEach(c=>c.checked=false);$("minPrice").value="";$("maxPrice").value="";$("sortSelect").value="popular";searchTerm="";$("searchInput").value="";renderCatalog()};
-$("checkCompat").onclick=()=>{const cpu=$("cpuSelect").value,gpu=$("gpuSelect").value,board=$("boardSelect").value;let msg="Selecciona los componentes para obtener una orientación.";if(cpu&&gpu&&board){msg="Selección registrada. Revisa socket, BIOS, dimensiones de GPU, consumo y conectores de la fuente con las especificaciones oficiales antes de comprar. Esta demo no valida compatibilidad real."}else if(cpu||gpu||board){msg="Faltan selecciones. Completa los campos para una revisión orientativa."}$("compatResult").textContent=msg};
+/* ===== COMPATIBILIDAD ===== */
+// Datos técnicos por id de producto (verifica siempre con la ficha del fabricante)
+const COMPAT = {
+  1:{gpuW:300, rec:750},          // RTX 5070 Ti
+  2:{socket:"AM5", ram:"DDR5", tdp:120}, // Ryzen 7 9800X3D
+  3:{gpuW:180, rec:600},          // RTX 5060 Ti
+  4:{psuW:1000},                  // Corsair RM1000e
+  5:{gpuW:360, rec:850},          // RTX 5080
+  6:{gpuW:250, rec:650},          // RTX 5070
+  7:{ram:"DDR5"},                 // Kingston FURY Beast DDR5
+  8:{psuW:750},                   // Fuente 750W
+  11:{ram:"DDR4"}                 // Kingston FURY Beast DDR4
+};
+const PLATAFORMAS = {
+  "AM5":{socket:"AM5", rams:["DDR5"]},
+  "AM4":{socket:"AM4", rams:["DDR4"]},
+  "Intel LGA1700":{socket:"LGA1700", rams:["DDR4","DDR5"]},
+  "Intel LGA1851":{socket:"LGA1851", rams:["DDR5"]}
+};
+function llenarCompat(){
+  const fill=(id,ph,list)=>{
+    $(id).innerHTML=`<option value="">${ph}</option>`+list.map(o=>`<option value="${esc(o.v)}">${esc(o.t)}</option>`).join("");
+  };
+  const por=fn=>products.filter(p=>COMPAT[p.id]&&fn(COMPAT[p.id])).map(p=>({v:p.id,t:p.name.split(" - ").slice(0,2).join(" - ")}));
+  fill("cpuSelect","Selecciona un procesador",por(c=>c.socket));
+  fill("gpuSelect","Selecciona una tarjeta gráfica",por(c=>c.gpuW));
+  fill("ramSelect","Selecciona memoria RAM",por(c=>c.ram&&!c.socket));
+  fill("psuSelect","Selecciona fuente de poder",por(c=>c.psuW));
+  fill("boardSelect","Selecciona plataforma",Object.keys(PLATAFORMAS).map(k=>({v:k,t:k})));
+}
+llenarCompat();
+
+$("checkCompat").onclick=()=>{
+  const get=id=>{const v=$(id).value;return v?products.find(p=>String(p.id)===v):null};
+  const cpu=get("cpuSelect"), gpu=get("gpuSelect"), ram=get("ramSelect"), psu=get("psuSelect");
+  const plat=PLATAFORMAS[$("boardSelect").value];
+  const out=[];
+  const add=(t,x)=>out.push({t,x}); // t: ok | bad | warn
+
+  if(cpu&&plat){
+    const s=COMPAT[cpu.id].socket;
+    s===plat.socket
+      ? add("ok",`El procesador (${s}) es compatible con la plataforma ${plat.socket}.`)
+      : add("bad",`El procesador usa socket ${s} y la plataforma es ${plat.socket}. No son compatibles.`);
+  }
+  if(ram&&plat){
+    const r=COMPAT[ram.id].ram;
+    plat.rams.includes(r)
+      ? add("ok",`La memoria ${r} es compatible con esta plataforma.`)
+      : add("bad",`La memoria es ${r}, pero esta plataforma usa ${plat.rams.join(" o ")}.`);
+  }
+  if(cpu&&ram){
+    const rc=COMPAT[cpu.id].ram, r=COMPAT[ram.id].ram;
+    if(rc&&rc!==r) add("bad",`El procesador solo soporta ${rc} y elegiste memoria ${r}.`);
+  }
+  if(psu&&gpu){
+    const w=COMPAT[psu.id].psuW, g=COMPAT[gpu.id];
+    const tdp=cpu?COMPAT[cpu.id].tdp:100;
+    const estimado=tdp+g.gpuW+100;
+    if(w<g.rec) add("bad",`La tarjeta gráfica recomienda al menos ${g.rec} W y la fuente es de ${w} W.`);
+    else if(w<estimado*1.25) add("warn",`La fuente de ${w} W alcanza, pero con poco margen (consumo estimado ~${estimado} W). Lo ideal es dejar 25% libre.`);
+    else add("ok",`La fuente de ${w} W cubre el consumo estimado (~${estimado} W) con buen margen.`);
+  }
+  if(psu&&!gpu&&cpu){
+    const w=COMPAT[psu.id].psuW;
+    if(w<COMPAT[cpu.id].tdp+150) add("warn","La fuente parece justa incluso sin tarjeta gráfica dedicada.");
+  }
+
+  const box=$("compatResult");
+  if(!out.length){
+    box.textContent="Elige al menos dos componentes que se puedan comparar (por ejemplo procesador + plataforma).";
+    return;
+  }
+  const color={ok:"#166534",bad:"#991b1b",warn:"#92400e"}, icono={ok:"✅",bad:"❌",warn:"⚠️"};
+  box.innerHTML=out.map(o=>`<div style="color:${color[o.t]};margin-bottom:6px">${icono[o.t]} ${esc(o.x)}</div>`).join("")
+    +`<div style="color:#777;margin-top:8px">No se valida el largo de la GPU contra el gabinete ni la BIOS de la placa. Confirma con la ficha oficial.</div>`;
+};
 registrarPCs();saveCart();renderHome();renderCatalog();;
 function registrarPCs(){
   const ens=products.find(p=>p.id===100);
