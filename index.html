@@ -850,146 +850,302 @@ document.addEventListener("click", e => {
   }
 });
 $("searchBtn").onclick=()=>{searchTerm=$("searchInput").value.trim().toLowerCase();showPage("catalog");renderCatalog()};$("searchInput").addEventListener("keydown",e=>{if(e.key==="Enter")$("searchBtn").click()});["minPrice","maxPrice","sortSelect"].forEach(id=>$(id).addEventListener("input",renderCatalog));document.querySelectorAll(".brand-filter,.cat-filter").forEach(el=>el.addEventListener("change",renderCatalog));$("clearFilters").onclick=()=>{document.querySelectorAll(".brand-filter,.cat-filter").forEach(c=>c.checked=false);$("minPrice").value="";$("maxPrice").value="";$("sortSelect").value="popular";searchTerm="";$("searchInput").value="";renderCatalog()};
-/* ===== COMPATIBILIDAD ===== */
-// ⚠️ Los datos marcados con (verificar) son aproximados: confírmalos con la ficha del fabricante.
+
+/* ===== COMPATIBILIDAD VELORA TECH ===== */
+
+// Cada producto debe tener una ficha técnica asociada a su ID.
+// Los datos pendientes de verificar no deben considerarse confirmados.
+
 const COMPAT = {
-  // GPUs: gpuW = consumo, rec = fuente recomendada, len = largo en mm, conn = conector
-  1:{tipo:"gpu", gpuW:300, rec:750, len:340, conn:"12V-2x6"},   // RTX 5070 Ti Gigabyte (verificar len/conn)
-  3:{tipo:"gpu", gpuW:180, rec:600, len:250, conn:"8-pin"},     // RTX 5060 Ti PNY (verificar len/conn)
-  5:{tipo:"gpu", gpuW:360, rec:850, len:330, conn:"12V-2x6"},   // RTX 5080 PNY (verificar len/conn)
-  6:{tipo:"gpu", gpuW:250, rec:650, len:305, conn:"12V-2x6"},   // RTX 5070 ASUS Prime (verificar len/conn)
+  // TARJETAS GRÁFICAS
+  1: {tipo:"gpu", gpuW:300, rec:750, len:340, conn:["12V-2x6"]},
+  3: {tipo:"gpu", gpuW:180, rec:600, len:250, conn:["8-pin"]},
+  5: {tipo:"gpu", gpuW:360, rec:850, len:330, conn:["12V-2x6"]},
+  6: {tipo:"gpu", gpuW:250, rec:650, len:305, conn:["12V-2x6"]},
 
-  // CPU: serie se compara con las series que soporta la tarjeta madre de fábrica
-  2:{tipo:"cpu", socket:"AM5", ram:"DDR5", tdp:120, serie:"Ryzen 9000"},
+  // PROCESADORES
+  2: {
+    tipo:"cpu",
+    socket:"AM5",
+    ram:["DDR5"],
+    tdp:120,
+    serie:"Ryzen 9000"
+  },
 
-  // RAM
-  7:{tipo:"ram", ram:"DDR5"},
-  11:{tipo:"ram", ram:"DDR4"},
+  // MEMORIA RAM
+  7: {tipo:"ram", ram:"DDR5", capacity:32, modules:2, speed:6000},
+  11:{tipo:"ram", ram:"DDR4", capacity:32, modules:2, speed:3200},
 
-  // Fuentes: form = formato, conns = conectores de GPU que trae
-  4:{tipo:"psu", psuW:1000, form:"ATX", conns:["12V-2x6","8-pin"]},
-  8:{tipo:"psu", psuW:750,  form:"ATX", conns:["8-pin"]},       // (verificar)
+  // FUENTES
+  4: {tipo:"psu", psuW:1000, form:"ATX", conns:["12V-2x6","8-pin"]},
+  8: {tipo:"psu", psuW:750, form:"ATX", conns:["8-pin"]},
 
-  // Cooler: sockets que soporta y altura en mm
-  9:{tipo:"cooler", sockets:["AM5","AM4","LGA1700"], height:155}, // (verificar)
+  // REFRIGERACIÓN
+  9: {tipo:"cooler", sockets:["AM5","AM4","LGA1700"], height:155},
 
-  // Almacenamiento: type = "M.2" o "SATA"
+  // ALMACENAMIENTO
   10:{tipo:"storage", type:"SATA"},
 
-  // Gabinete: formatos de placa, largo máx. de GPU, altura máx. de cooler, formatos de fuente
-  12:{tipo:"case", forms:["ATX","Micro-ATX","Mini-ITX"], maxGpu:330, maxCooler:160, psuForms:["ATX"]}, // (verificar)
+  // GABINETES
+  12:{
+    tipo:"case",
+    forms:["ATX","Micro-ATX","Mini-ITX"],
+    maxGpu:330,
+    maxCooler:160,
+    psuForms:["ATX"]
+  },
 
-  // Tarjetas madre: agrega una línea por cada una que vendas, por ejemplo:
- 13:{tipo:"board", socket:"AM5", ram:"DDR5", form:"ATX", m2:3, sata:4, cpus:["Ryzen 7000","Ryzen 9000"]},
+  // TARJETAS MADRE
+  13:{
+    tipo:"board",
+    socket:"AM5",
+    ram:"DDR5",
+    form:"ATX",
+    m2:3,
+    sata:4,
+    cpus:["Ryzen 7000","Ryzen 9000"]
+  }
 };
 
 const CAMPOS = [
-  {id:"cpuSelect",     tipo:"cpu",     ph:"Selecciona un procesador",      nombre:"Procesador"},
-  {id:"boardSelect",   tipo:"board",   ph:"Selecciona una tarjeta madre",  nombre:"Tarjeta madre"},
-  {id:"ramSelect",     tipo:"ram",     ph:"Selecciona memoria RAM",        nombre:"Memoria RAM"},
-  {id:"gpuSelect",     tipo:"gpu",     ph:"Selecciona una tarjeta gráfica",nombre:"Tarjeta gráfica"},
-  {id:"psuSelect",     tipo:"psu",     ph:"Selecciona fuente de poder",    nombre:"Fuente de poder"},
-  {id:"caseSelect",    tipo:"case",    ph:"Selecciona un gabinete",        nombre:"Gabinete"},
-  {id:"coolerSelect",  tipo:"cooler",  ph:"Selecciona un cooler",          nombre:"Cooler"},
-  {id:"storageSelect", tipo:"storage", ph:"Selecciona almacenamiento",     nombre:"Almacenamiento"}
+  {id:"cpuSelect",tipo:"cpu",nombre:"Procesador"},
+  {id:"boardSelect",tipo:"board",nombre:"Tarjeta madre"},
+  {id:"ramSelect",tipo:"ram",nombre:"Memoria RAM"},
+  {id:"gpuSelect",tipo:"gpu",nombre:"Tarjeta gráfica"},
+  {id:"psuSelect",tipo:"psu",nombre:"Fuente de poder"},
+  {id:"caseSelect",tipo:"case",nombre:"Gabinete"},
+  {id:"coolerSelect",tipo:"cooler",nombre:"Refrigeración"},
+  {id:"storageSelect",tipo:"storage",nombre:"Almacenamiento"}
 ];
 
+// Llena los selectores utilizando el catálogo actual.
 function llenarCompat(){
   CAMPOS.forEach(c=>{
-    const lista=products.filter(p=>COMPAT[p.id]&&COMPAT[p.id].tipo===c.tipo)
-      .map(p=>({v:p.id,t:p.name.split(" - ").slice(0,2).join(" - ")}));
-    $(c.id).innerHTML=`<option value="">${lista.length?c.ph:"Sin productos disponibles"}</option>`+
-      lista.map(o=>`<option value="${esc(o.v)}">${esc(o.t)}</option>`).join("");
+    const select=$(c.id);
+    if(!select)return;
+
+    const lista=products.filter(p=>
+      COMPAT[p.id] && COMPAT[p.id].tipo===c.tipo
+    );
+
+    select.innerHTML=
+      `<option value="">Selecciona ${c.nombre.toLowerCase()}</option>`+
+      lista.map(p=>
+        `<option value="${p.id}">${esc(p.name)}</option>`
+      ).join("");
   });
 }
-llenarCompat();
 
-$("checkCompat").onclick=()=>{
-  const sel={};
-  CAMPOS.forEach(c=>{const v=$(c.id).value; sel[c.tipo]=v?products.find(p=>String(p.id)===v):null});
+function revisarCompatibilidad(){
   const box=$("compatResult");
+  const seleccion={};
 
-  const faltan=CAMPOS.filter(c=>!sel[c.tipo]).map(c=>c.nombre);
-  if(faltan.length){
-    box.innerHTML=`⚠️ Para revisar la compatibilidad falta seleccionar: <strong>${faltan.join(", ")}</strong>.`;
+  CAMPOS.forEach(c=>{
+    const id=$(c.id)?.value;
+    seleccion[c.tipo]=id
+      ? products.find(p=>String(p.id)===String(id))
+      : null;
+  });
+
+  const elegidos=Object.values(seleccion).filter(Boolean);
+
+  if(elegidos.length<2){
+    box.innerHTML="⚠️ Selecciona al menos dos componentes para revisar.";
     return;
   }
 
-  const d={}; Object.keys(sel).forEach(k=>d[k]=COMPAT[sel[k].id]);
-  const out=[], add=(t,x)=>out.push({t,x});
+  const datos={};
+  Object.keys(seleccion).forEach(tipo=>{
+    const p=seleccion[tipo];
+    datos[tipo]=p?COMPAT[p.id]:null;
+  });
 
-  // 1. Procesador + tarjeta madre (socket)
-  d.cpu.socket===d.board.socket
-    ? add("ok",`El procesador (${d.cpu.socket}) es compatible con el socket de la tarjeta madre.`)
-    : add("bad",`El procesador usa socket ${d.cpu.socket} y la tarjeta madre ${d.board.socket}.`);
+  const resultados=[];
+  const agregar=(tipo,mensaje)=>
+    resultados.push({tipo,mensaje});
 
-  // 2. Procesador + BIOS de la tarjeta madre
-  if(d.board.cpus){
-    d.board.cpus.includes(d.cpu.serie)
-      ? add("ok",`La tarjeta madre soporta la serie ${d.cpu.serie} de fábrica.`)
-      : add("warn",`La tarjeta madre podría necesitar actualizar la BIOS para usar la serie ${d.cpu.serie}.`);
+  const comparar=(a,b)=>{
+    return seleccion[a]&&seleccion[b]&&datos[a]&&datos[b];
+  };
+
+  // CPU + TARJETA MADRE
+  if(comparar("cpu","board")){
+    if(datos.cpu.socket&&datos.board.socket){
+      agregar(
+        datos.cpu.socket===datos.board.socket?"ok":"bad",
+        datos.cpu.socket===datos.board.socket
+          ?"El socket del procesador coincide con la tarjeta madre."
+          :"El socket del procesador no coincide con la tarjeta madre."
+      );
+    }
+
+    if(datos.board.cpus&&datos.cpu.serie){
+      agregar(
+        datos.board.cpus.includes(datos.cpu.serie)?"ok":"warn",
+        datos.board.cpus.includes(datos.cpu.serie)
+          ?"La serie del procesador aparece en la lista de soporte."
+          :"Verifica la versión de BIOS necesaria para este procesador."
+      );
+    }
   }
 
-  // 3. Tarjeta madre + RAM, y procesador + RAM
-  d.board.ram===d.ram.ram
-    ? add("ok",`La memoria ${d.ram.ram} es compatible con la tarjeta madre.`)
-    : add("bad",`La tarjeta madre usa ${d.board.ram} y elegiste memoria ${d.ram.ram}.`);
-  if(d.cpu.ram){
-    d.cpu.ram===d.ram.ram
-      ? add("ok",`El procesador soporta memoria ${d.ram.ram}.`)
-      : add("bad",`El procesador solo soporta ${d.cpu.ram} y elegiste memoria ${d.ram.ram}.`);
+  // TARJETA MADRE + RAM
+  if(comparar("board","ram")){
+    if(datos.board.ram&&datos.ram.ram){
+      agregar(
+        datos.board.ram===datos.ram.ram?"ok":"bad",
+        datos.board.ram===datos.ram.ram
+          ?"El tipo de memoria coincide con la tarjeta madre."
+          :"El tipo de memoria no coincide con la tarjeta madre."
+      );
+    }
+
+    if(datos.board.maxRam&&datos.ram.capacity){
+      agregar(
+        datos.ram.capacity<=datos.board.maxRam?"ok":"bad",
+        `Capacidad RAM: ${datos.ram.capacity} GB; máximo de placa: ${datos.board.maxRam} GB.`
+      );
+    }
   }
 
-  // 4. Fuente + GPU + procesador (potencia)
-  const w=d.psu.psuW, estimado=(d.cpu.tdp||100)+d.gpu.gpuW+100;
-  if(w<d.gpu.rec) add("bad",`La tarjeta gráfica recomienda al menos ${d.gpu.rec} W y la fuente es de ${w} W.`);
-  else if(w<estimado*1.25) add("warn",`La fuente de ${w} W alcanza, pero con poco margen (consumo estimado ~${estimado} W). Lo ideal es dejar 25% libre.`);
-  else add("ok",`La fuente de ${w} W cubre el consumo estimado (~${estimado} W) con buen margen.`);
+  // CPU + RAM
+  if(comparar("cpu","ram")){
+    if(datos.cpu.ram&&datos.ram.ram){
+      agregar(
+        datos.cpu.ram.includes(datos.ram.ram)?"ok":"bad",
+        datos.cpu.ram.includes(datos.ram.ram)
+          ?"El tipo de RAM es admitido por el procesador."
+          :"El procesador no admite este tipo de RAM."
+      );
+    }
+  }
 
-  // 5. Fuente + conector de la GPU
-  d.psu.conns.includes(d.gpu.conn)
-    ? add("ok",`La fuente tiene el conector ${d.gpu.conn} que pide la tarjeta gráfica.`)
-    : add("warn",`La tarjeta gráfica usa ${d.gpu.conn} y la fuente no lo trae nativo; necesitarías adaptador.`);
+  // FUENTE + GPU
+  if(comparar("psu","gpu")){
+    if(datos.psu.psuW&&datos.gpu.rec){
+      agregar(
+        datos.psu.psuW>=datos.gpu.rec?"ok":"bad",
+        `Fuente: ${datos.psu.psuW} W. Recomendación de GPU: ${datos.gpu.rec} W.`
+      );
+    }
 
-  // 6. Gabinete + tarjeta madre (formato)
-  d.case.forms.includes(d.board.form)
-    ? add("ok",`El gabinete acepta tarjetas madre ${d.board.form}.`)
-    : add("bad",`La tarjeta madre es ${d.board.form} y el gabinete solo acepta ${d.case.forms.join(", ")}.`);
+    if(datos.psu.conns&&datos.gpu.conn){
+      const compatible=datos.gpu.conn.every(c=>
+        datos.psu.conns.includes(c)
+      );
 
-  // 7. Gabinete + GPU (largo)
-  d.gpu.len<=d.case.maxGpu
-    ? add("ok",`La tarjeta gráfica (${d.gpu.len} mm) cabe en el gabinete (máx. ${d.case.maxGpu} mm).`)
-    : add("bad",`La tarjeta gráfica mide ${d.gpu.len} mm y el gabinete admite máximo ${d.case.maxGpu} mm.`);
+      agregar(
+        compatible?"ok":"warn",
+        compatible
+          ?"La fuente incluye los conectores indicados para la GPU."
+          :"Verifica los conectores de alimentación de la GPU."
+      );
+    }
+  }
 
-  // 8. Gabinete + fuente (formato)
-  d.case.psuForms.includes(d.psu.form)
-    ? add("ok",`El gabinete acepta fuentes ${d.psu.form}.`)
-    : add("bad",`La fuente es ${d.psu.form} y el gabinete solo acepta ${d.case.psuForms.join(", ")}.`);
+  // TARJETA MADRE + GABINETE
+  if(comparar("board","case")){
+    if(datos.board.form&&datos.case.forms){
+      agregar(
+        datos.case.forms.includes(datos.board.form)?"ok":"bad",
+        datos.case.forms.includes(datos.board.form)
+          ?"El gabinete admite el formato de tarjeta madre."
+          :"El gabinete no admite el formato de tarjeta madre."
+      );
+    }
+  }
 
-  // 9. Cooler + procesador (socket)
-  d.cooler.sockets.includes(d.cpu.socket)
-    ? add("ok",`El cooler es compatible con el socket ${d.cpu.socket}.`)
-    : add("bad",`El cooler no soporta el socket ${d.cpu.socket}.`);
+  // GPU + GABINETE
+  if(comparar("gpu","case")){
+    if(datos.gpu.len&&datos.case.maxGpu){
+      agregar(
+        datos.gpu.len<=datos.case.maxGpu?"ok":"bad",
+        `GPU: ${datos.gpu.len} mm. Espacio máximo del gabinete: ${datos.case.maxGpu} mm.`
+      );
+    }
+  }
 
-  // 10. Cooler + gabinete (altura)
-  d.cooler.height<=d.case.maxCooler
-    ? add("ok",`El cooler (${d.cooler.height} mm) cabe en el gabinete (máx. ${d.case.maxCooler} mm).`)
-    : add("bad",`El cooler mide ${d.cooler.height} mm y el gabinete admite máximo ${d.case.maxCooler} mm.`);
+  // FUENTE + GABINETE
+  if(comparar("psu","case")){
+    if(datos.psu.form&&datos.case.psuForms){
+      agregar(
+        datos.case.psuForms.includes(datos.psu.form)?"ok":"bad",
+        "Revisión del formato de la fuente y del gabinete."
+      );
+    }
+  }
 
-  // 11. Tarjeta madre + almacenamiento
-  const slots=d.storage.type==="M.2"?d.board.m2:d.board.sata;
-  slots>0
-    ? add("ok",`La tarjeta madre tiene ${slots} conexión(es) ${d.storage.type} disponibles.`)
-    : add("bad",`La tarjeta madre no tiene conexiones ${d.storage.type}.`);
+  // COOLER + CPU
+  if(comparar("cooler","cpu")){
+    if(datos.cooler.sockets&&datos.cpu.socket){
+      agregar(
+        datos.cooler.sockets.includes(datos.cpu.socket)?"ok":"bad",
+        datos.cooler.sockets.includes(datos.cpu.socket)
+          ?"El sistema de refrigeración admite el socket del procesador."
+          :"El sistema de refrigeración no admite el socket del procesador."
+      );
+    }
+  }
 
-  const color={ok:"#166534",bad:"#991b1b",warn:"#92400e"}, icono={ok:"✅",bad:"❌",warn:"⚠️"};
-  const hayError=out.some(o=>o.t==="bad"), hayAviso=out.some(o=>o.t==="warn");
-  const titulo=hayError?"Hay incompatibilidades en tu selección":hayAviso?"Es compatible, pero con avisos":"Tu selección es compatible";
+  // COOLER + GABINETE
+  if(comparar("cooler","case")){
+    if(datos.cooler.height&&datos.case.maxCooler){
+      agregar(
+        datos.cooler.height<=datos.case.maxCooler?"ok":"bad",
+        "Revisión de la altura del cooler respecto al gabinete."
+      );
+    }
+  }
+
+  // TARJETA MADRE + ALMACENAMIENTO
+  if(comparar("board","storage")){
+    const tipo=datos.storage.type;
+    const conexiones=tipo==="M.2"?datos.board.m2:
+      tipo==="SATA"?datos.board.sata:null;
+
+    if(conexiones!==null&&conexiones!==undefined){
+      agregar(
+        conexiones>0?"ok":"bad",
+        `La tarjeta madre declara ${conexiones} conexión(es) ${tipo}.`
+      );
+    }
+  }
+
+  // Datos técnicos que todavía no se pueden verificar.
+  const sinFicha=elegidos.filter(p=>!COMPAT[p.id]);
+  if(sinFicha.length){
+    agregar("warn","Hay productos sin ficha técnica de compatibilidad.");
+  }
+
+  const colores={
+    ok:"#166534",
+    bad:"#991b1b",
+    warn:"#92400e"
+  };
+
+  const iconos={ok:"✅",bad:"❌",warn:"⚠️"};
+
+  const error=resultados.some(r=>r.tipo==="bad");
+  const aviso=resultados.some(r=>r.tipo==="warn");
+
+  const titulo=error
+    ?"Se detectaron incompatibilidades"
+    :aviso
+      ?"Revisión con advertencias"
+      :"No se detectaron incompatibilidades en los datos revisados";
+
   box.innerHTML=
-    `<div style="font-weight:700;margin-bottom:8px;color:${hayError?color.bad:hayAviso?color.warn:color.ok}">${titulo}</div>`+
-    out.map(o=>`<div style="color:${color[o.t]};margin-bottom:6px">${icono[o.t]} ${esc(o.x)}</div>`).join("")+
-    `<div style="color:#777;margin-top:8px">Herramienta orientativa. Confirma medidas y conectores con la ficha oficial de cada modelo.</div>`;
-};
+    `<strong style="color:${error?colores.bad:aviso?colores.warn:colores.ok}">${titulo}</strong>`+
+    resultados.map(r=>
+      `<div style="color:${colores[r.tipo]};margin-top:8px">${iconos[r.tipo]} ${esc(r.mensaje)}</div>`
+    ).join("")+
+    `<p style="color:#777;margin-top:12px">Resultado orientativo. Confirma BIOS, dimensiones, conectores y especificaciones en las fichas oficiales de los fabricantes.</p>`;
+}
+
+llenarCompat();
+
+$("checkCompat").onclick=revisarCompatibilidad;
+
 registrarPCs();saveCart();renderHome();renderCatalog();;
 function registrarPCs(){
   const ens=products.find(p=>p.id===100);
